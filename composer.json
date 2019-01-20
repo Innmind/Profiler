@@ -19,12 +19,14 @@
         "innmind/immutable": "^2.13",
         "innmind/time-continuum": "^1.3",
         "ramsey/uuid": "^3.8",
-        "innmind/filesystem": "^3.3"
+        "innmind/filesystem": "^3.3",
+        "innmind/operating-system": "^1.3"
     },
     "autoload": {
         "psr-4": {
             "Innmind\\Profiler\\": "src/"
-        }
+        },
+        "files": ["src/Server/Domain/bootstrap.php"]
     },
     "autoload-dev": {
         "psr-4": {
