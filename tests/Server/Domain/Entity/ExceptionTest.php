@@ -15,7 +15,7 @@ class ExceptionTest extends TestCase
     public function testInterface()
     {
         $exception = new Exception(
-            $identity = $this->createMock(Identity::class),
+            $identity = Identity::generate('exception'),
             $svg = new Svg('<svg></svg>')
         );
 

@@ -17,7 +17,7 @@ class EventBusTest extends TestCase
     public function testInterface()
     {
         $bus = new EventBus(
-            $identity = $this->createMock(Identity::class)
+            $identity = Identity::generate('event-bus')
         );
 
         $this->assertSame($identity, $bus->identity());

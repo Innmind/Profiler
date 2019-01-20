@@ -15,7 +15,7 @@ class AppGraphTest extends TestCase
     public function testInterface()
     {
         $section = new AppGraph(
-            $identity = $this->createMock(Identity::class),
+            $identity = Identity::generate('app-graph'),
             $svg = new Svg('<svg></svg>')
         );
 

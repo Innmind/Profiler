@@ -3,8 +3,31 @@ declare(strict_types = 1);
 
 namespace Innmind\Profiler\Server\Domain\Entity\Section;
 
-interface Identity
+use Ramsey\Uuid\Uuid;
+
+final class Identity
 {
-    public function name(): string;
-    public function __toString(): string;
+    private $value;
+    private $section;
+
+    private function __construct(string $value, string $section)
+    {
+        $this->value = $value;
+        $this->section = $section;
+    }
+
+    public static function generate(string $section): self
+    {
+        return new self((string) Uuid::uuid4(), $section);
+    }
+
+    public function section(): string
+    {
+        return $this->section;
+    }
+
+    public function __toString(): string
+    {
+        return $this->value;
+    }
 }

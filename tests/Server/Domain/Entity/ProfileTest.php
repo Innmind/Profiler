@@ -19,7 +19,7 @@ class ProfileTest extends TestCase
     public function testStart()
     {
         $profile = Profile::start(
-            $identity = $this->createMock(Identity::class),
+            $identity = Identity::generate(),
             'foo',
             $startedAt = $this->createMock(PointInTimeInterface::class)
         );
@@ -36,11 +36,11 @@ class ProfileTest extends TestCase
     public function testAdd()
     {
         $profile = Profile::start(
-            $this->createMock(Identity::class),
+            Identity::generate(),
             'foo',
             $this->createMock(PointInTimeInterface::class)
         );
-        $section = $this->createMock(Section::class);
+        $section = Section::generate('section');
 
         $this->assertNull($profile->add($section));
         $this->assertSame([$section], $profile->sections()->toPrimitive());
@@ -49,7 +49,7 @@ class ProfileTest extends TestCase
     public function testFail()
     {
         $profile = Profile::start(
-            $this->createMock(Identity::class),
+            Identity::generate(),
             'foo',
             $this->createMock(PointInTimeInterface::class)
         );
@@ -62,7 +62,7 @@ class ProfileTest extends TestCase
     public function testSuceeed()
     {
         $profile = Profile::start(
-            $this->createMock(Identity::class),
+            Identity::generate(),
             'foo',
             $this->createMock(PointInTimeInterface::class)
         );
@@ -75,7 +75,7 @@ class ProfileTest extends TestCase
     public function testThrowWhenAddingSectionToAClosedProfile()
     {
         $profile = Profile::start(
-            $this->createMock(Identity::class),
+            Identity::generate(),
             'foo',
             $this->createMock(PointInTimeInterface::class)
         );
@@ -83,6 +83,6 @@ class ProfileTest extends TestCase
 
         $this->expectException(LogicException::class);
 
-        $profile->add($this->createMock(Section::class));
+        $profile->add(Section::generate('section'));
     }
 }

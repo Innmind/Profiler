@@ -14,7 +14,7 @@ class RequestResponseTest extends TestCase
     public function testReceived()
     {
         $section = RequestResponse::received(
-            $identity = $this->createMock(Identity::class),
+            $identity = Identity::generate('request-response'),
             'some request'
         );
 
@@ -27,7 +27,7 @@ class RequestResponseTest extends TestCase
     public function testRespondedWith()
     {
         $section = RequestResponse::received(
-            $this->createMock(Identity::class),
+            Identity::generate('request-response'),
             'some request'
         );
 

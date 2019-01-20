@@ -17,7 +17,7 @@ class CommandBusTest extends TestCase
     public function testInterface()
     {
         $bus = new CommandBus(
-            $identity = $this->createMock(Identity::class)
+            $identity = Identity::generate('command-bus')
         );
 
         $this->assertSame($identity, $bus->identity());
