@@ -14,6 +14,7 @@ use function Innmind\Profiler\Server\{
     Domain\bootstrap as domain,
     Web\bootstrap as web,
 };
+use function Innmind\Templating\bootstrap as render;
 
 new class extends Main {
     protected function main(ServerRequest $request, OperatingSystem $os): Response
@@ -23,7 +24,11 @@ new class extends Main {
             new Path(__DIR__.'/../var')
         );
 
-        $handle = web($os, $domain);
+        $handle = web(
+            $os,
+            render(new Path(__DIR__.'/../templates')),
+            $domain
+        );
 
         return $handle($request);
     }

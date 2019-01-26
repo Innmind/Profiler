@@ -8,7 +8,10 @@ use Innmind\Profiler\Server\Domain\{
     Entity\Profile\Status,
     Exception\LogicException,
 };
-use Innmind\TimeContinuum\PointInTimeInterface;
+use Innmind\TimeContinuum\{
+    PointInTimeInterface,
+    Format\ISO8601,
+};
 use Innmind\Immutable\{
     SetInterface,
     Set,
@@ -91,5 +94,14 @@ final class Profile
     public function sections(): SetInterface
     {
         return $this->sections;
+    }
+
+    public function __toString(): string
+    {
+        return \sprintf(
+            '[%s] %s',
+            $this->startedAt->format(new ISO8601),
+            $this->name
+        );
     }
 }

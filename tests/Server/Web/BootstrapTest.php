@@ -10,6 +10,7 @@ use function Innmind\Profiler\Server\{
 use Innmind\OperatingSystem\Factory;
 use Innmind\Url\Path;
 use Innmind\HttpFramework\RequestHandler;
+use Innmind\Templating\Engine;
 use PHPUnit\Framework\TestCase;
 
 class BootstrapTest extends TestCase
@@ -19,6 +20,7 @@ class BootstrapTest extends TestCase
         $os = Factory::build();
         $handler = bootstrap(
             $os,
+            $this->createMock(Engine::class),
             domain($os->filesystem(), new Path(\sys_get_temp_dir()))
         );
 

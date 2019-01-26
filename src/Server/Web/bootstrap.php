@@ -15,6 +15,7 @@ use Innmind\Router\{
     Route,
     RequestMatcher\RequestMatcher,
 };
+use Innmind\Templating\Engine;
 use Innmind\Immutable\{
     MapInterface,
     Map,
@@ -24,6 +25,7 @@ use function Innmind\Immutable\assertMap;
 
 function bootstrap(
     OperatingSystem $os,
+    Engine $render,
     MapInterface $repositories
 ): RequestHandler {
     assertMap('string', 'object', $repositories, 2);
@@ -70,9 +72,23 @@ function bootstrap(
             Str::of('OPTIONS /\*')
         )
     );
+    $routes = $rest['routes'];
+    $controllers = $rest['controllers'];
+
+    $routes = $routes->add(Route::of(
+        new Route\Name('index'),
+        Str::of('GET /')
+    ));
+    $controllers = $controllers->put(
+        'index',
+        new Controller\Index(
+            $repositories->get(Entity\Profile::class),
+            $render
+        )
+    );
 
     return new Router(
-        new RequestMatcher($rest['routes']),
-        $rest['controllers']
+        new RequestMatcher($routes),
+        $controllers
     );
 }
