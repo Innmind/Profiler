@@ -29,18 +29,6 @@ function bootstrap(Filesystem $filesystem, PathInterface $storage): MapInterface
             )
         )
         (
-            Entity\CommandBus::class,
-            new Repository\CommandBusRepository(
-                $filesystem->mount(new Path($storage.'/sections/command-bus'))
-            )
-        )
-        (
-            Entity\EventBus::class,
-            new Repository\EventBusRepository(
-                $filesystem->mount(new Path($storage.'/sections/event-bus'))
-            )
-        )
-        (
             Entity\Exception::class,
             new Repository\ExceptionRepository(
                 $filesystem->mount(new Path($storage.'/sections/exception'))
