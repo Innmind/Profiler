@@ -75,17 +75,31 @@ function bootstrap(
     $routes = $rest['routes'];
     $controllers = $rest['controllers'];
 
-    $routes = $routes->add(Route::of(
-        new Route\Name('index'),
-        Str::of('GET /')
-    ));
-    $controllers = $controllers->put(
-        'index',
-        new Controller\Index(
-            $repositories->get(Entity\Profile::class),
-            $render
+    $routes = $routes
+        ->add(Route::of(
+            new Route\Name('index'),
+            Str::of('GET /')
+        ))
+        ->add(Route::of(
+            new Route\Name('profile'),
+            Str::of('GET /profile/{identity}')
+        ));
+    $controllers = $controllers
+        (
+            'index',
+            new Controller\Index(
+                $repositories->get(Entity\Profile::class),
+                $render
+            )
         )
-    );
+        (
+            'profile',
+            new Controller\Profile(
+                $repositories->get(Entity\Profile::class),
+                $repositories,
+                $render
+            )
+        );
 
     return new Router(
         new RequestMatcher($routes),

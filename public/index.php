@@ -10,6 +10,11 @@ use Innmind\Http\Message\{
 };
 use Innmind\OperatingSystem\OperatingSystem;
 use Innmind\Url\Path;
+use Innmind\Profiler\Server\Web\{
+    Names,
+    Templates,
+};
+use Innmind\Immutable\Map;
 use function Innmind\Profiler\Server\{
     Domain\bootstrap as domain,
     Web\bootstrap as web,
@@ -26,7 +31,13 @@ new class extends Main {
 
         $handle = web(
             $os,
-            render(new Path(__DIR__.'/../templates')),
+            render(
+                new Path(__DIR__.'/../templates'),
+                null,
+                Map::of('string', 'object')
+                    ('name', new Names)
+                    ('render', new Templates)
+            ),
             $domain
         );
 

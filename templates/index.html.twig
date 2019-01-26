@@ -83,7 +83,7 @@
             <ul>
                 {% for profile in profiles %}
                     <li class="{% if profile.closed %}{{ profile.status }}{% else %}pending{% endif %}">
-                        <a href="/profile/{{ profile.identity }}">{{profile}}</a>
+                        <a href="/profile/{{ profile.identity }}#section-1">{{profile}}</a>
                     </li>
                 {% else %}
                     <li class="empty">No profile found</li>
