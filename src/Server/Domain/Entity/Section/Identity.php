@@ -10,7 +10,7 @@ final class Identity
     private $value;
     private $section;
 
-    private function __construct(string $value, string $section)
+    public function __construct(string $value, string $section)
     {
         $this->value = $value;
         $this->section = $section;
