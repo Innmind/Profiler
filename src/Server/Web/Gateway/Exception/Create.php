@@ -30,7 +30,7 @@ final class Create implements ResourceCreator
         HttpResource $resource
     ): Identity {
         $section = new Exception(
-            Section\Identity::generate('exception'),
+            Section\Identity::generate(Exception::class),
             new Svg($resource->property('graph')->value())
         );
         $this->repository->add($section);

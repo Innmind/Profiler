@@ -6,6 +6,7 @@ namespace Innmind\Profiler\Server\Web\Gateway\RequestResponse;
 use Innmind\Profiler\Server\Domain\{
     Entity\Profile,
     Entity\Section,
+    Entity\RequestResponse,
     Repository\ProfileRepository,
 };
 use Innmind\Rest\Server\{
@@ -25,7 +26,7 @@ final class Link implements ResourceLinker
 
     public function __invoke(Reference $from, ResourceLink ...$links): void
     {
-        $section = new Section\Identity((string) $from->identity(), 'request_response');
+        $section = new Section\Identity((string) $from->identity(), RequestResponse::class);
 
         foreach ($links as $link) {
             if ($link->relationship() !== 'section-of') {

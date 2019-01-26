@@ -30,7 +30,7 @@ final class Create implements ResourceCreator
         HttpResource $resource
     ): Identity {
         $section = new AppGraph(
-            Section\Identity::generate('app_graph'),
+            Section\Identity::generate(AppGraph::class),
             new Svg($resource->property('graph')->value())
         );
         $this->repository->add($section);

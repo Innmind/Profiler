@@ -6,6 +6,7 @@ namespace Innmind\Profiler\Server\Web\Gateway\Exception;
 use Innmind\Profiler\Server\Domain\{
     Entity\Profile,
     Entity\Section,
+    Entity\Exception,
     Repository\ProfileRepository,
 };
 use Innmind\Rest\Server\{
@@ -25,7 +26,7 @@ final class Link implements ResourceLinker
 
     public function __invoke(Reference $from, ResourceLink ...$links): void
     {
-        $section = new Section\Identity((string) $from->identity(), 'exception');
+        $section = new Section\Identity((string) $from->identity(), Exception::class);
 
         foreach ($links as $link) {
             if ($link->relationship() !== 'section-of') {

@@ -8,6 +8,7 @@ use Innmind\Profiler\Server\{
     Domain\Repository\ProfileRepository,
     Domain\Entity\Profile,
     Domain\Entity\Section,
+    Domain\Entity\RequestResponse,
 };
 use Innmind\Rest\Server\{
     ResourceLinker,
@@ -52,7 +53,7 @@ class LinkTest extends TestCase
         $link(
             new Reference(
                 $directory->child('section')->definition('request_response'),
-                new Identity((string) $expected = Section\Identity::generate('request_response'))
+                new Identity((string) $expected = Section\Identity::generate(RequestResponse::class))
             ),
             new ResourceLink(
                 new Reference(

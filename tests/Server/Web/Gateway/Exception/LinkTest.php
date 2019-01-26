@@ -8,6 +8,7 @@ use Innmind\Profiler\Server\{
     Domain\Repository\ProfileRepository,
     Domain\Entity\Profile,
     Domain\Entity\Section,
+    Domain\Entity\Exception,
 };
 use Innmind\Rest\Server\{
     ResourceLinker,
@@ -52,7 +53,7 @@ class LinkTest extends TestCase
         $link(
             new Reference(
                 $directory->child('section')->definition('exception'),
-                new Identity((string) $expected = Section\Identity::generate('exception'))
+                new Identity((string) $expected = Section\Identity::generate(Exception::class))
             ),
             new ResourceLink(
                 new Reference(

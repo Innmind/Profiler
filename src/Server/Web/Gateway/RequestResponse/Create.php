@@ -29,7 +29,7 @@ final class Create implements ResourceCreator
         HttpResource $resource
     ): Identity {
         $section = RequestResponse::received(
-            Section\Identity::generate('request_response'),
+            Section\Identity::generate(RequestResponse::class),
             $resource->property('request')->value()
         );
         $this->repository->add($section);
