@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\Profiler\Web;
 
+use Innmind\Profiler\Domain\Entity;
 use Innmind\Rest\Server\{
     Definition\Directory,
     Definition\HttpResource,
@@ -29,7 +30,7 @@ return function(TimeContinuumInterface $clock): Directory {
                 Set::of(Directory::class),
                 new HttpResource(
                     'http',
-                    new Gateway('http'),
+                    new Gateway(Entity\Http::class),
                     new Identity('uuid'),
                     Set::of(
                         Property::class,
@@ -58,7 +59,7 @@ return function(TimeContinuumInterface $clock): Directory {
                 ),
                 new HttpResource(
                     'exception',
-                    new Gateway('exception'),
+                    new Gateway(Entity\Exception::class),
                     new Identity('uuid'),
                     Set::of(
                         Property::class,
@@ -82,7 +83,7 @@ return function(TimeContinuumInterface $clock): Directory {
                 ),
                 new HttpResource(
                     'app_graph',
-                    new Gateway('app_graph'),
+                    new Gateway(Entity\AppGraph::class),
                     new Identity('uuid'),
                     Set::of(
                         Property::class,
@@ -106,7 +107,7 @@ return function(TimeContinuumInterface $clock): Directory {
                 ),
                 new HttpResource(
                     'environment',
-                    new Gateway('environment'),
+                    new Gateway(Entity\Environment::class),
                     new Identity('uuid'),
                     Set::of(
                         Property::class,
@@ -132,7 +133,7 @@ return function(TimeContinuumInterface $clock): Directory {
         ),
         new HttpResource(
             'profile',
-            new Gateway('profile'),
+            new Gateway(Entity\Profile::class),
             new Identity('uuid'),
             Set::of(
                 Property::class,

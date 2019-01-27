@@ -34,14 +34,14 @@ function bootstrap(
 
     $gateways = Map::of('string', GatewayInterface::class)
         (
-            'profile',
+            Entity\Profile::class,
             new Gateway\Profile(
                 new Gateway\Profile\Create($repositories->get(Entity\Profile::class)),
                 new Gateway\Profile\Update($repositories->get(Entity\Profile::class))
             )
         )
         (
-            'http',
+            Entity\Http::class,
             new Gateway\Http(
                 new Gateway\Http\Create(
                     $repositories->get(Entity\Http::class),
@@ -51,7 +51,7 @@ function bootstrap(
             )
         )
         (
-            'exception',
+            Entity\Exception::class,
             new Gateway\Exception(
                 new Gateway\Exception\Create(
                     $repositories->get(Entity\Exception::class),
@@ -60,7 +60,7 @@ function bootstrap(
             )
         )
         (
-            'app_graph',
+            Entity\AppGraph::class,
             new Gateway\AppGraph(
                 new Gateway\AppGraph\Create(
                     $repositories->get(Entity\AppGraph::class),
@@ -69,7 +69,7 @@ function bootstrap(
             )
         )
         (
-            'environment',
+            Entity\Environment::class,
             new Gateway\Environment(
                 new Gateway\Environment\Create(
                     $repositories->get(Entity\Environment::class),
