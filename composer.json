@@ -31,8 +31,8 @@
             "Innmind\\Profiler\\": "src/"
         },
         "files": [
-            "src/Server/Domain/bootstrap.php",
-            "src/Server/Web/bootstrap.php"
+            "src/Domain/bootstrap.php",
+            "src/Web/bootstrap.php"
         ]
     },
     "autoload-dev": {

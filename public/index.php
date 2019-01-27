@@ -10,12 +10,12 @@ use Innmind\Http\Message\{
 };
 use Innmind\OperatingSystem\OperatingSystem;
 use Innmind\Url\Path;
-use Innmind\Profiler\Server\Web\{
+use Innmind\Profiler\Web\{
     Names,
     Templates,
 };
 use Innmind\Immutable\Map;
-use function Innmind\Profiler\Server\{
+use function Innmind\Profiler\{
     Domain\bootstrap as domain,
     Web\bootstrap as web,
 };
