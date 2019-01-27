@@ -34,6 +34,9 @@ final class Names
 
             case Remote\Http::class:
                 return 'Remote / Http';
+
+            case Remote\Processes::class:
+                return 'Remote / Processes';
         }
 
         return 'Unknown';

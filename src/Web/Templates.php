@@ -34,6 +34,9 @@ final class Templates
 
             case Remote\Http::class:
                 return 'section/remote/http.html.twig';
+
+            case Remote\Processes::class:
+                return 'section/processes.html.twig';
         }
 
         return 'Unknown';

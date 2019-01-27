@@ -59,6 +59,30 @@ return function(TimeContinuumInterface $clock): Directory {
                                     new Access(Access::CREATE, Access::UPDATE)
                                 )
                             )
+                        ),
+                        new HttpResource(
+                            'processes',
+                            new Gateway(Entity\Remote\Processes::class),
+                            new Identity('uuid'),
+                            Set::of(
+                                Property::class,
+                                Property::required(
+                                    'uuid',
+                                    new StringType,
+                                    new Access(Access::READ)
+                                ),
+                                Property::required(
+                                    'processes',
+                                    new SetType('string', new StringType),
+                                    new Access(Access::CREATE)
+                                ),
+                                Property::required(
+                                    'profile',
+                                    new StringType,
+                                    new Access(Access::CREATE)
+                                )
+                            ),
+                            Set::of(Action::class, Action::get(), Action::create())
                         )
                     )
                 ),

@@ -22,7 +22,7 @@ class BootstrapTest extends TestCase
         $this->assertInstanceOf(MapInterface::class, $repositories);
         $this->assertSame('string', (string) $repositories->keyType());
         $this->assertSame('object', (string) $repositories->valueType());
-        $this->assertCount(7, $repositories);
+        $this->assertCount(8, $repositories);
         $this->assertSame(
             [
                 Entity\Profile::class,
@@ -32,6 +32,7 @@ class BootstrapTest extends TestCase
                 Entity\Environment::class,
                 Entity\Processes::class,
                 Entity\Remote\Http::class,
+                Entity\Remote\Processes::class,
             ],
             $repositories->keys()->toPrimitive()
         );

@@ -57,5 +57,13 @@ function bootstrap(Filesystem $filesystem, PathInterface $storage): MapInterface
             new Repository\SectionRepository(
                 $filesystem->mount(new Path($storage.'/sections/remote-http'))
             )
+        )
+        (
+            // this is not a real class but it's used to separate the processes
+            // from the ones executed on remote servers
+            Entity\Remote\Processes::class,
+            new Repository\SectionRepository(
+                $filesystem->mount(new Path($storage.'/sections/remote-processes'))
+            )
         );
 }
