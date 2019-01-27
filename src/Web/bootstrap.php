@@ -67,6 +67,15 @@ function bootstrap(
                     $repositories->get(Entity\Profile::class)
                 )
             )
+        )
+        (
+            'environment',
+            new Gateway\Environment(
+                new Gateway\Environment\Create(
+                    $repositories->get(Entity\Environment::class),
+                    $repositories->get(Entity\Profile::class)
+                )
+            )
         );
 
     $framework = framework();

@@ -12,6 +12,7 @@ use Innmind\Rest\Server\{
     Definition\Access,
     Definition\Type\StringType,
     Definition\Type\BoolType,
+    Definition\Type\SetType,
     Definition\Type\PointInTimeType,
     Action,
 };
@@ -93,6 +94,30 @@ return function(TimeContinuumInterface $clock): Directory {
                         Property::required(
                             'graph',
                             new StringType,
+                            new Access(Access::CREATE)
+                        ),
+                        Property::required(
+                            'profile',
+                            new StringType,
+                            new Access(Access::CREATE)
+                        )
+                    ),
+                    Set::of(Action::class, Action::get(), Action::create())
+                ),
+                new HttpResource(
+                    'environment',
+                    new Gateway('environment'),
+                    new Identity('uuid'),
+                    Set::of(
+                        Property::class,
+                        Property::required(
+                            'uuid',
+                            new StringType,
+                            new Access(Access::READ)
+                        ),
+                        Property::required(
+                            'pairs',
+                            new SetType('string', new StringType),
                             new Access(Access::CREATE)
                         ),
                         Property::required(

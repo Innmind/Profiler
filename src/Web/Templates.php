@@ -7,6 +7,7 @@ use Innmind\Profiler\Domain\Entity\{
     AppGraph,
     RequestResponse,
     Exception,
+    Environment,
 };
 
 final class Templates
@@ -22,6 +23,9 @@ final class Templates
 
             case Exception::class:
                 return 'section/exception.html.twig';
+
+            case Environment::class:
+                return 'section/environment.html.twig';
         }
 
         return 'Unknown';

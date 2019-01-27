@@ -7,6 +7,7 @@ use Innmind\Profiler\Domain\Entity\{
     AppGraph,
     RequestResponse,
     Exception,
+    Environment,
 };
 
 final class Names
@@ -22,6 +23,9 @@ final class Names
 
             case Exception::class:
                 return 'Exception';
+
+            case Environment::class:
+                return 'Environment';
         }
 
         return 'Unknown';
