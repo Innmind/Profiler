@@ -5,6 +5,7 @@ namespace Tests\Innmind\Profiler\Domain\Entity;
 
 use Innmind\Profiler\Domain\{
     Entity\Environment,
+    Entity\Section,
     Entity\Section\Identity,
 };
 use Innmind\Immutable\Set;
@@ -19,6 +20,7 @@ class EnvironmentTest extends TestCase
             $pairs = Set::of('string', 'FOO=bar', 'BAR=42')
         );
 
+        $this->assertInstanceOf(Section::class, $section);
         $this->assertSame($identity, $section->identity());
         $this->assertSame($pairs, $section->pairs());
         $this->assertSame("FOO=bar\nBAR=42", (string) $section);

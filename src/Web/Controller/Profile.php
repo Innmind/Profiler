@@ -60,7 +60,7 @@ final class Profile implements Controller
             $arguments->get('identity')
         ));
         $sections = $profile->sections()->reduce(
-            Set::of('object'),
+            Set::of(Section::class),
             function(SetInterface $sections, Section\Identity $identity): SetInterface {
                 return $sections->add(
                     $this->repositories->get($identity->section())->get($identity)

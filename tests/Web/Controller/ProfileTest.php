@@ -7,6 +7,7 @@ use Innmind\Profiler\{
     Web\Controller\Profile,
     Domain\Repository\ProfileRepository,
     Domain\Entity\Profile as ProfileEntity,
+    Domain\Entity\Section,
 };
 use Innmind\HttpFramework\Controller;
 use Innmind\Http\Message\{
@@ -63,7 +64,7 @@ class ProfileTest extends TestCase
                         $parameters->get('profile') instanceof ProfileEntity &&
                         $parameters->contains('sections') &&
                         $parameters->get('sections') instanceof SetInterface &&
-                        (string) $parameters->get('sections')->type() === 'object';
+                        (string) $parameters->get('sections')->type() === Section::class;
                 })
             );
         $repository->add(ProfileEntity::start(

@@ -5,6 +5,7 @@ namespace Tests\Innmind\Profiler\Domain\Entity;
 
 use Innmind\Profiler\Domain\{
     Entity\Exception,
+    Entity\Section,
     Entity\Section\Identity,
     Model\Svg,
 };
@@ -19,6 +20,7 @@ class ExceptionTest extends TestCase
             $svg = new Svg('<svg></svg>')
         );
 
+        $this->assertInstanceOf(Section::class, $exception);
         $this->assertSame($identity, $exception->identity());
         $this->assertSame($svg, $exception->graph());
     }

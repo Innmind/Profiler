@@ -8,7 +8,7 @@ use Innmind\Profiler\Domain\{
     Model\Svg,
 };
 
-final class AppGraph
+final class AppGraph implements Section
 {
     private $identity;
     private $graph;

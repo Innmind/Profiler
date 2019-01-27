@@ -5,6 +5,7 @@ namespace Tests\Innmind\Profiler\Domain\Entity;
 
 use Innmind\Profiler\Domain\Entity\{
     Http,
+    Section,
     Section\Identity,
 };
 use PHPUnit\Framework\TestCase;
@@ -19,6 +20,7 @@ class HttpTest extends TestCase
         );
 
         $this->assertInstanceOf(Http::class, $section);
+        $this->assertInstanceOf(Section::class, $section);
         $this->assertSame($identity, $section->identity());
         $this->assertSame('some request', $section->request());
         $this->assertFalse($section->hasRespondedYet());

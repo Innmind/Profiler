@@ -8,7 +8,7 @@ use Innmind\Profiler\Domain\{
     Model\Svg,
 };
 
-final class Exception
+final class Exception implements Section
 {
     private $identity;
     private $graph;

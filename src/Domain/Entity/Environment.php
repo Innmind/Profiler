@@ -7,7 +7,7 @@ use Innmind\Profiler\Domain\Entity\Section\Identity;
 use Innmind\Immutable\SetInterface;
 use function Innmind\Immutable\assertSet;
 
-final class Environment
+final class Environment implements Section
 {
     private $identity;
     private $pairs;
