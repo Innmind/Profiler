@@ -8,6 +8,7 @@ use Innmind\Profiler\Domain\Entity\{
     Http,
     Exception,
     Environment,
+    Processes,
     Remote,
 };
 
@@ -27,6 +28,9 @@ final class Templates
 
             case Environment::class:
                 return 'section/environment.html.twig';
+
+            case Processes::class:
+                return 'section/processes.html.twig';
 
             case Remote\Http::class:
                 return 'section/remote/http.html.twig';

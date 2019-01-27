@@ -47,6 +47,12 @@ function bootstrap(Filesystem $filesystem, PathInterface $storage): MapInterface
             )
         )
         (
+            Entity\Processes::class,
+            new Repository\SectionRepository(
+                $filesystem->mount(new Path($storage.'/sections/processes'))
+            )
+        )
+        (
             Entity\Remote\Http::class,
             new Repository\SectionRepository(
                 $filesystem->mount(new Path($storage.'/sections/remote-http'))

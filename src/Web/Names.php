@@ -8,6 +8,7 @@ use Innmind\Profiler\Domain\Entity\{
     Http,
     Exception,
     Environment,
+    Processes,
     Remote,
 };
 
@@ -27,6 +28,9 @@ final class Names
 
             case Environment::class:
                 return 'Environment';
+
+            case Processes::class:
+                return 'Processes';
 
             case Remote\Http::class:
                 return 'Remote / Http';

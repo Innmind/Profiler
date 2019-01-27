@@ -86,6 +86,15 @@ function bootstrap(
                     $repositories->get(Entity\Profile::class)
                 )
             )
+        )
+        (
+            Entity\Processes::class,
+            new Gateway\Processes(
+                new Gateway\Processes\Create(
+                    $repositories->get(Entity\Processes::class),
+                    $repositories->get(Entity\Profile::class)
+                )
+            )
         );
 
     $framework = framework();
