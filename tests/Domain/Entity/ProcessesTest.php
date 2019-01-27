@@ -8,7 +8,7 @@ use Innmind\Profiler\Domain\{
     Entity\Section,
     Entity\Section\Identity,
 };
-use Innmind\Immutable\Stream;
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class ProcessesTest extends TestCase
@@ -17,7 +17,7 @@ class ProcessesTest extends TestCase
     {
         $section = new Processes(
             $identity = Identity::generate('app-graph'),
-            $processes = Stream::of('string', 'cat foo', 'echo bar')
+            $processes = Set::of('string', 'cat foo', 'echo bar')
         );
 
         $this->assertInstanceOf(Section::class, $section);

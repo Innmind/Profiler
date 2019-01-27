@@ -3,8 +3,8 @@ declare(strict_types = 1);
 
 namespace Innmind\Profiler\Domain\Entity;
 
-use Innmind\Immutable\StreamInterface;
-use function Innmind\Immutable\assertStream;
+use Innmind\Immutable\SetInterface;
+use function Innmind\Immutable\assertSet;
 
 final class Processes implements Section
 {
@@ -13,9 +13,9 @@ final class Processes implements Section
 
     public function __construct(
         Section\Identity $identity,
-        StreamInterface $processes
+        SetInterface $processes
     ) {
-        assertStream('string', $processes, 2);
+        assertSet('string', $processes, 2);
 
         $this->identity = $identity;
         $this->processes = $processes;
@@ -27,9 +27,9 @@ final class Processes implements Section
     }
 
     /**
-     * @return StreamInterface<string>
+     * @return SetInterface<string>
      */
-    public function processes(): StreamInterface
+    public function processes(): SetInterface
     {
         return $this->processes;
     }

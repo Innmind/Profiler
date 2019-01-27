@@ -16,7 +16,7 @@ use Innmind\Rest\Server\{
 };
 use Innmind\Filesystem\Adapter\MemoryAdapter;
 use Innmind\TimeContinuum\TimeContinuum\Earth;
-use Innmind\Immutable\Stream;
+use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
 class CreateTest extends TestCase
@@ -58,7 +58,7 @@ class CreateTest extends TestCase
             $directory->child('section')->definition('processes'),
             HttpResource::of(
                 $directory->child('section')->definition('processes'),
-                new Property('processes', Stream::of('string')),
+                new Property('processes', Set::of('string')),
                 new Property('profile', (string) $profile->identity())
             )
         );
