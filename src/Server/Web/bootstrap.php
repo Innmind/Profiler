@@ -43,23 +43,29 @@ function bootstrap(
         (
             'request_response',
             new Gateway\RequestResponse(
-                new Gateway\RequestResponse\Create($repositories->get(Entity\RequestResponse::class)),
-                new Gateway\RequestResponse\Update($repositories->get(Entity\RequestResponse::class)),
-                new Gateway\RequestResponse\Link($repositories->get(Entity\Profile::class))
+                new Gateway\RequestResponse\Create(
+                    $repositories->get(Entity\RequestResponse::class),
+                    $repositories->get(Entity\Profile::class)
+                ),
+                new Gateway\RequestResponse\Update($repositories->get(Entity\RequestResponse::class))
             )
         )
         (
             'exception',
             new Gateway\Exception(
-                new Gateway\Exception\Create($repositories->get(Entity\Exception::class)),
-                new Gateway\Exception\Link($repositories->get(Entity\Profile::class))
+                new Gateway\Exception\Create(
+                    $repositories->get(Entity\Exception::class),
+                    $repositories->get(Entity\Profile::class)
+                )
             )
         )
         (
             'exception',
             new Gateway\AppGraph(
-                new Gateway\AppGraph\Create($repositories->get(Entity\AppGraph::class)),
-                new Gateway\AppGraph\Link($repositories->get(Entity\Profile::class))
+                new Gateway\AppGraph\Create(
+                    $repositories->get(Entity\AppGraph::class),
+                    $repositories->get(Entity\Profile::class)
+                )
             )
         );
 

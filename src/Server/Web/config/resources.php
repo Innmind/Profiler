@@ -10,7 +10,6 @@ use Innmind\Rest\Server\{
     Definition\Identity,
     Definition\Property,
     Definition\Access,
-    Definition\AllowedLink,
     Definition\Type\StringType,
     Definition\Type\BoolType,
     Definition\Type\PointInTimeType,
@@ -44,16 +43,17 @@ return function(TimeContinuumInterface $clock): Directory {
                             new Access(Access::CREATE)
                         ),
                         Property::required(
+                            'profile',
+                            new StringType,
+                            new Access(Access::CREATE)
+                        ),
+                        Property::required(
                             'response',
                             new StringType,
                             new Access(Access::UPDATE)
                         )
                     ),
-                    Set::of(Action::class, Action::get(), Action::create(), Action::update()),
-                    Set::of(
-                        AllowedLink::class,
-                        new AllowedLink('section-of', 'api.profile')
-                    )
+                    Set::of(Action::class, Action::get(), Action::create(), Action::update())
                 ),
                 new HttpResource(
                     'exception',
@@ -70,13 +70,14 @@ return function(TimeContinuumInterface $clock): Directory {
                             'graph',
                             new StringType,
                             new Access(Access::CREATE)
+                        ),
+                        Property::required(
+                            'profile',
+                            new StringType,
+                            new Access(Access::CREATE)
                         )
                     ),
-                    Set::of(Action::class, Action::get(), Action::create()),
-                    Set::of(
-                        AllowedLink::class,
-                        new AllowedLink('section-of', 'api.profile')
-                    )
+                    Set::of(Action::class, Action::get(), Action::create())
                 ),
                 new HttpResource(
                     'app_graph',
@@ -93,13 +94,14 @@ return function(TimeContinuumInterface $clock): Directory {
                             'graph',
                             new StringType,
                             new Access(Access::CREATE)
+                        ),
+                        Property::required(
+                            'profile',
+                            new StringType,
+                            new Access(Access::CREATE)
                         )
                     ),
-                    Set::of(Action::class, Action::get(), Action::create()),
-                    Set::of(
-                        AllowedLink::class,
-                        new AllowedLink('section-of', 'api.profile')
-                    )
+                    Set::of(Action::class, Action::get(), Action::create())
                 )
             )
         ),

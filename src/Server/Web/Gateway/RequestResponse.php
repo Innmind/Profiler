@@ -19,16 +19,13 @@ final class RequestResponse implements Gateway
 {
     private $creator;
     private $updater;
-    private $linker;
 
     public function __construct(
         ResourceCreator $creator,
-        ResourceUpdater $updater,
-        ResourceLinker $linker
+        ResourceUpdater $updater
     ) {
         $this->creator = $creator;
         $this->updater = $updater;
-        $this->linker = $linker;
     }
 
     public function resourceListAccessor(): ResourceListAccessor
@@ -58,7 +55,7 @@ final class RequestResponse implements Gateway
 
     public function resourceLinker(): ResourceLinker
     {
-        return $this->linker;
+        throw new ActionNotImplemented;
     }
 
     public function resourceUnlinker(): ResourceUnlinker

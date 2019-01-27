@@ -18,14 +18,10 @@ use Innmind\Rest\Server\{
 final class AppGraph implements Gateway
 {
     private $creator;
-    private $linker;
 
-    public function __construct(
-        ResourceCreator $creator,
-        ResourceLinker $linker
-    ) {
+    public function __construct(ResourceCreator $creator)
+    {
         $this->creator = $creator;
-        $this->linker = $linker;
     }
 
     public function resourceListAccessor(): ResourceListAccessor
@@ -55,7 +51,7 @@ final class AppGraph implements Gateway
 
     public function resourceLinker(): ResourceLinker
     {
-        return $this->linker;
+        throw new ActionNotImplemented;
     }
 
     public function resourceUnlinker(): ResourceUnlinker

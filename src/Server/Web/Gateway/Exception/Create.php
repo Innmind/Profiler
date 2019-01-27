@@ -6,8 +6,10 @@ namespace Innmind\Profiler\Server\Web\Gateway\Exception;
 use Innmind\Profiler\Server\Domain\{
     Entity\Exception,
     Entity\Section,
+    Entity\Profile,
     Model\Svg,
     Repository\ExceptionRepository,
+    Repository\ProfileRepository,
 };
 use Innmind\Rest\Server\{
     ResourceCreator,
@@ -18,11 +20,15 @@ use Innmind\Rest\Server\{
 
 final class Create implements ResourceCreator
 {
-    private $repository;
+    private $exceptions;
+    private $profiles;
 
-    public function __construct(ExceptionRepository $repository)
-    {
-        $this->repository = $repository;
+    public function __construct(
+        ExceptionRepository $exceptions,
+        ProfileRepository $profiles
+    ) {
+        $this->exceptions = $exceptions;
+        $this->profiles = $profiles;
     }
 
     public function __invoke(
@@ -33,7 +39,13 @@ final class Create implements ResourceCreator
             Section\Identity::generate(Exception::class),
             new Svg($resource->property('graph')->value())
         );
-        $this->repository->add($section);
+        $this->exceptions->add($section);
+
+        $profile = $this->profiles->get(new Profile\Identity(
+            $resource->property('profile')->value()
+        ));
+        $profile->add($section->identity());
+        $this->profiles->add($profile);
 
         return new Identity\Identity((string) $section->identity());
     }

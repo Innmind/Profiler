@@ -6,7 +6,9 @@ namespace Innmind\Profiler\Server\Web\Gateway\RequestResponse;
 use Innmind\Profiler\Server\Domain\{
     Entity\RequestResponse,
     Entity\Section,
+    Entity\Profile,
     Repository\RequestResponseRepository,
+    Repository\ProfileRepository,
 };
 use Innmind\Rest\Server\{
     ResourceCreator,
@@ -17,11 +19,15 @@ use Innmind\Rest\Server\{
 
 final class Create implements ResourceCreator
 {
-    private $repository;
+    private $requests;
+    private $profiles;
 
-    public function __construct(RequestResponseRepository $repository)
-    {
-        $this->repository = $repository;
+    public function __construct(
+        RequestResponseRepository $requests,
+        ProfileRepository $profiles
+    ) {
+        $this->requests = $requests;
+        $this->profiles = $profiles;
     }
 
     public function __invoke(
@@ -32,7 +38,13 @@ final class Create implements ResourceCreator
             Section\Identity::generate(RequestResponse::class),
             $resource->property('request')->value()
         );
-        $this->repository->add($section);
+        $this->requests->add($section);
+
+        $profile = $this->profiles->get(new Profile\Identity(
+            $resource->property('profile')->value()
+        ));
+        $profile->add($section->identity());
+        $this->profiles->add($profile);
 
         return new Identity\Identity((string) $section->identity());
     }
