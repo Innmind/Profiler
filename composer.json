@@ -1,6 +1,6 @@
 {
     "name": "innmind/profiler",
-    "type": "library",
+    "type": "project",
     "description": "App profiler",
     "keywords": ["profiler", "http", "cli"],
     "homepage": "http://github.com/Innmind/Profiler",
