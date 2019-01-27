@@ -22,13 +22,16 @@ final class Create implements ResourceCreator
 {
     private $graphs;
     private $profiles;
+    private $section;
 
     public function __construct(
         SectionRepository $graphs,
-        ProfileRepository $profiles
+        ProfileRepository $profiles,
+        string $section = null
     ) {
         $this->graphs = $graphs;
         $this->profiles = $profiles;
+        $this->section = $section ?? Processes::class;
     }
 
     public function __invoke(
@@ -36,7 +39,7 @@ final class Create implements ResourceCreator
         HttpResource $resource
     ): Identity {
         $section = new Processes(
-            Section\Identity::generate(Processes::class),
+            Section\Identity::generate($this->section),
             $resource->property('processes')->value()
         );
         $this->graphs->add($section);

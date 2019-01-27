@@ -65,7 +65,8 @@ function bootstrap(
             new Gateway\Processes(
                 new Gateway\Processes\Create(
                     $repositories->get(Entity\Remote\Processes::class),
-                    $repositories->get(Entity\Profile::class)
+                    $repositories->get(Entity\Profile::class),
+                    Entity\Remote\Processes::class
                 )
             )
         )
