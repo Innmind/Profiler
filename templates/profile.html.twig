@@ -126,6 +126,10 @@
                 margin-bottom: 20px;
                 padding: 10px;
             }
+
+            main section > h3 {
+                text-align: center;
+            }
         </style>
     </head>
     <body>
@@ -147,6 +151,7 @@
             </code>
             {% for section in sections %}
                 <section id="section-{{ loop.index }}">
+                    <h3>{{ name.__invoke(section.identity.section) }}</h3>
                     {% include render.__invoke(section.identity.section) with { 'profile': profile, 'section': section } %}
                 </section>
             {% endfor %}
