@@ -5,7 +5,7 @@ namespace Tests\Innmind\Profiler\Web\Gateway\Http;
 
 use Innmind\Profiler\{
     Web\Gateway\Http\Create,
-    Domain\Repository\HttpRepository,
+    Domain\Repository\SectionRepository,
     Domain\Repository\ProfileRepository,
     Domain\Entity\Profile,
 };
@@ -25,7 +25,7 @@ class CreateTest extends TestCase
         $this->assertInstanceOf(
             ResourceCreator::class,
             new Create(
-                new HttpRepository(
+                new SectionRepository(
                     new MemoryAdapter
                 ),
                 new ProfileRepository(
@@ -39,7 +39,7 @@ class CreateTest extends TestCase
     {
         $clock = new Earth;
         $create = new Create(
-            new HttpRepository(
+            new SectionRepository(
                 $adapter = new MemoryAdapter
             ),
             $profiles = new ProfileRepository(

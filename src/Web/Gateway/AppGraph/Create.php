@@ -8,7 +8,7 @@ use Innmind\Profiler\Domain\{
     Entity\Section,
     Entity\Profile,
     Model\Svg,
-    Repository\AppGraphRepository,
+    Repository\SectionRepository,
     Repository\ProfileRepository,
 };
 use Innmind\Rest\Server\{
@@ -24,7 +24,7 @@ final class Create implements ResourceCreator
     private $profiles;
 
     public function __construct(
-        AppGraphRepository $graphs,
+        SectionRepository $graphs,
         ProfileRepository $profiles
     ) {
         $this->graphs = $graphs;

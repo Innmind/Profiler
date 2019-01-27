@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Innmind\Profiler\Domain\Repository;
 
 use Innmind\Profiler\Domain\{
-    Entity\Environment,
+    Entity\Section,
     Entity\Section\Identity,
     Exception\LogicException,
 };
@@ -18,7 +18,7 @@ use Innmind\Immutable\{
     Set,
 };
 
-final class EnvironmentRepository
+final class SectionRepository
 {
     private $filesystem;
 
@@ -27,7 +27,7 @@ final class EnvironmentRepository
         $this->filesystem = $filesystem;
     }
 
-    public function add(Environment $section): void
+    public function add(Section $section): void
     {
         $this->filesystem->add(new File\File(
             (string) $section->identity(),
@@ -38,7 +38,7 @@ final class EnvironmentRepository
     /**
      * @throws LogicException When section not found
      */
-    public function get(Identity $identity): Environment
+    public function get(Identity $identity): Section
     {
         if (!$this->filesystem->has((string) $identity)) {
             throw new LogicException;

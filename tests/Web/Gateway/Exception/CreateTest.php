@@ -5,7 +5,7 @@ namespace Tests\Innmind\Profiler\Web\Gateway\Exception;
 
 use Innmind\Profiler\{
     Web\Gateway\Exception\Create,
-    Domain\Repository\ExceptionRepository,
+    Domain\Repository\SectionRepository,
     Domain\Repository\ProfileRepository,
     Domain\Entity\Profile,
 };
@@ -25,7 +25,7 @@ class CreateTest extends TestCase
         $this->assertInstanceOf(
             ResourceCreator::class,
             new Create(
-                new ExceptionRepository(
+                new SectionRepository(
                     new MemoryAdapter
                 ),
                 new ProfileRepository(
@@ -39,7 +39,7 @@ class CreateTest extends TestCase
     {
         $clock = new Earth;
         $create = new Create(
-            new ExceptionRepository(
+            new SectionRepository(
                 $adapter = new MemoryAdapter
             ),
             $profiles = new ProfileRepository(

@@ -7,7 +7,7 @@ use Innmind\Profiler\Domain\{
     Entity\Http,
     Entity\Section,
     Entity\Profile,
-    Repository\HttpRepository,
+    Repository\SectionRepository,
     Repository\ProfileRepository,
 };
 use Innmind\Rest\Server\{
@@ -23,7 +23,7 @@ final class Create implements ResourceCreator
     private $profiles;
 
     public function __construct(
-        HttpRepository $requests,
+        SectionRepository $requests,
         ProfileRepository $profiles
     ) {
         $this->requests = $requests;

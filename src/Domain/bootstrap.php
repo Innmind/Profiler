@@ -24,25 +24,25 @@ function bootstrap(Filesystem $filesystem, PathInterface $storage): MapInterface
         )
         (
             Entity\AppGraph::class,
-            new Repository\AppGraphRepository(
+            new Repository\SectionRepository(
                 $filesystem->mount(new Path($storage.'/sections/app-graph'))
             )
         )
         (
             Entity\Exception::class,
-            new Repository\ExceptionRepository(
+            new Repository\SectionRepository(
                 $filesystem->mount(new Path($storage.'/sections/exception'))
             )
         )
         (
             Entity\Http::class,
-            new Repository\HttpRepository(
+            new Repository\SectionRepository(
                 $filesystem->mount(new Path($storage.'/sections/http'))
             )
         )
         (
             Entity\Environment::class,
-            new Repository\EnvironmentRepository(
+            new Repository\SectionRepository(
                 $filesystem->mount(new Path($storage.'/sections/environment'))
             )
         );

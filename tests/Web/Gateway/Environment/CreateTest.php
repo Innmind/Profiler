@@ -5,7 +5,7 @@ namespace Tests\Innmind\Profiler\Web\Gateway\Environment;
 
 use Innmind\Profiler\{
     Web\Gateway\Environment\Create,
-    Domain\Repository\EnvironmentRepository,
+    Domain\Repository\SectionRepository,
     Domain\Repository\ProfileRepository,
     Domain\Entity\Profile,
 };
@@ -26,7 +26,7 @@ class CreateTest extends TestCase
         $this->assertInstanceOf(
             ResourceCreator::class,
             new Create(
-                new EnvironmentRepository(
+                new SectionRepository(
                     new MemoryAdapter
                 ),
                 new ProfileRepository(
@@ -40,7 +40,7 @@ class CreateTest extends TestCase
     {
         $clock = new Earth;
         $create = new Create(
-            new EnvironmentRepository(
+            new SectionRepository(
                 $adapter = new MemoryAdapter
             ),
             $profiles = new ProfileRepository(

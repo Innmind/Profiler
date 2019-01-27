@@ -6,7 +6,7 @@ namespace Innmind\Profiler\Web\Gateway\Http;
 use Innmind\Profiler\Domain\{
     Entity\Http,
     Entity\Section,
-    Repository\HttpRepository,
+    Repository\SectionRepository,
 };
 use Innmind\Rest\Server\{
     ResourceUpdater,
@@ -19,7 +19,7 @@ final class Update implements ResourceUpdater
 {
     private $repository;
 
-    public function __construct(HttpRepository $repository)
+    public function __construct(SectionRepository $repository)
     {
         $this->repository = $repository;
     }

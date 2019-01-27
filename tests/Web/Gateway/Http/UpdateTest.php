@@ -5,7 +5,7 @@ namespace Tests\Innmind\Profiler\Web\Gateway\Http;
 
 use Innmind\Profiler\{
     Web\Gateway\Http\Update,
-    Domain\Repository\HttpRepository,
+    Domain\Repository\SectionRepository,
     Domain\Entity\Http,
     Domain\Entity\Section,
 };
@@ -26,7 +26,7 @@ class UpdateTest extends TestCase
         $this->assertInstanceOf(
             ResourceUpdater::class,
             new Update(
-                new HttpRepository(
+                new SectionRepository(
                     new MemoryAdapter
                 )
             )
@@ -37,7 +37,7 @@ class UpdateTest extends TestCase
     {
         $clock = new Earth;
         $update = new Update(
-            $repository = new HttpRepository(
+            $repository = new SectionRepository(
                 new MemoryAdapter
             )
         );
