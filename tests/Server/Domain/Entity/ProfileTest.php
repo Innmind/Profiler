@@ -31,6 +31,7 @@ class ProfileTest extends TestCase
         $this->assertInstanceOf(SetInterface::class, $profile->sections());
         $this->assertSame(Section::class, (string) $profile->sections()->type());
         $this->assertCount(0, $profile->sections());
+        $this->assertSame('[] foo', (string) $profile);
     }
 
     public function testAdd()
@@ -54,9 +55,10 @@ class ProfileTest extends TestCase
             $this->createMock(PointInTimeInterface::class)
         );
 
-        $this->assertNull($profile->fail());
+        $this->assertNull($profile->fail('bar'));
         $this->assertTrue($profile->closed());
         $this->assertEquals(Status::failed(), $profile->status());
+        $this->assertSame('[] [bar] foo', (string) $profile);
     }
 
     public function testSuceeed()
@@ -67,9 +69,10 @@ class ProfileTest extends TestCase
             $this->createMock(PointInTimeInterface::class)
         );
 
-        $this->assertNull($profile->succeed());
+        $this->assertNull($profile->succeed('bar'));
         $this->assertTrue($profile->closed());
         $this->assertEquals(Status::succeeded(), $profile->status());
+        $this->assertSame('[] [bar] foo', (string) $profile);
     }
 
     public function testThrowWhenAddingSectionToAClosedProfile()
@@ -79,7 +82,7 @@ class ProfileTest extends TestCase
             'foo',
             $this->createMock(PointInTimeInterface::class)
         );
-        $profile->succeed();
+        $profile->succeed('bar');
 
         $this->expectException(LogicException::class);
 

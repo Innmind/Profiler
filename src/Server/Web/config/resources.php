@@ -130,6 +130,11 @@ return function(TimeContinuumInterface $clock): Directory {
                     'success',
                     new BoolType,
                     new Access(Access::UPDATE)
+                ),
+                Property::required(
+                    'exit',
+                    new StringType,
+                    new Access(Access::UPDATE)
                 )
             ),
             Set::of(Action::class, Action::get(), Action::create(), Action::update())

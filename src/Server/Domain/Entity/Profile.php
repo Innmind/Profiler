@@ -24,6 +24,7 @@ final class Profile
     private $startedAt;
     private $sections;
     private $status;
+    private $exit;
 
     private function __construct(
         Identity $identity,
@@ -69,14 +70,16 @@ final class Profile
         return $this->status;
     }
 
-    public function fail(): void
+    public function fail(string $message): void
     {
         $this->status = Status::failed();
+        $this->exit = $message;
     }
 
-    public function succeed(): void
+    public function succeed(string $message): void
     {
         $this->status = Status::succeeded();
+        $this->exit = $message;
     }
 
     public function add(Section\Identity $section): void
@@ -99,8 +102,9 @@ final class Profile
     public function __toString(): string
     {
         return \sprintf(
-            '[%s] %s',
+            '[%s]%s %s',
             $this->startedAt->format(new ISO8601),
+            $this->closed() ? " [{$this->exit}]" : '',
             $this->name
         );
     }

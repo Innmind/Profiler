@@ -35,10 +35,12 @@ final class Update implements ResourceUpdater
             return;
         }
 
+        $exit = $resource->property('exit')->value();
+
         if ($resource->property('success')->value()) {
-            $profile->succeed();
+            $profile->succeed($exit);
         } else {
-            $profile->fail();
+            $profile->fail($exit);
         }
 
         $this->repository->add($profile);
