@@ -27,7 +27,41 @@ return function(TimeContinuumInterface $clock): Directory {
             Directory::class,
             Directory::of(
                 'section',
-                Set::of(Directory::class),
+                Set::of(
+                    Directory::class,
+                    Directory::of(
+                        'remote',
+                        Set::of(Directory::class),
+                        new HttpResource(
+                            'http',
+                            new Gateway(Entity\Remote\Http::class),
+                            new Identity('uuid'),
+                            Set::of(
+                                Property::class,
+                                Property::required(
+                                    'uuid',
+                                    new StringType,
+                                    new Access(Access::READ)
+                                ),
+                                Property::required(
+                                    'profile',
+                                    new StringType,
+                                    new Access(Access::CREATE)
+                                ),
+                                Property::required(
+                                    'request',
+                                    new StringType,
+                                    new Access(Access::CREATE, Access::UPDATE)
+                                ),
+                                Property::required(
+                                    'response',
+                                    new StringType,
+                                    new Access(Access::CREATE, Access::UPDATE)
+                                )
+                            )
+                        )
+                    )
+                ),
                 new HttpResource(
                     'http',
                     new Gateway(Entity\Http::class),

@@ -51,6 +51,16 @@ function bootstrap(
             )
         )
         (
+            Entity\Remote\Http::class,
+            new Gateway\Http(
+                new Gateway\Remote\Http\Create(
+                    $repositories->get(Entity\Remote\Http::class),
+                    $repositories->get(Entity\Profile::class)
+                ),
+                new Gateway\Remote\Http\Update($repositories->get(Entity\Remote\Http::class))
+            )
+        )
+        (
             Entity\Exception::class,
             new Gateway\Exception(
                 new Gateway\Exception\Create(
