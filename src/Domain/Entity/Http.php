@@ -5,7 +5,7 @@ namespace Innmind\Profiler\Domain\Entity;
 
 use Innmind\Profiler\Domain\Entity\Section\Identity;
 
-final class RequestResponse
+final class Http
 {
     private $identity;
     private $request;

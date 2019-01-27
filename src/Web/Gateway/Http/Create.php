@@ -1,13 +1,13 @@
 <?php
 declare(strict_types = 1);
 
-namespace Innmind\Profiler\Web\Gateway\RequestResponse;
+namespace Innmind\Profiler\Web\Gateway\Http;
 
 use Innmind\Profiler\Domain\{
-    Entity\RequestResponse,
+    Entity\Http,
     Entity\Section,
     Entity\Profile,
-    Repository\RequestResponseRepository,
+    Repository\HttpRepository,
     Repository\ProfileRepository,
 };
 use Innmind\Rest\Server\{
@@ -23,7 +23,7 @@ final class Create implements ResourceCreator
     private $profiles;
 
     public function __construct(
-        RequestResponseRepository $requests,
+        HttpRepository $requests,
         ProfileRepository $profiles
     ) {
         $this->requests = $requests;
@@ -34,8 +34,8 @@ final class Create implements ResourceCreator
         ResourceDefinition $definition,
         HttpResource $resource
     ): Identity {
-        $section = RequestResponse::received(
-            Section\Identity::generate(RequestResponse::class),
+        $section = Http::received(
+            Section\Identity::generate(Http::class),
             $resource->property('request')->value()
         );
         $this->requests->add($section);

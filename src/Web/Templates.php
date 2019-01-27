@@ -5,7 +5,7 @@ namespace Innmind\Profiler\Web;
 
 use Innmind\Profiler\Domain\Entity\{
     AppGraph,
-    RequestResponse,
+    Http,
     Exception,
     Environment,
 };
@@ -18,8 +18,8 @@ final class Templates
             case AppGraph::class:
                 return 'section/app_graph.html.twig';
 
-            case RequestResponse::class:
-                return 'section/request_response.html.twig';
+            case Http::class:
+                return 'section/http.html.twig';
 
             case Exception::class:
                 return 'section/exception.html.twig';

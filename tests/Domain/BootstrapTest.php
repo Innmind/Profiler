@@ -28,7 +28,7 @@ class BootstrapTest extends TestCase
                 Entity\Profile::class,
                 Entity\AppGraph::class,
                 Entity\Exception::class,
-                Entity\RequestResponse::class,
+                Entity\Http::class,
                 Entity\Environment::class,
             ],
             $repositories->keys()->toPrimitive()

@@ -15,7 +15,7 @@ use Innmind\Rest\Server\{
     Exception\ActionNotImplemented,
 };
 
-final class RequestResponse implements Gateway
+final class Http implements Gateway
 {
     private $creator;
     private $updater;

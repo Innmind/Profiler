@@ -1,12 +1,12 @@
 <?php
 declare(strict_types = 1);
 
-namespace Tests\Innmind\Profiler\Web\Gateway\RequestResponse;
+namespace Tests\Innmind\Profiler\Web\Gateway\Http;
 
 use Innmind\Profiler\{
-    Web\Gateway\RequestResponse\Update,
-    Domain\Repository\RequestResponseRepository,
-    Domain\Entity\RequestResponse,
+    Web\Gateway\Http\Update,
+    Domain\Repository\HttpRepository,
+    Domain\Entity\Http,
     Domain\Entity\Section,
 };
 use Innmind\Rest\Server\{
@@ -26,7 +26,7 @@ class UpdateTest extends TestCase
         $this->assertInstanceOf(
             ResourceUpdater::class,
             new Update(
-                new RequestResponseRepository(
+                new HttpRepository(
                     new MemoryAdapter
                 )
             )
@@ -37,22 +37,22 @@ class UpdateTest extends TestCase
     {
         $clock = new Earth;
         $update = new Update(
-            $repository = new RequestResponseRepository(
+            $repository = new HttpRepository(
                 new MemoryAdapter
             )
         );
         $directory = (require 'src/Web/config/resources.php')($clock);
-        $section = RequestResponse::received(
-            Section\Identity::generate('request_response'),
+        $section = Http::received(
+            Section\Identity::generate(Http::class),
             'foo'
         );
         $repository->add($section);
 
         $update(
-            $directory->child('section')->definition('request_response'),
+            $directory->child('section')->definition('http'),
             new Identity((string) $section->identity()),
             HttpResource::of(
-                $directory->child('section')->definition('request_response'),
+                $directory->child('section')->definition('http'),
                 new Property('response', 'bar')
             )
         );

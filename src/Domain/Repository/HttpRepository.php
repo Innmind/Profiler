@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Innmind\Profiler\Domain\Repository;
 
 use Innmind\Profiler\Domain\{
-    Entity\RequestResponse,
+    Entity\Http,
     Entity\Section\Identity,
     Exception\LogicException,
 };
@@ -18,7 +18,7 @@ use Innmind\Immutable\{
     Set,
 };
 
-final class RequestResponseRepository
+final class HttpRepository
 {
     private $filesystem;
 
@@ -27,7 +27,7 @@ final class RequestResponseRepository
         $this->filesystem = $filesystem;
     }
 
-    public function add(RequestResponse $section): void
+    public function add(Http $section): void
     {
         $this->filesystem->add(new File\File(
             (string) $section->identity(),
@@ -38,7 +38,7 @@ final class RequestResponseRepository
     /**
      * @throws LogicException When section not found
      */
-    public function get(Identity $identity): RequestResponse
+    public function get(Identity $identity): Http
     {
         if (!$this->filesystem->has((string) $identity)) {
             throw new LogicException;

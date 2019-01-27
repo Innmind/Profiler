@@ -4,8 +4,8 @@ declare(strict_types = 1);
 namespace Tests\Innmind\Profiler\Domain\Repository;
 
 use Innmind\Profiler\Domain\{
-    Repository\RequestResponseRepository,
-    Entity\RequestResponse,
+    Repository\HttpRepository,
+    Entity\Http,
     Entity\Section\Identity,
     Exception\LogicException,
 };
@@ -16,16 +16,16 @@ use Innmind\Filesystem\{
 };
 use PHPUnit\Framework\TestCase;
 
-class RequestResponseRepositoryTest extends TestCase
+class HttpRepositoryTest extends TestCase
 {
     public function testAdd()
     {
-        $repository = new RequestResponseRepository(
+        $repository = new HttpRepository(
             $adapter = new MemoryAdapter
         );
 
-        $section = RequestResponse::received(
-            Identity::generate('section'),
+        $section = Http::received(
+            Identity::generate(Http::class),
             'request'
         );
 
@@ -39,23 +39,23 @@ class RequestResponseRepositoryTest extends TestCase
 
     public function testThrowWhenGettingUnknownProfile()
     {
-        $repository = new RequestResponseRepository(
+        $repository = new HttpRepository(
             new MemoryAdapter
         );
 
         $this->expectException(LogicException::class);
 
-        $repository->get(Identity::generate('section'));
+        $repository->get(Identity::generate(Http::class));
     }
 
     public function testGet()
     {
-        $repository = new RequestResponseRepository(
+        $repository = new HttpRepository(
             $adapter = new MemoryAdapter
         );
 
-        $section = RequestResponse::received(
-            Identity::generate('section'),
+        $section = Http::received(
+            Identity::generate(Http::class),
             'request'
         );
         $adapter->add(new File(
@@ -63,14 +63,14 @@ class RequestResponseRepositoryTest extends TestCase
             new StringStream(\serialize($section))
         ));
 
-        $this->assertInstanceOf(RequestResponse::class, $repository->get($section->identity()));
+        $this->assertInstanceOf(Http::class, $repository->get($section->identity()));
         $this->assertNotSame($section, $repository->get($section->identity()));
         $this->assertEquals($section, $repository->get($section->identity()));
     }
 
     public function testDoNothingWhenRemovingUnknownProfile()
     {
-        $repository = new RequestResponseRepository(
+        $repository = new HttpRepository(
             new MemoryAdapter
         );
 
@@ -79,11 +79,11 @@ class RequestResponseRepositoryTest extends TestCase
 
     public function testRemove()
     {
-        $repository = new RequestResponseRepository(
+        $repository = new HttpRepository(
             $adapter = new MemoryAdapter
         );
-        $section = RequestResponse::received(
-            Identity::generate('section'),
+        $section = Http::received(
+            Identity::generate(Http::class),
             'request'
         );
         $repository->add($section);

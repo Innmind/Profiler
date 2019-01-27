@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Tests\Innmind\Profiler\Web\Gateway;
 
-use Innmind\Profiler\Web\Gateway\RequestResponse;
+use Innmind\Profiler\Web\Gateway\Http;
 use Innmind\Rest\Server\{
     Gateway,
     ResourceCreator,
@@ -11,11 +11,11 @@ use Innmind\Rest\Server\{
 };
 use PHPUnit\Framework\TestCase;
 
-class RequestResponseTest extends TestCase
+class HttpTest extends TestCase
 {
     public function testInterface()
     {
-        $gateway = new RequestResponse(
+        $gateway = new Http(
             $creator = $this->createMock(ResourceCreator::class),
             $updater = $this->createMock(ResourceUpdater::class)
         );

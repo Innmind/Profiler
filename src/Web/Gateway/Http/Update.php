@@ -1,12 +1,12 @@
 <?php
 declare(strict_types = 1);
 
-namespace Innmind\Profiler\Web\Gateway\RequestResponse;
+namespace Innmind\Profiler\Web\Gateway\Http;
 
 use Innmind\Profiler\Domain\{
-    Entity\RequestResponse,
+    Entity\Http,
     Entity\Section,
-    Repository\RequestResponseRepository,
+    Repository\HttpRepository,
 };
 use Innmind\Rest\Server\{
     ResourceUpdater,
@@ -19,7 +19,7 @@ final class Update implements ResourceUpdater
 {
     private $repository;
 
-    public function __construct(RequestResponseRepository $repository)
+    public function __construct(HttpRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -29,7 +29,7 @@ final class Update implements ResourceUpdater
         Identity $identity,
         HttpResource $resource
     ): void {
-        $identity = new Section\Identity((string) $identity, RequestResponse::class);
+        $identity = new Section\Identity((string) $identity, Http::class);
         $section = $this->repository->get($identity);
 
         $section->respondedWith(

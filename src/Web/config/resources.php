@@ -28,8 +28,8 @@ return function(TimeContinuumInterface $clock): Directory {
                 'section',
                 Set::of(Directory::class),
                 new HttpResource(
-                    'request_response',
-                    new Gateway('request_response'),
+                    'http',
+                    new Gateway('http'),
                     new Identity('uuid'),
                     Set::of(
                         Property::class,

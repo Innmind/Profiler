@@ -35,9 +35,9 @@ function bootstrap(Filesystem $filesystem, PathInterface $storage): MapInterface
             )
         )
         (
-            Entity\RequestResponse::class,
-            new Repository\RequestResponseRepository(
-                $filesystem->mount(new Path($storage.'/sections/request-response'))
+            Entity\Http::class,
+            new Repository\HttpRepository(
+                $filesystem->mount(new Path($storage.'/sections/http'))
             )
         )
         (

@@ -5,7 +5,7 @@ namespace Innmind\Profiler\Web;
 
 use Innmind\Profiler\Domain\Entity\{
     AppGraph,
-    RequestResponse,
+    Http,
     Exception,
     Environment,
 };
@@ -18,8 +18,8 @@ final class Names
             case AppGraph::class:
                 return 'App graph';
 
-            case RequestResponse::class:
-                return 'Request / Response';
+            case Http::class:
+                return 'Http';
 
             case Exception::class:
                 return 'Exception';

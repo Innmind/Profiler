@@ -41,13 +41,13 @@ function bootstrap(
             )
         )
         (
-            'request_response',
-            new Gateway\RequestResponse(
-                new Gateway\RequestResponse\Create(
-                    $repositories->get(Entity\RequestResponse::class),
+            'http',
+            new Gateway\Http(
+                new Gateway\Http\Create(
+                    $repositories->get(Entity\Http::class),
                     $repositories->get(Entity\Profile::class)
                 ),
-                new Gateway\RequestResponse\Update($repositories->get(Entity\RequestResponse::class))
+                new Gateway\Http\Update($repositories->get(Entity\Http::class))
             )
         )
         (

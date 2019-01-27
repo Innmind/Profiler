@@ -1,11 +1,11 @@
 <?php
 declare(strict_types = 1);
 
-namespace Tests\Innmind\Profiler\Web\Gateway\RequestResponse;
+namespace Tests\Innmind\Profiler\Web\Gateway\Http;
 
 use Innmind\Profiler\{
-    Web\Gateway\RequestResponse\Create,
-    Domain\Repository\RequestResponseRepository,
+    Web\Gateway\Http\Create,
+    Domain\Repository\HttpRepository,
     Domain\Repository\ProfileRepository,
     Domain\Entity\Profile,
 };
@@ -25,7 +25,7 @@ class CreateTest extends TestCase
         $this->assertInstanceOf(
             ResourceCreator::class,
             new Create(
-                new RequestResponseRepository(
+                new HttpRepository(
                     new MemoryAdapter
                 ),
                 new ProfileRepository(
@@ -39,7 +39,7 @@ class CreateTest extends TestCase
     {
         $clock = new Earth;
         $create = new Create(
-            new RequestResponseRepository(
+            new HttpRepository(
                 $adapter = new MemoryAdapter
             ),
             $profiles = new ProfileRepository(
@@ -54,9 +54,9 @@ class CreateTest extends TestCase
         $directory = (require 'src/Web/config/resources.php')($clock);
 
         $identity = $create(
-            $directory->child('section')->definition('request_response'),
+            $directory->child('section')->definition('http'),
             HttpResource::of(
-                $directory->child('section')->definition('request_response'),
+                $directory->child('section')->definition('http'),
                 new Property('request', 'foo'),
                 new Property('profile', (string) $profile->identity())
             )
