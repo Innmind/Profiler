@@ -60,7 +60,7 @@ function bootstrap(
             )
         )
         (
-            'exception',
+            'app_graph',
             new Gateway\AppGraph(
                 new Gateway\AppGraph\Create(
                     $repositories->get(Entity\AppGraph::class),
