@@ -20,6 +20,9 @@ final class Templates
             case AppGraph::class:
                 return 'section/app_graph.html.twig';
 
+            case CallGraph::class:
+                return 'section/call_graph.html.twig';
+
             case Http::class:
                 return 'section/http.html.twig';
 

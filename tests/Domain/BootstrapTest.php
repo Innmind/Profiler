@@ -22,11 +22,12 @@ class BootstrapTest extends TestCase
         $this->assertInstanceOf(MapInterface::class, $repositories);
         $this->assertSame('string', (string) $repositories->keyType());
         $this->assertSame('object', (string) $repositories->valueType());
-        $this->assertCount(8, $repositories);
+        $this->assertCount(9, $repositories);
         $this->assertSame(
             [
                 Entity\Profile::class,
                 Entity\AppGraph::class,
+                Entity\CallGraph::class,
                 Entity\Exception::class,
                 Entity\Http::class,
                 Entity\Environment::class,

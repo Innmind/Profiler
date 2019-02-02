@@ -164,6 +164,30 @@ return function(TimeContinuumInterface $clock): Directory {
                     Set::of(Action::class, Action::get(), Action::create())
                 ),
                 new HttpResource(
+                    'call_graph',
+                    new Gateway(Entity\CallGraph::class),
+                    new Identity('uuid'),
+                    Set::of(
+                        Property::class,
+                        Property::required(
+                            'uuid',
+                            new StringType,
+                            new Access(Access::READ)
+                        ),
+                        Property::required(
+                            'graph',
+                            new StringType,
+                            new Access(Access::CREATE)
+                        ),
+                        Property::required(
+                            'profile',
+                            new StringType,
+                            new Access(Access::CREATE)
+                        )
+                    ),
+                    Set::of(Action::class, Action::get(), Action::create())
+                ),
+                new HttpResource(
                     'environment',
                     new Gateway(Entity\Environment::class),
                     new Identity('uuid'),
