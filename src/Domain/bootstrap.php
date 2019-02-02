@@ -29,6 +29,12 @@ function bootstrap(Filesystem $filesystem, PathInterface $storage): MapInterface
             )
         )
         (
+            Entity\CallGraph::class,
+            new Repository\SectionRepository(
+                $filesystem->mount(new Path($storage.'/sections/call-graph'))
+            )
+        )
+        (
             Entity\Exception::class,
             new Repository\SectionRepository(
                 $filesystem->mount(new Path($storage.'/sections/exception'))

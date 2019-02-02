@@ -5,6 +5,7 @@ namespace Innmind\Profiler\Web;
 
 use Innmind\Profiler\Domain\Entity\{
     AppGraph,
+    CallGraph,
     Http,
     Exception,
     Environment,
@@ -19,6 +20,9 @@ final class Names
         switch ($section) {
             case AppGraph::class:
                 return 'App graph';
+
+            case CallGraph::class:
+                return 'Call graph';
 
             case Http::class:
                 return 'Http';

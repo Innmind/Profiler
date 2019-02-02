@@ -89,6 +89,15 @@ function bootstrap(
             )
         )
         (
+            Entity\CallGraph::class,
+            new Gateway\CallGraph(
+                new Gateway\CallGraph\Create(
+                    $repositories->get(Entity\CallGraph::class),
+                    $repositories->get(Entity\Profile::class)
+                )
+            )
+        )
+        (
             Entity\Environment::class,
             new Gateway\Environment(
                 new Gateway\Environment\Create(
