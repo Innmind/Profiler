@@ -5,6 +5,7 @@ namespace Innmind\Profiler\Web;
 
 use Innmind\Profiler\Domain\Entity\{
     AppGraph,
+    CallGraph,
     Http,
     Exception,
     Environment,
