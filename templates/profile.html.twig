@@ -156,7 +156,7 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/spiermar/d3-flame-graph@2.0.3/dist/d3-flamegraph.min.js"></script>
         <main>
             <code class="name {% if profile.closed %}{{ profile.status }}{% else %}pending{% endif %}">
-                GET /some-url
+                {{ profile }}
             </code>
             {% for section in sections %}
                 <section id="section-{{ loop.index }}">
