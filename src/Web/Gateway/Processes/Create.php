@@ -20,9 +20,9 @@ use Innmind\Rest\Server\{
 
 final class Create implements ResourceCreator
 {
-    private $graphs;
-    private $profiles;
-    private $section;
+    private SectionRepository $graphs;
+    private ProfileRepository $profiles;
+    private string $section;
 
     public function __construct(
         SectionRepository $graphs,
@@ -40,16 +40,16 @@ final class Create implements ResourceCreator
     ): Identity {
         $section = new Processes(
             Section\Identity::generate($this->section),
-            $resource->property('processes')->value()
+            $resource->property('processes')->value(),
         );
         $this->graphs->add($section);
 
         $profile = $this->profiles->get(new Profile\Identity(
-            $resource->property('profile')->value()
+            $resource->property('profile')->value(),
         ));
         $profile->add($section->identity());
         $this->profiles->add($profile);
 
-        return new Identity\Identity((string) $section->identity());
+        return new Identity\Identity($section->identity()->toString());
     }
 }

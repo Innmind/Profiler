@@ -11,30 +11,24 @@ use Innmind\HttpFramework\Controller;
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
-    Message\StatusCode\StatusCode,
-    Headers\Headers,
+    Message\StatusCode,
+    Headers,
     Header\ContentType,
-    Header\ContentTypeValue,
 };
 use Innmind\Router\Route;
 use Innmind\Templating\{
     Engine,
     Name,
 };
-use Innmind\Immutable\{
-    MapInterface,
-    Map,
-};
+use Innmind\Immutable\Map;
 
 final class Index implements Controller
 {
-    private $repository;
-    private $render;
+    private ProfileRepository $repository;
+    private Engine $render;
 
-    public function __construct(
-        ProfileRepository $repository,
-        Engine $render
-    ) {
+    public function __construct(ProfileRepository $repository, Engine $render)
+    {
         $this->repository = $repository;
         $this->render = $render;
     }
@@ -45,7 +39,7 @@ final class Index implements Controller
     public function __invoke(
         ServerRequest $request,
         Route $route,
-        MapInterface $arguments
+        Map $arguments
     ): Response {
         $profiles = $this
             ->repository
@@ -59,15 +53,13 @@ final class Index implements Controller
             $code->associatedReasonPhrase(),
             $request->protocolVersion(),
             Headers::of(
-                new ContentType(
-                    new ContentTypeValue('text', 'html')
-                )
+                ContentType::of('text', 'html'),
             ),
             ($this->render)(
                 new Name('index.html.twig'),
                 Map::of('string', 'mixed')
-                    ('profiles', $profiles)
-            )
+                    ('profiles', $profiles),
+            ),
         );
     }
 }

@@ -9,27 +9,24 @@ use Innmind\Profiler\Domain\{
     Exception\LogicException,
 };
 use Innmind\TimeContinuum\{
-    PointInTimeInterface,
-    Format\ISO8601,
+    PointInTime,
+    Earth\Format\ISO8601,
 };
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Immutable\Set;
 
 final class Profile
 {
-    private $identity;
-    private $name;
-    private $startedAt;
-    private $sections;
-    private $status;
-    private $exit;
+    private Identity $identity;
+    private string $name;
+    private PointInTime $startedAt;
+    private Set $sections;
+    private ?Status $status = null;
+    private ?string $exit = null;
 
     private function __construct(
         Identity $identity,
         string $name,
-        PointInTimeInterface $startedAt
+        PointInTime $startedAt
     ) {
         $this->identity = $identity;
         $this->name = $name;
@@ -40,7 +37,7 @@ final class Profile
     public static function start(
         Identity $identity,
         string $name,
-        PointInTimeInterface $startedAt
+        PointInTime $startedAt
     ): self {
         return new self($identity, $name, $startedAt);
     }
@@ -55,7 +52,7 @@ final class Profile
         return $this->name;
     }
 
-    public function startedAt(): PointInTimeInterface
+    public function startedAt(): PointInTime
     {
         return $this->startedAt;
     }
@@ -88,24 +85,24 @@ final class Profile
             throw new LogicException;
         }
 
-        $this->sections = $this->sections->add($section);
+        $this->sections = ($this->sections)($section);
     }
 
     /**
-     * @return SetInterface<Section\Identity>
+     * @return Set<Section\Identity>
      */
-    public function sections(): SetInterface
+    public function sections(): Set
     {
         return $this->sections;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return \sprintf(
             '[%s]%s %s',
             $this->startedAt->format(new ISO8601),
             $this->closed() ? " [{$this->exit}]" : '',
-            $this->name
+            $this->name,
         );
     }
 }

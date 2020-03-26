@@ -4,15 +4,18 @@ declare(strict_types = 1);
 namespace Innmind\Profiler\Domain\Entity;
 
 use Innmind\Profiler\Domain\Entity\Section\Identity;
-use Innmind\Immutable\SetInterface;
-use function Innmind\Immutable\assertSet;
+use Innmind\Immutable\Set;
+use function Innmind\Immutable\{
+    assertSet,
+    join,
+};
 
 final class Environment implements Section
 {
-    private $identity;
-    private $pairs;
+    private Identity $identity;
+    private Set $pairs;
 
-    public function __construct(Identity $identity, SetInterface $pairs)
+    public function __construct(Identity $identity, Set $pairs)
     {
         assertSet('string', $pairs, 2);
 
@@ -26,15 +29,15 @@ final class Environment implements Section
     }
 
     /**
-     * @return SetInterface<string>
+     * @return Set<string>
      */
-    public function pairs(): SetInterface
+    public function pairs(): Set
     {
         return $this->pairs;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
-        return (string) $this->pairs->join("\n");
+        return join("\n", $this->pairs)->toString();
     }
 }

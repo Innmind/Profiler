@@ -7,6 +7,7 @@ use Innmind\HttpServer\Main;
 use Innmind\Http\Message\{
     ServerRequest,
     Response,
+    Environment,
 };
 use Innmind\OperatingSystem\OperatingSystem;
 use Innmind\Url\Path;
@@ -22,25 +23,30 @@ use function Innmind\Profiler\{
 use function Innmind\Templating\bootstrap as render;
 
 new class extends Main {
-    protected function main(ServerRequest $request, OperatingSystem $os): Response
+    private $handle;
+
+    protected function preload(OperatingSystem $os, Environment $env): void
     {
         $domain = domain(
             $os->filesystem(),
-            new Path(__DIR__.'/../var')
+            Path::of(__DIR__.'/../var/'),
         );
 
-        $handle = web(
+        $this->handle = web(
             $os,
             render(
-                new Path(__DIR__.'/../templates'),
+                Path::of(__DIR__.'/../templates/'),
                 null,
                 Map::of('string', 'object')
                     ('name', new Names)
-                    ('render', new Templates)
+                    ('render', new Templates),
             ),
-            $domain
+            $domain,
         );
+    }
 
-        return $handle($request);
+    protected function main(ServerRequest $request): Response
+    {
+        return ($this->handle)($request);
     }
 };

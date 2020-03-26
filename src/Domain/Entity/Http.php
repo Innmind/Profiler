@@ -7,9 +7,9 @@ use Innmind\Profiler\Domain\Entity\Section\Identity;
 
 final class Http implements Section
 {
-    private $identity;
-    private $request;
-    private $response;
+    private Identity $identity;
+    private string $request;
+    private ?string $response = null;
 
     private function __construct(Identity $identity, string $request)
     {
@@ -17,7 +17,7 @@ final class Http implements Section
         $this->request = $request;
     }
 
-    public static function received(Identity $identity, string $request)
+    public static function received(Identity $identity, string $request): self
     {
         return new self($identity, $request);
     }

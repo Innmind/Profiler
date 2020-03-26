@@ -14,8 +14,9 @@ use Innmind\Rest\Server\{
     HttpResource\HttpResource,
     HttpResource\Property,
 };
-use Innmind\Filesystem\Adapter\MemoryAdapter;
-use Innmind\TimeContinuum\TimeContinuum\Earth;
+use Innmind\Filesystem\Adapter\InMemory;
+use Innmind\TimeContinuum\Earth\Clock as Earth;
+use function Innmind\Immutable\first;
 use PHPUnit\Framework\TestCase;
 
 class CreateTest extends TestCase
@@ -26,10 +27,10 @@ class CreateTest extends TestCase
             ResourceCreator::class,
             new Create(
                 new SectionRepository(
-                    new MemoryAdapter
+                    new InMemory
                 ),
                 new ProfileRepository(
-                    new MemoryAdapter
+                    new InMemory
                 )
             )
         );
@@ -40,10 +41,10 @@ class CreateTest extends TestCase
         $clock = new Earth;
         $create = new Create(
             new SectionRepository(
-                $adapter = new MemoryAdapter
+                $adapter = new InMemory
             ),
             $profiles = new ProfileRepository(
-                new MemoryAdapter
+                new InMemory
             )
         );
         $profiles->add($profile = Profile::start(
@@ -58,13 +59,13 @@ class CreateTest extends TestCase
             HttpResource::of(
                 $directory->child('section')->definition('call_graph'),
                 new Property('graph', 'foo'),
-                new Property('profile', (string) $profile->identity())
+                new Property('profile', $profile->identity()->toString())
             )
         );
 
-        $this->assertSame($adapter->all()->key(), (string) $identity);
+        $this->assertSame(first($adapter->all())->name()->toString(), $identity->toString());
         $profile = $profiles->get($profile->identity());
         $this->assertCount(1, $profile->sections());
-        $this->assertSame((string) $identity, (string) $profile->sections()->current());
+        $this->assertSame($identity->toString(), first($profile->sections())->toString());
     }
 }

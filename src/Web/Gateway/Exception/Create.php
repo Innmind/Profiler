@@ -20,8 +20,8 @@ use Innmind\Rest\Server\{
 
 final class Create implements ResourceCreator
 {
-    private $exceptions;
-    private $profiles;
+    private SectionRepository $exceptions;
+    private ProfileRepository $profiles;
 
     public function __construct(
         SectionRepository $exceptions,
@@ -37,16 +37,16 @@ final class Create implements ResourceCreator
     ): Identity {
         $section = new Exception(
             Section\Identity::generate(Exception::class),
-            new Svg($resource->property('graph')->value())
+            new Svg($resource->property('graph')->value()),
         );
         $this->exceptions->add($section);
 
         $profile = $this->profiles->get(new Profile\Identity(
-            $resource->property('profile')->value()
+            $resource->property('profile')->value(),
         ));
         $profile->add($section->identity());
         $this->profiles->add($profile);
 
-        return new Identity\Identity((string) $section->identity());
+        return new Identity\Identity($section->identity()->toString());
     }
 }

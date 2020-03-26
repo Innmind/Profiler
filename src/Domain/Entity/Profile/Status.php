@@ -5,7 +5,7 @@ namespace Innmind\Profiler\Domain\Entity\Profile;
 
 final class Status
 {
-    private $value;
+    private string $value;
 
     private function __construct(string $value)
     {
@@ -22,7 +22,7 @@ final class Status
         return new self('succeeded');
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->value;
     }

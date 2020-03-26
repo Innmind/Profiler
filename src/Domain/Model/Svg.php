@@ -7,7 +7,7 @@ use Innmind\Immutable\Str;
 
 final class Svg
 {
-    private $value;
+    private string $value;
 
     public function __construct(string $value)
     {
@@ -19,7 +19,7 @@ final class Svg
         return Str::of('data:image/svg+xml;base64,'.\base64_encode($this->value));
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->value;
     }

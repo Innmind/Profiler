@@ -11,16 +11,14 @@ use Innmind\Profiler\Domain\{
 use Innmind\Filesystem\{
     Adapter,
     File,
-    Stream\StringStream,
+    Name,
 };
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Stream\Readable\Stream;
+use Innmind\Immutable\Set;
 
 final class SectionRepository
 {
-    private $filesystem;
+    private Adapter $filesystem;
 
     public function __construct(Adapter $filesystem)
     {
@@ -29,9 +27,9 @@ final class SectionRepository
 
     public function add(Section $section): void
     {
-        $this->filesystem->add(new File\File(
-            (string) $section->identity(),
-            new StringStream(\serialize($section))
+        $this->filesystem->add(File\File::named(
+            $section->identity()->toString(),
+            Stream::ofContent(\serialize($section)),
         ));
     }
 
@@ -40,19 +38,19 @@ final class SectionRepository
      */
     public function get(Identity $identity): Section
     {
-        if (!$this->filesystem->has((string) $identity)) {
+        if (!$this->filesystem->contains(new Name($identity->toString()))) {
             throw new LogicException;
         }
 
         return \unserialize(
-            (string) $this->filesystem->get((string) $identity)->content()
+            $this->filesystem->get(new Name($identity->toString()))->content()->toString(),
         );
     }
 
     public function remove(Identity $identity): void
     {
-        if ($this->filesystem->has((string) $identity)) {
-            $this->filesystem->remove((string) $identity);
+        if ($this->filesystem->contains(new Name($identity->toString()))) {
+            $this->filesystem->remove(new Name($identity->toString()));
         }
     }
 }

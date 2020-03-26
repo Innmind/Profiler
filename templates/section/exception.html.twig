@@ -1,2 +1,2 @@
-<a href="{{ section.graph.dataUri }}" download="stack trace.svg">Download</a>
-{{ section.graph|raw }}
+<a href="{{ section.graph.dataUri.toString() }}" download="stack trace.svg">Download</a>
+{{ section.graph.toString()|raw }}

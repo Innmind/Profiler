@@ -20,8 +20,8 @@ use Innmind\Rest\Server\{
 
 final class Create implements ResourceCreator
 {
-    private $requests;
-    private $profiles;
+    private SectionRepository $requests;
+    private ProfileRepository $profiles;
 
     public function __construct(
         SectionRepository $requests,
@@ -36,20 +36,20 @@ final class Create implements ResourceCreator
         HttpResource $resource
     ): Identity {
         $section = new Http(
-            Section\Identity::generate(Http::class)
+            Section\Identity::generate(Http::class),
         );
         $section->add(new Call(
             $resource->property('request')->value(),
-            $resource->property('response')->value()
+            $resource->property('response')->value(),
         ));
         $this->requests->add($section);
 
         $profile = $this->profiles->get(new Profile\Identity(
-            $resource->property('profile')->value()
+            $resource->property('profile')->value(),
         ));
         $profile->add($section->identity());
         $this->profiles->add($profile);
 
-        return new Identity\Identity((string) $section->identity());
+        return new Identity\Identity($section->identity()->toString());
     }
 }

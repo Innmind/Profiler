@@ -16,7 +16,7 @@ use Innmind\Rest\Server\{
 
 final class Update implements ResourceUpdater
 {
-    private $repository;
+    private ProfileRepository $repository;
 
     public function __construct(ProfileRepository $repository)
     {
@@ -28,7 +28,7 @@ final class Update implements ResourceUpdater
         Identity $identity,
         HttpResource $resource
     ): void {
-        $identity = new Profile\Identity((string) $identity);
+        $identity = new Profile\Identity($identity->toString());
         $profile = $this->repository->get($identity);
 
         if ($profile->closed()) {

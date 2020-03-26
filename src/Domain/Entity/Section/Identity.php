@@ -7,8 +7,8 @@ use Ramsey\Uuid\Uuid;
 
 final class Identity
 {
-    private $value;
-    private $section;
+    private string $value;
+    private string $section;
 
     public function __construct(string $value, string $section)
     {
@@ -18,7 +18,7 @@ final class Identity
 
     public static function generate(string $section): self
     {
-        return new self((string) Uuid::uuid4(), $section);
+        return new self(Uuid::uuid4()->toString(), $section);
     }
 
     public function section(): string
@@ -26,7 +26,7 @@ final class Identity
         return $this->section;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->value;
     }

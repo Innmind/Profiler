@@ -3,18 +3,16 @@ declare(strict_types = 1);
 
 namespace Innmind\Profiler\Domain\Entity;
 
-use Innmind\Immutable\SetInterface;
+use Innmind\Immutable\Set;
 use function Innmind\Immutable\assertSet;
 
 final class Processes implements Section
 {
-    private $identity;
-    private $processes;
+    private Section\Identity $identity;
+    private Set $processes;
 
-    public function __construct(
-        Section\Identity $identity,
-        SetInterface $processes
-    ) {
+    public function __construct(Section\Identity $identity, Set $processes)
+    {
         assertSet('string', $processes, 2);
 
         $this->identity = $identity;
@@ -27,9 +25,9 @@ final class Processes implements Section
     }
 
     /**
-     * @return SetInterface<string>
+     * @return Set<string>
      */
-    public function processes(): SetInterface
+    public function processes(): Set
     {
         return $this->processes;
     }

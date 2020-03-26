@@ -11,16 +11,14 @@ use Innmind\Profiler\Domain\{
 use Innmind\Filesystem\{
     Adapter,
     File,
-    Stream\StringStream,
+    Name,
 };
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Stream\Readable\Stream;
+use Innmind\Immutable\Set;
 
 final class ProfileRepository
 {
-    private $filesystem;
+    private Adapter $filesystem;
 
     public function __construct(Adapter $filesystem)
     {
@@ -29,9 +27,9 @@ final class ProfileRepository
 
     public function add(Profile $profile): void
     {
-        $this->filesystem->add(new File\File(
-            (string) $profile->identity(),
-            new StringStream(\serialize($profile))
+        $this->filesystem->add(File\File::named(
+            $profile->identity()->toString(),
+            Stream::ofContent(\serialize($profile)),
         ));
     }
 
@@ -40,39 +38,35 @@ final class ProfileRepository
      */
     public function get(Identity $identity): Profile
     {
-        if (!$this->filesystem->has((string) $identity)) {
+        if (!$this->filesystem->contains(new Name($identity->toString()))) {
             throw new LogicException;
         }
 
         return \unserialize(
-            (string) $this->filesystem->get((string) $identity)->content()
+            $this->filesystem->get(new Name($identity->toString()))->content()->toString(),
         );
     }
 
     public function remove(Identity $identity): void
     {
-        if ($this->filesystem->has((string) $identity)) {
-            $this->filesystem->remove((string) $identity);
+        if ($this->filesystem->contains(new Name($identity->toString()))) {
+            $this->filesystem->remove(new Name($identity->toString()));
         }
     }
 
     /**
-     * @return SetInterface<Profile>
+     * @return Set<Profile>
      */
-    public function all(): SetInterface
+    public function all(): Set
     {
         return $this
             ->filesystem
             ->all()
-            ->reduce(
-                Set::of(Profile::class),
-                static function(SetInterface $profiles, string $name, File $file): SetInterface {
-                    return $profiles->add(
-                        \unserialize(
-                            (string) $file->content()
-                        )
-                    );
-                }
+            ->mapTo(
+                Profile::class,
+                static fn(File $file): Profile => \unserialize(
+                    $file->content()->toString(),
+                ),
             );
     }
 }

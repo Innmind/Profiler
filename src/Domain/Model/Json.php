@@ -5,14 +5,14 @@ namespace Innmind\Profiler\Domain\Model;
 
 final class Json
 {
-    private $value;
+    private string $value;
 
     public function __construct(string $value)
     {
         $this->value = $value;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->value;
     }

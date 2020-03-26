@@ -8,20 +8,17 @@ use Innmind\Profiler\Domain\Entity\{
     Section\Identity,
     Remote\Http\Call,
 };
-use Innmind\Immutable\{
-    StreamInterface,
-    Stream,
-};
+use Innmind\Immutable\Sequence;
 
 final class Http implements Section
 {
-    private $identity;
-    private $calls;
+    private Identity $identity;
+    private Sequence $calls;
 
     public function __construct(Identity $identity)
     {
         $this->identity = $identity;
-        $this->calls = Stream::of(Call::class);
+        $this->calls = Sequence::of(Call::class);
     }
 
     public function identity(): Identity
@@ -31,13 +28,13 @@ final class Http implements Section
 
     public function add(Call $call): void
     {
-        $this->calls = $this->calls->add($call);
+        $this->calls = ($this->calls)($call);
     }
 
     /**
-     * @return StreamInterface<Call>
+     * @return Sequence<Call>
      */
-    public function calls(): StreamInterface
+    public function calls(): Sequence
     {
         return $this->calls;
     }

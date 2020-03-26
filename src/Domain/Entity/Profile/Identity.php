@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 final class Identity
 {
-    private $value;
+    private string $value;
 
     public function __construct(string $value)
     {
@@ -19,7 +19,7 @@ final class Identity
         return new self((string) Uuid::uuid4());
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->value;
     }

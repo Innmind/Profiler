@@ -15,8 +15,8 @@ use Innmind\Rest\Server\{
     HttpResource\Property,
     Identity\Identity,
 };
-use Innmind\Filesystem\Adapter\MemoryAdapter;
-use Innmind\TimeContinuum\TimeContinuum\Earth;
+use Innmind\Filesystem\Adapter\InMemory;
+use Innmind\TimeContinuum\Earth\Clock as Earth;
 use PHPUnit\Framework\TestCase;
 
 class UpdateTest extends TestCase
@@ -27,7 +27,7 @@ class UpdateTest extends TestCase
             ResourceUpdater::class,
             new Update(
                 new SectionRepository(
-                    new MemoryAdapter
+                    new InMemory
                 )
             )
         );
@@ -38,7 +38,7 @@ class UpdateTest extends TestCase
         $clock = new Earth;
         $update = new Update(
             $repository = new SectionRepository(
-                new MemoryAdapter
+                new InMemory
             )
         );
         $directory = (require 'src/Web/config/resources.php')($clock);
@@ -49,7 +49,7 @@ class UpdateTest extends TestCase
 
         $update(
             $directory->child('section')->child('remote')->definition('http'),
-            new Identity((string) $section->identity()),
+            new Identity($section->identity()->toString()),
             HttpResource::of(
                 $directory->child('section')->child('remote')->definition('http'),
                 new Property('request', 'foo'),
@@ -59,7 +59,7 @@ class UpdateTest extends TestCase
 
         $section = $repository->get($section->identity());
         $this->assertCount(1, $section->calls());
-        $this->assertSame('foo', $section->calls()->current()->request());
-        $this->assertSame('bar', $section->calls()->current()->response());
+        $this->assertSame('foo', $section->calls()->first()->request());
+        $this->assertSame('bar', $section->calls()->first()->response());
     }
 }

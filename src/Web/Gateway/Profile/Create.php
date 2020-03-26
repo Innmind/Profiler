@@ -16,7 +16,7 @@ use Innmind\Rest\Server\{
 
 final class Create implements ResourceCreator
 {
-    private $repository;
+    private ProfileRepository $repository;
 
     public function __construct(ProfileRepository $repository)
     {
@@ -30,10 +30,10 @@ final class Create implements ResourceCreator
         $profile = Profile::start(
             Profile\Identity::generate(),
             $resource->property('name')->value(),
-            $resource->property('started_at')->value()
+            $resource->property('started_at')->value(),
         );
         $this->repository->add($profile);
 
-        return new Identity\Identity((string) $profile->identity());
+        return new Identity\Identity($profile->identity()->toString());
     }
 }
