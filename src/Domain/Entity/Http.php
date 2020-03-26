@@ -17,7 +17,7 @@ final class Http implements Section
         $this->request = $request;
     }
 
-    public static function received(Identity $identity, string $request)
+    public static function received(Identity $identity, string $request): self
     {
         return new self($identity, $request);
     }
