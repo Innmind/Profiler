@@ -1,10 +1,7 @@
 # Profiler
 
-| `develop` |
-|-----------|
-| [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Innmind/Profiler/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/Innmind/Profiler/?branch=develop) |
-| [![Code Coverage](https://scrutinizer-ci.com/g/Innmind/Profiler/badges/coverage.png?b=develop)](https://scrutinizer-ci.com/g/Innmind/Profiler/?branch=develop) |
-| [![Build Status](https://scrutinizer-ci.com/g/Innmind/Profiler/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/Innmind/Profiler/build-status/develop) |
+[![Build Status](https://github.com/Innmind/Profiler/workflows/CI/badge.svg)](https://github.com/Innmind/Profiler/actions?query=workflow%3ACI)
+[![codecov](https://codecov.io/gh/Innmind/Profiler/branch/develop/graph/badge.svg)](https://codecov.io/gh/Innmind/Profiler)
 
 (Framework agnostic) App profiler to help profile any kind of applications (http or cli).
 
