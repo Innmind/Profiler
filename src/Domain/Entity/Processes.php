@@ -8,8 +8,8 @@ use function Innmind\Immutable\assertSet;
 
 final class Processes implements Section
 {
-    private $identity;
-    private $processes;
+    private Section\Identity $identity;
+    private SetInterface $processes;
 
     public function __construct(
         Section\Identity $identity,

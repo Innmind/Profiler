@@ -10,8 +10,8 @@ use Innmind\Profiler\Domain\{
 
 final class CallGraph implements Section
 {
-    private $identity;
-    private $graph;
+    private Identity $identity;
+    private Json $graph;
 
     public function __construct(Identity $identity, Json $graph)
     {

@@ -16,7 +16,7 @@ use Innmind\Rest\Server\{
 
 final class Update implements ResourceUpdater
 {
-    private $repository;
+    private ProfileRepository $repository;
 
     public function __construct(ProfileRepository $repository)
     {

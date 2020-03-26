@@ -9,8 +9,8 @@ use function Innmind\Immutable\assertSet;
 
 final class Environment implements Section
 {
-    private $identity;
-    private $pairs;
+    private Identity $identity;
+    private SetInterface $pairs;
 
     public function __construct(Identity $identity, SetInterface $pairs)
     {

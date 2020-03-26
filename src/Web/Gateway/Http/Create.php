@@ -19,8 +19,8 @@ use Innmind\Rest\Server\{
 
 final class Create implements ResourceCreator
 {
-    private $requests;
-    private $profiles;
+    private SectionRepository $requests;
+    private ProfileRepository $profiles;
 
     public function __construct(
         SectionRepository $requests,

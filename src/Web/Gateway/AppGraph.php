@@ -17,7 +17,7 @@ use Innmind\Rest\Server\{
 
 final class AppGraph implements Gateway
 {
-    private $creator;
+    private ResourceCreator $creator;
 
     public function __construct(ResourceCreator $creator)
     {

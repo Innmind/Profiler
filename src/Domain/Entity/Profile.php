@@ -19,12 +19,12 @@ use Innmind\Immutable\{
 
 final class Profile
 {
-    private $identity;
-    private $name;
-    private $startedAt;
-    private $sections;
-    private $status;
-    private $exit;
+    private Identity $identity;
+    private string $name;
+    private PointInTimeInterface $startedAt;
+    private Set $sections;
+    private ?Status $status = null;
+    private ?string $exit = null;
 
     private function __construct(
         Identity $identity,

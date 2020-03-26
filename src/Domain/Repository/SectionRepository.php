@@ -20,7 +20,7 @@ use Innmind\Immutable\{
 
 final class SectionRepository
 {
-    private $filesystem;
+    private Adapter $filesystem;
 
     public function __construct(Adapter $filesystem)
     {

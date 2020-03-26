@@ -10,8 +10,8 @@ use Innmind\Profiler\Domain\{
 
 final class AppGraph implements Section
 {
-    private $identity;
-    private $graph;
+    private Identity $identity;
+    private Svg $graph;
 
     public function __construct(Identity $identity, Svg $graph)
     {

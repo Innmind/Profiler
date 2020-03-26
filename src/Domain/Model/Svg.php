@@ -7,7 +7,7 @@ use Innmind\Immutable\Str;
 
 final class Svg
 {
-    private $value;
+    private string $value;
 
     public function __construct(string $value)
     {

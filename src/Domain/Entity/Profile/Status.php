@@ -5,7 +5,7 @@ namespace Innmind\Profiler\Domain\Entity\Profile;
 
 final class Status
 {
-    private $value;
+    private string $value;
 
     private function __construct(string $value)
     {

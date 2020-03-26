@@ -28,8 +28,8 @@ use Innmind\Immutable\{
 
 final class Index implements Controller
 {
-    private $repository;
-    private $render;
+    private ProfileRepository $repository;
+    private Engine $render;
 
     public function __construct(
         ProfileRepository $repository,

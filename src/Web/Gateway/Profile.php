@@ -17,8 +17,8 @@ use Innmind\Rest\Server\{
 
 final class Profile implements Gateway
 {
-    private $creator;
-    private $updater;
+    private ResourceCreator $creator;
+    private ResourceUpdater $updater;
 
     public function __construct(
         ResourceCreator $creator,

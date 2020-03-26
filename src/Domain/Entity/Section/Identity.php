@@ -7,8 +7,8 @@ use Ramsey\Uuid\Uuid;
 
 final class Identity
 {
-    private $value;
-    private $section;
+    private string $value;
+    private string $section;
 
     public function __construct(string $value, string $section)
     {

@@ -5,8 +5,8 @@ namespace Innmind\Profiler\Domain\Entity\Remote\Http;
 
 final class Call
 {
-    private $request;
-    private $response;
+    private string $request;
+    private string $response;
 
     public function __construct(string $request, string $response)
     {

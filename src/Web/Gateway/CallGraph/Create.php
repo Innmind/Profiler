@@ -20,8 +20,8 @@ use Innmind\Rest\Server\{
 
 final class Create implements ResourceCreator
 {
-    private $graphs;
-    private $profiles;
+    private SectionRepository $graphs;
+    private ProfileRepository $profiles;
 
     public function __construct(
         SectionRepository $graphs,

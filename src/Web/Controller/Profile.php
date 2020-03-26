@@ -32,9 +32,9 @@ use function Innmind\Immutable\assertMap;
 
 final class Profile implements Controller
 {
-    private $repository;
-    private $repositories;
-    private $render;
+    private ProfileRepository $repository;
+    private MapInterface $repositories;
+    private Engine $render;
 
     public function __construct(
         ProfileRepository $repository,

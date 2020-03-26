@@ -5,7 +5,7 @@ namespace Innmind\Profiler\Domain\Model;
 
 final class Json
 {
-    private $value;
+    private string $value;
 
     public function __construct(string $value)
     {

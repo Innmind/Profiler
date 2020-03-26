@@ -15,8 +15,8 @@ use Innmind\Immutable\{
 
 final class Http implements Section
 {
-    private $identity;
-    private $calls;
+    private Identity $identity;
+    private Stream $calls;
 
     public function __construct(Identity $identity)
     {

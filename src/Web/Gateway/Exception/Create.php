@@ -20,8 +20,8 @@ use Innmind\Rest\Server\{
 
 final class Create implements ResourceCreator
 {
-    private $exceptions;
-    private $profiles;
+    private SectionRepository $exceptions;
+    private ProfileRepository $profiles;
 
     public function __construct(
         SectionRepository $exceptions,
