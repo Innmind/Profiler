@@ -10,11 +10,12 @@ use Innmind\Profiler\{
     Domain\Entity\Section,
 };
 use Innmind\HttpFramework\Controller;
-use Innmind\Http\Message\{
-    ServerRequest,
-    Response,
+use Innmind\Http\{
+    Message\ServerRequest,
+    Message\Response,
+    ProtocolVersion,
 };
-use Innmind\Filesystem\Adapter\MemoryAdapter;
+use Innmind\Filesystem\Adapter\InMemory;
 use Innmind\Templating\{
     Engine,
     Name as  TemplateName,
@@ -23,9 +24,9 @@ use Innmind\Router\{
     Route,
     Route\Name,
 };
-use Innmind\TimeContinuum\PointInTime\Earth\Now;
+use Innmind\TimeContinuum\Earth\PointInTime\Now;
 use Innmind\Immutable\{
-    SetInterface,
+    Set,
     Map,
     Str,
 };
@@ -39,7 +40,7 @@ class ProfileTest extends TestCase
             Controller::class,
             new Profile(
                 new ProfileRepository(
-                    new MemoryAdapter
+                    new InMemory
                 ),
                 Map::of('string', 'object'),
                 $this->createMock(Engine::class)
@@ -50,7 +51,7 @@ class ProfileTest extends TestCase
     public function testInvokation()
     {
         $profile = new Profile(
-            $repository = new ProfileRepository(new MemoryAdapter),
+            $repository = new ProfileRepository(new InMemory),
             Map::of('string', 'object'),
             $engine = $this->createMock(Engine::class)
         );
@@ -63,7 +64,7 @@ class ProfileTest extends TestCase
                     return $parameters->contains('profile') &&
                         $parameters->get('profile') instanceof ProfileEntity &&
                         $parameters->contains('sections') &&
-                        $parameters->get('sections') instanceof SetInterface &&
+                        $parameters->get('sections') instanceof Set &&
                         (string) $parameters->get('sections')->type() === Section::class;
                 })
             );
@@ -72,11 +73,16 @@ class ProfileTest extends TestCase
             'foo',
             new Now
         ));
+        $request = $this->createMock(ServerRequest::class);
+        $request
+            ->expects($this->any())
+            ->method('protocolVersion')
+            ->willReturn(new ProtocolVersion(2, 0));
 
         $this->assertInstanceOf(
             Response::class,
             $profile(
-                $this->createMock(ServerRequest::class),
+                $request,
                 Route::of(new Name('index'), Str::of('GET /')),
                 Map::of('string', 'string')
                     ('identity', (string) $identity)

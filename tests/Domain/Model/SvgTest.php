@@ -14,7 +14,7 @@ class SvgTest extends TestCase
         $svg = new Svg('<svg></svg>');
 
         $this->assertInstanceOf(Str::class, $svg->dataUri());
-        $this->assertSame('data:image/svg+xml;base64,PHN2Zz48L3N2Zz4=', (string) $svg->dataUri());
+        $this->assertSame('data:image/svg+xml;base64,PHN2Zz48L3N2Zz4=', $svg->dataUri()->toString());
         $this->assertSame('<svg></svg>', (string) $svg);
     }
 }

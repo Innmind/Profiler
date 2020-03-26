@@ -17,7 +17,6 @@ use Innmind\Router\{
 };
 use Innmind\Templating\Engine;
 use Innmind\Immutable\{
-    MapInterface,
     Map,
     Str,
 };
@@ -26,7 +25,7 @@ use function Innmind\Immutable\assertMap;
 function bootstrap(
     OperatingSystem $os,
     Engine $render,
-    MapInterface $repositories
+    Map $repositories
 ): RequestHandler {
     assertMap('string', 'object', $repositories, 2);
 

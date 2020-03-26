@@ -21,7 +21,7 @@ class BootstrapTest extends TestCase
         $handler = bootstrap(
             $os,
             $this->createMock(Engine::class),
-            domain($os->filesystem(), new Path(\sys_get_temp_dir()))
+            domain($os->filesystem(), $os->status()->tmp())
         );
 
         $this->assertInstanceOf(RequestHandler::class, $handler);

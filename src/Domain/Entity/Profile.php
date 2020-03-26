@@ -9,19 +9,16 @@ use Innmind\Profiler\Domain\{
     Exception\LogicException,
 };
 use Innmind\TimeContinuum\{
-    PointInTimeInterface,
-    Format\ISO8601,
+    PointInTime,
+    Earth\Format\ISO8601,
 };
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Immutable\Set;
 
 final class Profile
 {
     private Identity $identity;
     private string $name;
-    private PointInTimeInterface $startedAt;
+    private PointInTime $startedAt;
     private Set $sections;
     private ?Status $status = null;
     private ?string $exit = null;
@@ -29,7 +26,7 @@ final class Profile
     private function __construct(
         Identity $identity,
         string $name,
-        PointInTimeInterface $startedAt
+        PointInTime $startedAt
     ) {
         $this->identity = $identity;
         $this->name = $name;
@@ -40,7 +37,7 @@ final class Profile
     public static function start(
         Identity $identity,
         string $name,
-        PointInTimeInterface $startedAt
+        PointInTime $startedAt
     ): self {
         return new self($identity, $name, $startedAt);
     }
@@ -55,7 +52,7 @@ final class Profile
         return $this->name;
     }
 
-    public function startedAt(): PointInTimeInterface
+    public function startedAt(): PointInTime
     {
         return $this->startedAt;
     }
@@ -92,9 +89,9 @@ final class Profile
     }
 
     /**
-     * @return SetInterface<Section\Identity>
+     * @return Set<Section\Identity>
      */
-    public function sections(): SetInterface
+    public function sections(): Set
     {
         return $this->sections;
     }

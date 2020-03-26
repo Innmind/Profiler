@@ -12,8 +12,9 @@ use Innmind\Rest\Server\{
     HttpResource\HttpResource,
     HttpResource\Property,
 };
-use Innmind\Filesystem\Adapter\MemoryAdapter;
-use Innmind\TimeContinuum\TimeContinuum\Earth;
+use Innmind\Filesystem\Adapter\InMemory;
+use Innmind\TimeContinuum\Earth\Clock as Earth;
+use function Innmind\Immutable\first;
 use PHPUnit\Framework\TestCase;
 
 class CreateTest extends TestCase
@@ -24,7 +25,7 @@ class CreateTest extends TestCase
             ResourceCreator::class,
             new Create(
                 new ProfileRepository(
-                    new MemoryAdapter
+                    new InMemory
                 )
             )
         );
@@ -35,7 +36,7 @@ class CreateTest extends TestCase
         $clock = new Earth;
         $create = new Create(
             new ProfileRepository(
-                $adapter = new MemoryAdapter
+                $adapter = new InMemory
             )
         );
         $directory = (require 'src/Web/config/resources.php')($clock);
@@ -49,6 +50,6 @@ class CreateTest extends TestCase
             )
         );
 
-        $this->assertSame($adapter->all()->key(), (string) $identity);
+        $this->assertSame(first($adapter->all())->name()->toString(), $identity->toString());
     }
 }

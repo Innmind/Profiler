@@ -9,11 +9,12 @@ use Innmind\Profiler\{
     Domain\Entity\Profile,
 };
 use Innmind\HttpFramework\Controller;
-use Innmind\Http\Message\{
-    ServerRequest,
-    Response,
+use Innmind\Http\{
+    Message\ServerRequest,
+    Message\Response,
+    ProtocolVersion,
 };
-use Innmind\Filesystem\Adapter\MemoryAdapter;
+use Innmind\Filesystem\Adapter\InMemory;
 use Innmind\Templating\{
     Engine,
     Name as  TemplateName,
@@ -23,7 +24,7 @@ use Innmind\Router\{
     Route\Name,
 };
 use Innmind\Immutable\{
-    StreamInterface,
+    Sequence,
     Map,
     Str,
 };
@@ -37,7 +38,7 @@ class IndexTest extends TestCase
             Controller::class,
             new Index(
                 new ProfileRepository(
-                    new MemoryAdapter
+                    new InMemory
                 ),
                 $this->createMock(Engine::class)
             )
@@ -47,7 +48,7 @@ class IndexTest extends TestCase
     public function testInvokation()
     {
         $index = new Index(
-            new ProfileRepository(new MemoryAdapter),
+            new ProfileRepository(new InMemory),
             $engine = $this->createMock(Engine::class)
         );
         $engine
@@ -57,15 +58,20 @@ class IndexTest extends TestCase
                 new TemplateName('index.html.twig'),
                 $this->callback(static function($parameters): bool {
                     return $parameters->contains('profiles') &&
-                        $parameters->get('profiles') instanceof StreamInterface &&
+                        $parameters->get('profiles') instanceof Sequence &&
                         (string) $parameters->get('profiles')->type() === Profile::class;
                 })
             );
+        $request = $this->createMock(ServerRequest::class);
+        $request
+            ->expects($this->any())
+            ->method('protocolVersion')
+            ->willReturn(new ProtocolVersion(2, 0));
 
         $this->assertInstanceOf(
             Response::class,
             $index(
-                $this->createMock(ServerRequest::class),
+                $request,
                 Route::of(new Name('index'), Str::of('GET /')),
                 Map::of('string', 'string')
             )

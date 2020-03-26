@@ -10,12 +10,14 @@ use Innmind\Profiler\Domain\{
     Exception\LogicException,
 };
 use Innmind\Filesystem\{
-    Adapter\MemoryAdapter,
+    Adapter\InMemory,
     File\File,
-    Stream\StringStream,
+    Name,
 };
-use Innmind\TimeContinuum\PointInTime\Earth\PointInTime;
-use Innmind\Immutable\SetInterface;
+use Innmind\Stream\Readable\Stream;
+use Innmind\TimeContinuum\Earth\PointInTime\PointInTime;
+use Innmind\Immutable\Set;
+use function Innmind\Immutable\first;
 use PHPUnit\Framework\TestCase;
 
 class ProfileRepositoryTest extends TestCase
@@ -23,7 +25,7 @@ class ProfileRepositoryTest extends TestCase
     public function testAdd()
     {
         $repository = new ProfileRepository(
-            $adapter = new MemoryAdapter
+            $adapter = new InMemory
         );
 
         $profile = Profile::start(
@@ -33,17 +35,17 @@ class ProfileRepositoryTest extends TestCase
         );
 
         $this->assertNull($repository->add($profile));
-        $this->assertTrue($adapter->has((string) $profile->identity()));
+        $this->assertTrue($adapter->contains(new Name((string) $profile->identity())));
         $this->assertSame(
             \serialize($profile),
-            (string) $adapter->get((string) $profile->identity())->content()
+            $adapter->get(new Name((string) $profile->identity()))->content()->toString(),
         );
     }
 
     public function testThrowWhenGettingUnknownProfile()
     {
         $repository = new ProfileRepository(
-            new MemoryAdapter
+            new InMemory
         );
 
         $this->expectException(LogicException::class);
@@ -54,7 +56,7 @@ class ProfileRepositoryTest extends TestCase
     public function testGet()
     {
         $repository = new ProfileRepository(
-            $adapter = new MemoryAdapter
+            $adapter = new InMemory
         );
 
         $profile = Profile::start(
@@ -62,9 +64,9 @@ class ProfileRepositoryTest extends TestCase
             'foo',
             new PointInTime('2019-01-01T00:00:00+01:00')
         );
-        $adapter->add(new File(
+        $adapter->add(File::named(
             (string) $profile->identity(),
-            new StringStream(\serialize($profile))
+            Stream::ofContent(\serialize($profile))
         ));
 
         $this->assertInstanceOf(Profile::class, $repository->get($profile->identity()));
@@ -75,7 +77,7 @@ class ProfileRepositoryTest extends TestCase
     public function testDoNothingWhenRemovingUnknownProfile()
     {
         $repository = new ProfileRepository(
-            new MemoryAdapter
+            new InMemory
         );
 
         $this->assertNull($repository->remove(Identity::generate()));
@@ -84,7 +86,7 @@ class ProfileRepositoryTest extends TestCase
     public function testRemove()
     {
         $repository = new ProfileRepository(
-            $adapter = new MemoryAdapter
+            $adapter = new InMemory
         );
         $profile = Profile::start(
             Identity::generate(),
@@ -94,13 +96,13 @@ class ProfileRepositoryTest extends TestCase
         $repository->add($profile);
 
         $this->assertNull($repository->remove($profile->identity()));
-        $this->assertFalse($adapter->has((string) $profile->identity()));
+        $this->assertFalse($adapter->contains(new Name((string) $profile->identity())));
     }
 
     public function testAll()
     {
         $repository = new ProfileRepository(
-            new MemoryAdapter
+            new InMemory
         );
         $profile = Profile::start(
             Identity::generate(),
@@ -111,10 +113,10 @@ class ProfileRepositoryTest extends TestCase
 
         $all = $repository->all();
 
-        $this->assertInstanceOf(SetInterface::class, $all);
+        $this->assertInstanceOf(Set::class, $all);
         $this->assertSame(Profile::class, (string) $all->type());
         $this->assertCount(1, $all);
-        $this->assertNotSame($profile, $all->current());
-        $this->assertEquals($profile, $all->current());
+        $this->assertNotSame($profile, first($all));
+        $this->assertEquals($profile, first($all));
     }
 }

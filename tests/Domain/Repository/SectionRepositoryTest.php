@@ -10,10 +10,11 @@ use Innmind\Profiler\Domain\{
     Exception\LogicException,
 };
 use Innmind\Filesystem\{
-    Adapter\MemoryAdapter,
+    Adapter\InMemory,
     File\File,
-    Stream\StringStream,
+    Name,
 };
+use Innmind\Stream\Readable\Stream;
 use Innmind\Immutable\Set;
 use PHPUnit\Framework\TestCase;
 
@@ -22,7 +23,7 @@ class SectionRepositoryTest extends TestCase
     public function testAdd()
     {
         $repository = new SectionRepository(
-            $adapter = new MemoryAdapter
+            $adapter = new InMemory
         );
 
         $section = new Environment(
@@ -31,17 +32,17 @@ class SectionRepositoryTest extends TestCase
         );
 
         $this->assertNull($repository->add($section));
-        $this->assertTrue($adapter->has((string) $section->identity()));
+        $this->assertTrue($adapter->contains(new Name((string) $section->identity())));
         $this->assertSame(
             \serialize($section),
-            (string) $adapter->get((string) $section->identity())->content()
+            $adapter->get(new Name((string) $section->identity()))->content()->toString(),
         );
     }
 
     public function testThrowWhenGettingUnknownProfile()
     {
         $repository = new SectionRepository(
-            new MemoryAdapter
+            new InMemory
         );
 
         $this->expectException(LogicException::class);
@@ -52,16 +53,16 @@ class SectionRepositoryTest extends TestCase
     public function testGet()
     {
         $repository = new SectionRepository(
-            $adapter = new MemoryAdapter
+            $adapter = new InMemory
         );
 
         $section = new Environment(
             Identity::generate('section'),
             Set::of('string')
         );
-        $adapter->add(new File(
+        $adapter->add(File::named(
             (string) $section->identity(),
-            new StringStream(\serialize($section))
+            Stream::ofContent(\serialize($section))
         ));
 
         $this->assertInstanceOf(Environment::class, $repository->get($section->identity()));
@@ -72,7 +73,7 @@ class SectionRepositoryTest extends TestCase
     public function testDoNothingWhenRemovingUnknownProfile()
     {
         $repository = new SectionRepository(
-            new MemoryAdapter
+            new InMemory
         );
 
         $this->assertNull($repository->remove(Identity::generate('section')));
@@ -81,7 +82,7 @@ class SectionRepositoryTest extends TestCase
     public function testRemove()
     {
         $repository = new SectionRepository(
-            $adapter = new MemoryAdapter
+            $adapter = new InMemory
         );
         $section = new Environment(
             Identity::generate('section'),
@@ -90,6 +91,6 @@ class SectionRepositoryTest extends TestCase
         $repository->add($section);
 
         $this->assertNull($repository->remove($section->identity()));
-        $this->assertFalse($adapter->has((string) $section->identity()));
+        $this->assertFalse($adapter->contains(new Name((string) $section->identity())));
     }
 }

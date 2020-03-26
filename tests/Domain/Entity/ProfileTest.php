@@ -10,8 +10,9 @@ use Innmind\Profiler\Domain\{
     Entity\Section\Identity as Section,
     Exception\LogicException,
 };
-use Innmind\TimeContinuum\PointInTimeInterface;
-use Innmind\Immutable\SetInterface;
+use Innmind\TimeContinuum\PointInTime;
+use Innmind\Immutable\Set;
+use function Innmind\Immutable\unwrap;
 use PHPUnit\Framework\TestCase;
 
 class ProfileTest extends TestCase
@@ -21,14 +22,14 @@ class ProfileTest extends TestCase
         $profile = Profile::start(
             $identity = Identity::generate(),
             'foo',
-            $startedAt = $this->createMock(PointInTimeInterface::class)
+            $startedAt = $this->createMock(PointInTime::class)
         );
 
         $this->assertInstanceOf(Profile::class, $profile);
         $this->assertSame($identity, $profile->identity());
         $this->assertSame('foo', $profile->name());
         $this->assertFalse($profile->closed());
-        $this->assertInstanceOf(SetInterface::class, $profile->sections());
+        $this->assertInstanceOf(Set::class, $profile->sections());
         $this->assertSame(Section::class, (string) $profile->sections()->type());
         $this->assertCount(0, $profile->sections());
         $this->assertSame('[] foo', (string) $profile);
@@ -39,12 +40,12 @@ class ProfileTest extends TestCase
         $profile = Profile::start(
             Identity::generate(),
             'foo',
-            $this->createMock(PointInTimeInterface::class)
+            $this->createMock(PointInTime::class)
         );
         $section = Section::generate('section');
 
         $this->assertNull($profile->add($section));
-        $this->assertSame([$section], $profile->sections()->toPrimitive());
+        $this->assertSame([$section], unwrap($profile->sections()));
     }
 
     public function testFail()
@@ -52,7 +53,7 @@ class ProfileTest extends TestCase
         $profile = Profile::start(
             Identity::generate(),
             'foo',
-            $this->createMock(PointInTimeInterface::class)
+            $this->createMock(PointInTime::class)
         );
 
         $this->assertNull($profile->fail('bar'));
@@ -66,7 +67,7 @@ class ProfileTest extends TestCase
         $profile = Profile::start(
             Identity::generate(),
             'foo',
-            $this->createMock(PointInTimeInterface::class)
+            $this->createMock(PointInTime::class)
         );
 
         $this->assertNull($profile->succeed('bar'));
@@ -80,7 +81,7 @@ class ProfileTest extends TestCase
         $profile = Profile::start(
             Identity::generate(),
             'foo',
-            $this->createMock(PointInTimeInterface::class)
+            $this->createMock(PointInTime::class)
         );
         $profile->succeed('bar');
 

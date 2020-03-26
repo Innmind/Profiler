@@ -7,7 +7,8 @@ use function Innmind\Profiler\Domain\bootstrap;
 use Innmind\Profiler\Domain\Entity;
 use Innmind\OperatingSystem\Filesystem;
 use Innmind\Url\Path;
-use Innmind\Immutable\MapInterface;
+use Innmind\Immutable\Map;
+use function Innmind\Immutable\unwrap;
 use PHPUnit\Framework\TestCase;
 
 class BootstrapTest extends TestCase
@@ -16,10 +17,10 @@ class BootstrapTest extends TestCase
     {
         $repositories = bootstrap(
             $this->createMock(Filesystem::class),
-            new Path(\sys_get_temp_dir())
+            Path::of(\sys_get_temp_dir().'/')
         );
 
-        $this->assertInstanceOf(MapInterface::class, $repositories);
+        $this->assertInstanceOf(Map::class, $repositories);
         $this->assertSame('string', (string) $repositories->keyType());
         $this->assertSame('object', (string) $repositories->valueType());
         $this->assertCount(9, $repositories);
@@ -35,7 +36,7 @@ class BootstrapTest extends TestCase
                 Entity\Remote\Http::class,
                 Entity\Remote\Processes::class,
             ],
-            $repositories->keys()->toPrimitive()
+            unwrap($repositories->keys()),
         );
     }
 }

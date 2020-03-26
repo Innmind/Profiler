@@ -17,10 +17,10 @@ use Innmind\Rest\Server\{
     Definition\Type\PointInTimeType,
     Action,
 };
-use Innmind\TimeContinuum\TimeContinuumInterface;
+use Innmind\TimeContinuum\Clock;
 use Innmind\Immutable\Set;
 
-return function(TimeContinuumInterface $clock): Directory {
+return function(Clock $clock): Directory {
     return Directory::of(
         'api',
         Set::of(

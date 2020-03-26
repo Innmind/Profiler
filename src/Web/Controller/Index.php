@@ -11,8 +11,8 @@ use Innmind\HttpFramework\Controller;
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
-    Message\StatusCode\StatusCode,
-    Headers\Headers,
+    Message\StatusCode,
+    Headers,
     Header\ContentType,
     Header\ContentTypeValue,
 };
@@ -21,10 +21,7 @@ use Innmind\Templating\{
     Engine,
     Name,
 };
-use Innmind\Immutable\{
-    MapInterface,
-    Map,
-};
+use Innmind\Immutable\Map;
 
 final class Index implements Controller
 {
@@ -45,7 +42,7 @@ final class Index implements Controller
     public function __invoke(
         ServerRequest $request,
         Route $route,
-        MapInterface $arguments
+        Map $arguments
     ): Response {
         $profiles = $this
             ->repository

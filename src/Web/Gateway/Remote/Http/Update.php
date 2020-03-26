@@ -30,7 +30,7 @@ final class Update implements ResourceUpdater
         Identity $identity,
         HttpResource $resource
     ): void {
-        $identity = new Section\Identity((string) $identity, Http::class);
+        $identity = new Section\Identity($identity->toString(), Http::class);
         $section = $this->repository->get($identity);
 
         $section->add(new Call(

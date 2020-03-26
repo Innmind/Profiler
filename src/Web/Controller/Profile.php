@@ -12,8 +12,8 @@ use Innmind\HttpFramework\Controller;
 use Innmind\Http\{
     Message\ServerRequest,
     Message\Response,
-    Message\StatusCode\StatusCode,
-    Headers\Headers,
+    Message\StatusCode,
+    Headers,
     Header\ContentType,
     Header\ContentTypeValue,
 };
@@ -23,9 +23,7 @@ use Innmind\Templating\{
     Name,
 };
 use Innmind\Immutable\{
-    MapInterface,
     Map,
-    SetInterface,
     Set,
 };
 use function Innmind\Immutable\assertMap;
@@ -33,12 +31,12 @@ use function Innmind\Immutable\assertMap;
 final class Profile implements Controller
 {
     private ProfileRepository $repository;
-    private MapInterface $repositories;
+    private Map $repositories;
     private Engine $render;
 
     public function __construct(
         ProfileRepository $repository,
-        MapInterface $repositories,
+        Map $repositories,
         Engine $render
     ) {
         assertMap('string', 'object', $repositories, 2);
@@ -54,14 +52,14 @@ final class Profile implements Controller
     public function __invoke(
         ServerRequest $request,
         Route $route,
-        MapInterface $arguments
+        Map $arguments
     ): Response {
         $profile = $this->repository->get(new ProfileEntity\Identity(
             $arguments->get('identity')
         ));
         $sections = $profile->sections()->reduce(
             Set::of(Section::class),
-            function(SetInterface $sections, Section\Identity $identity): SetInterface {
+            function(Set $sections, Section\Identity $identity): Set {
                 return $sections->add(
                     $this->repositories->get($identity->section())->get($identity)
                 );

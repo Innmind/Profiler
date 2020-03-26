@@ -11,12 +11,10 @@ use Innmind\Profiler\Domain\{
 use Innmind\Filesystem\{
     Adapter,
     File,
-    Stream\StringStream,
+    Name,
 };
-use Innmind\Immutable\{
-    SetInterface,
-    Set,
-};
+use Innmind\Stream\Readable\Stream;
+use Innmind\Immutable\Set;
 
 final class ProfileRepository
 {
@@ -29,9 +27,9 @@ final class ProfileRepository
 
     public function add(Profile $profile): void
     {
-        $this->filesystem->add(new File\File(
+        $this->filesystem->add(File\File::named(
             (string) $profile->identity(),
-            new StringStream(\serialize($profile))
+            Stream::ofContent(\serialize($profile)),
         ));
     }
 
@@ -40,36 +38,36 @@ final class ProfileRepository
      */
     public function get(Identity $identity): Profile
     {
-        if (!$this->filesystem->has((string) $identity)) {
+        if (!$this->filesystem->contains(new Name((string) $identity))) {
             throw new LogicException;
         }
 
         return \unserialize(
-            (string) $this->filesystem->get((string) $identity)->content()
+            $this->filesystem->get(new Name((string) $identity))->content()->toString(),
         );
     }
 
     public function remove(Identity $identity): void
     {
-        if ($this->filesystem->has((string) $identity)) {
-            $this->filesystem->remove((string) $identity);
+        if ($this->filesystem->contains(new Name((string) $identity))) {
+            $this->filesystem->remove(new Name((string) $identity));
         }
     }
 
     /**
-     * @return SetInterface<Profile>
+     * @return Set<Profile>
      */
-    public function all(): SetInterface
+    public function all(): Set
     {
         return $this
             ->filesystem
             ->all()
             ->reduce(
                 Set::of(Profile::class),
-                static function(SetInterface $profiles, string $name, File $file): SetInterface {
+                static function(Set $profiles, File $file): Set {
                     return $profiles->add(
                         \unserialize(
-                            (string) $file->content()
+                            $file->content()->toString(),
                         )
                     );
                 }
