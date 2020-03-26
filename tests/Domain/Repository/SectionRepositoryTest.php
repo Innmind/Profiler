@@ -32,10 +32,10 @@ class SectionRepositoryTest extends TestCase
         );
 
         $this->assertNull($repository->add($section));
-        $this->assertTrue($adapter->contains(new Name((string) $section->identity())));
+        $this->assertTrue($adapter->contains(new Name($section->identity()->toString())));
         $this->assertSame(
             \serialize($section),
-            $adapter->get(new Name((string) $section->identity()))->content()->toString(),
+            $adapter->get(new Name($section->identity()->toString()))->content()->toString(),
         );
     }
 
@@ -61,7 +61,7 @@ class SectionRepositoryTest extends TestCase
             Set::of('string')
         );
         $adapter->add(File::named(
-            (string) $section->identity(),
+            $section->identity()->toString(),
             Stream::ofContent(\serialize($section))
         ));
 
@@ -91,6 +91,6 @@ class SectionRepositoryTest extends TestCase
         $repository->add($section);
 
         $this->assertNull($repository->remove($section->identity()));
-        $this->assertFalse($adapter->contains(new Name((string) $section->identity())));
+        $this->assertFalse($adapter->contains(new Name($section->identity()->toString())));
     }
 }

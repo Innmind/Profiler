@@ -85,7 +85,7 @@ class ProfileTest extends TestCase
                 $request,
                 Route::of(new Name('index'), Str::of('GET /')),
                 Map::of('string', 'string')
-                    ('identity', (string) $identity)
+                    ('identity', $identity->toString())
             )
         );
     }

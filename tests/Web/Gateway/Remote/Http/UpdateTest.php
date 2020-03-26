@@ -49,7 +49,7 @@ class UpdateTest extends TestCase
 
         $update(
             $directory->child('section')->child('remote')->definition('http'),
-            new Identity((string) $section->identity()),
+            new Identity($section->identity()->toString()),
             HttpResource::of(
                 $directory->child('section')->child('remote')->definition('http'),
                 new Property('request', 'foo'),

@@ -28,7 +28,7 @@ final class ProfileRepository
     public function add(Profile $profile): void
     {
         $this->filesystem->add(File\File::named(
-            (string) $profile->identity(),
+            $profile->identity()->toString(),
             Stream::ofContent(\serialize($profile)),
         ));
     }
@@ -38,19 +38,19 @@ final class ProfileRepository
      */
     public function get(Identity $identity): Profile
     {
-        if (!$this->filesystem->contains(new Name((string) $identity))) {
+        if (!$this->filesystem->contains(new Name($identity->toString()))) {
             throw new LogicException;
         }
 
         return \unserialize(
-            $this->filesystem->get(new Name((string) $identity))->content()->toString(),
+            $this->filesystem->get(new Name($identity->toString()))->content()->toString(),
         );
     }
 
     public function remove(Identity $identity): void
     {
-        if ($this->filesystem->contains(new Name((string) $identity))) {
-            $this->filesystem->remove(new Name((string) $identity));
+        if ($this->filesystem->contains(new Name($identity->toString()))) {
+            $this->filesystem->remove(new Name($identity->toString()));
         }
     }
 

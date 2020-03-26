@@ -59,13 +59,13 @@ class CreateTest extends TestCase
             HttpResource::of(
                 $directory->child('section')->definition('call_graph'),
                 new Property('graph', 'foo'),
-                new Property('profile', (string) $profile->identity())
+                new Property('profile', $profile->identity()->toString())
             )
         );
 
         $this->assertSame(first($adapter->all())->name()->toString(), $identity->toString());
         $profile = $profiles->get($profile->identity());
         $this->assertCount(1, $profile->sections());
-        $this->assertSame($identity->toString(), (string) first($profile->sections()));
+        $this->assertSame($identity->toString(), first($profile->sections())->toString());
     }
 }

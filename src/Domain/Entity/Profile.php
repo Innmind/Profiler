@@ -96,7 +96,7 @@ final class Profile
         return $this->sections;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return \sprintf(
             '[%s]%s %s',

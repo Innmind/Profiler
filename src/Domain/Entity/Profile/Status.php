@@ -22,7 +22,7 @@ final class Status
         return new self('succeeded');
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->value;
     }

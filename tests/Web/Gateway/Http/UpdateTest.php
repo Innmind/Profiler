@@ -50,7 +50,7 @@ class UpdateTest extends TestCase
 
         $update(
             $directory->child('section')->definition('http'),
-            new Identity((string) $section->identity()),
+            new Identity($section->identity()->toString()),
             HttpResource::of(
                 $directory->child('section')->definition('http'),
                 new Property('response', 'bar')

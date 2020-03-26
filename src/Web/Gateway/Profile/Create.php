@@ -34,6 +34,6 @@ final class Create implements ResourceCreator
         );
         $this->repository->add($profile);
 
-        return new Identity\Identity((string) $profile->identity());
+        return new Identity\Identity($profile->identity()->toString());
     }
 }

@@ -36,7 +36,7 @@ final class Environment implements Section
         return $this->pairs;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return join("\n", $this->pairs)->toString();
     }

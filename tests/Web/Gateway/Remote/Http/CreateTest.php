@@ -60,13 +60,13 @@ class CreateTest extends TestCase
                 $directory->child('section')->child('remote')->definition('http'),
                 new Property('request', 'foo'),
                 new Property('response', 'bar'),
-                new Property('profile', (string) $profile->identity())
+                new Property('profile', $profile->identity()->toString())
             )
         );
 
         $this->assertSame(first($adapter->all())->name()->toString(), $identity->toString());
         $profile = $profiles->get($profile->identity());
         $this->assertCount(1, $profile->sections());
-        $this->assertSame($identity->toString(), (string) first($profile->sections()));
+        $this->assertSame($identity->toString(), first($profile->sections())->toString());
     }
 }

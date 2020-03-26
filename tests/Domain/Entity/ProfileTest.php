@@ -32,7 +32,7 @@ class ProfileTest extends TestCase
         $this->assertInstanceOf(Set::class, $profile->sections());
         $this->assertSame(Section::class, (string) $profile->sections()->type());
         $this->assertCount(0, $profile->sections());
-        $this->assertSame('[] foo', (string) $profile);
+        $this->assertSame('[] foo', $profile->toString());
     }
 
     public function testAdd()
@@ -59,7 +59,7 @@ class ProfileTest extends TestCase
         $this->assertNull($profile->fail('bar'));
         $this->assertTrue($profile->closed());
         $this->assertEquals(Status::failed(), $profile->status());
-        $this->assertSame('[] [bar] foo', (string) $profile);
+        $this->assertSame('[] [bar] foo', $profile->toString());
     }
 
     public function testSuceeed()
@@ -73,7 +73,7 @@ class ProfileTest extends TestCase
         $this->assertNull($profile->succeed('bar'));
         $this->assertTrue($profile->closed());
         $this->assertEquals(Status::succeeded(), $profile->status());
-        $this->assertSame('[] [bar] foo', (string) $profile);
+        $this->assertSame('[] [bar] foo', $profile->toString());
     }
 
     public function testThrowWhenAddingSectionToAClosedProfile()

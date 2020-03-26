@@ -35,10 +35,10 @@ class ProfileRepositoryTest extends TestCase
         );
 
         $this->assertNull($repository->add($profile));
-        $this->assertTrue($adapter->contains(new Name((string) $profile->identity())));
+        $this->assertTrue($adapter->contains(new Name($profile->identity()->toString())));
         $this->assertSame(
             \serialize($profile),
-            $adapter->get(new Name((string) $profile->identity()))->content()->toString(),
+            $adapter->get(new Name($profile->identity()->toString()))->content()->toString(),
         );
     }
 
@@ -65,7 +65,7 @@ class ProfileRepositoryTest extends TestCase
             new PointInTime('2019-01-01T00:00:00+01:00')
         );
         $adapter->add(File::named(
-            (string) $profile->identity(),
+            $profile->identity()->toString(),
             Stream::ofContent(\serialize($profile))
         ));
 
@@ -96,7 +96,7 @@ class ProfileRepositoryTest extends TestCase
         $repository->add($profile);
 
         $this->assertNull($repository->remove($profile->identity()));
-        $this->assertFalse($adapter->contains(new Name((string) $profile->identity())));
+        $this->assertFalse($adapter->contains(new Name($profile->identity()->toString())));
     }
 
     public function testAll()

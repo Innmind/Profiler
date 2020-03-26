@@ -23,6 +23,6 @@ class EnvironmentTest extends TestCase
         $this->assertInstanceOf(Section::class, $section);
         $this->assertSame($identity, $section->identity());
         $this->assertSame($pairs, $section->pairs());
-        $this->assertSame("FOO=bar\nBAR=42", (string) $section);
+        $this->assertSame("FOO=bar\nBAR=42", $section->toString());
     }
 }

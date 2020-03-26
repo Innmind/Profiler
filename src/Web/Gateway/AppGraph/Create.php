@@ -47,6 +47,6 @@ final class Create implements ResourceCreator
         $profile->add($section->identity());
         $this->profiles->add($profile);
 
-        return new Identity\Identity((string) $section->identity());
+        return new Identity\Identity($section->identity()->toString());
     }
 }

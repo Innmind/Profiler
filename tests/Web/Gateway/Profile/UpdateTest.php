@@ -50,7 +50,7 @@ class UpdateTest extends TestCase
 
         $update(
             $directory->definition('profile'),
-            new Identity((string) $profile->identity()),
+            new Identity($profile->identity()->toString()),
             HttpResource::of(
                 $directory->definition('profile'),
                 new Property('success', true),
@@ -80,7 +80,7 @@ class UpdateTest extends TestCase
 
         $update(
             $directory->definition('profile'),
-            new Identity((string) $profile->identity()),
+            new Identity($profile->identity()->toString()),
             HttpResource::of(
                 $directory->definition('profile'),
                 new Property('success', false),

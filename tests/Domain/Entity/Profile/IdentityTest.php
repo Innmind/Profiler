@@ -13,7 +13,7 @@ class IdentityTest extends TestCase
         $identity = Identity::generate();
 
         $this->assertInstanceOf(Identity::class, $identity);
-        $this->assertNotEmpty((string) $identity);
-        $this->assertNotSame((string) $identity, (string) Identity::generate());
+        $this->assertNotEmpty($identity->toString());
+        $this->assertNotSame($identity->toString(), Identity::generate()->toString());
     }
 }

@@ -28,7 +28,7 @@ final class SectionRepository
     public function add(Section $section): void
     {
         $this->filesystem->add(File\File::named(
-            (string) $section->identity(),
+            $section->identity()->toString(),
             Stream::ofContent(\serialize($section)),
         ));
     }
@@ -38,19 +38,19 @@ final class SectionRepository
      */
     public function get(Identity $identity): Section
     {
-        if (!$this->filesystem->contains(new Name((string) $identity))) {
+        if (!$this->filesystem->contains(new Name($identity->toString()))) {
             throw new LogicException;
         }
 
         return \unserialize(
-            $this->filesystem->get(new Name((string) $identity))->content()->toString(),
+            $this->filesystem->get(new Name($identity->toString()))->content()->toString(),
         );
     }
 
     public function remove(Identity $identity): void
     {
-        if ($this->filesystem->contains(new Name((string) $identity))) {
-            $this->filesystem->remove(new Name((string) $identity));
+        if ($this->filesystem->contains(new Name($identity->toString()))) {
+            $this->filesystem->remove(new Name($identity->toString()));
         }
     }
 }
