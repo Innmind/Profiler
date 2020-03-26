@@ -11,10 +11,8 @@ final class Processes implements Section
     private Section\Identity $identity;
     private Set $processes;
 
-    public function __construct(
-        Section\Identity $identity,
-        Set $processes
-    ) {
+    public function __construct(Section\Identity $identity, Set $processes)
+    {
         assertSet('string', $processes, 2);
 
         $this->identity = $identity;

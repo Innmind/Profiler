@@ -28,7 +28,7 @@ final class Http implements Section
 
     public function add(Call $call): void
     {
-        $this->calls = $this->calls->add($call);
+        $this->calls = ($this->calls)($call);
     }
 
     /**

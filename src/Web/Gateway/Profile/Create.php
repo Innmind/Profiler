@@ -30,7 +30,7 @@ final class Create implements ResourceCreator
         $profile = Profile::start(
             Profile\Identity::generate(),
             $resource->property('name')->value(),
-            $resource->property('started_at')->value()
+            $resource->property('started_at')->value(),
         );
         $this->repository->add($profile);
 

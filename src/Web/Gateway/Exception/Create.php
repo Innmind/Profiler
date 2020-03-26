@@ -37,12 +37,12 @@ final class Create implements ResourceCreator
     ): Identity {
         $section = new Exception(
             Section\Identity::generate(Exception::class),
-            new Svg($resource->property('graph')->value())
+            new Svg($resource->property('graph')->value()),
         );
         $this->exceptions->add($section);
 
         $profile = $this->profiles->get(new Profile\Identity(
-            $resource->property('profile')->value()
+            $resource->property('profile')->value(),
         ));
         $profile->add($section->identity());
         $this->profiles->add($profile);

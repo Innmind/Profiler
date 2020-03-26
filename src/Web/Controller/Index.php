@@ -14,7 +14,6 @@ use Innmind\Http\{
     Message\StatusCode,
     Headers,
     Header\ContentType,
-    Header\ContentTypeValue,
 };
 use Innmind\Router\Route;
 use Innmind\Templating\{
@@ -28,10 +27,8 @@ final class Index implements Controller
     private ProfileRepository $repository;
     private Engine $render;
 
-    public function __construct(
-        ProfileRepository $repository,
-        Engine $render
-    ) {
+    public function __construct(ProfileRepository $repository, Engine $render)
+    {
         $this->repository = $repository;
         $this->render = $render;
     }
@@ -56,15 +53,13 @@ final class Index implements Controller
             $code->associatedReasonPhrase(),
             $request->protocolVersion(),
             Headers::of(
-                new ContentType(
-                    new ContentTypeValue('text', 'html')
-                )
+                ContentType::of('text', 'html'),
             ),
             ($this->render)(
                 new Name('index.html.twig'),
                 Map::of('string', 'mixed')
-                    ('profiles', $profiles)
-            )
+                    ('profiles', $profiles),
+            ),
         );
     }
 }

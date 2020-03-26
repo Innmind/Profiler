@@ -29,7 +29,7 @@ new class extends Main {
     {
         $domain = domain(
             $os->filesystem(),
-            Path::of(__DIR__.'/../var/')
+            Path::of(__DIR__.'/../var/'),
         );
 
         $this->handle = web(
@@ -39,9 +39,9 @@ new class extends Main {
                 null,
                 Map::of('string', 'object')
                     ('name', new Names)
-                    ('render', new Templates)
+                    ('render', new Templates),
             ),
-            $domain
+            $domain,
         );
     }
 

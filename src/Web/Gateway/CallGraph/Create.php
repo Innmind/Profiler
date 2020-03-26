@@ -37,12 +37,12 @@ final class Create implements ResourceCreator
     ): Identity {
         $section = new CallGraph(
             Section\Identity::generate(CallGraph::class),
-            new Json($resource->property('graph')->value())
+            new Json($resource->property('graph')->value()),
         );
         $this->graphs->add($section);
 
         $profile = $this->profiles->get(new Profile\Identity(
-            $resource->property('profile')->value()
+            $resource->property('profile')->value(),
         ));
         $profile->add($section->identity());
         $this->profiles->add($profile);

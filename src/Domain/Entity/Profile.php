@@ -85,7 +85,7 @@ final class Profile
             throw new LogicException;
         }
 
-        $this->sections = $this->sections->add($section);
+        $this->sections = ($this->sections)($section);
     }
 
     /**
@@ -102,7 +102,7 @@ final class Profile
             '[%s]%s %s',
             $this->startedAt->format(new ISO8601),
             $this->closed() ? " [{$this->exit}]" : '',
-            $this->name
+            $this->name,
         );
     }
 }

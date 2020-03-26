@@ -40,12 +40,12 @@ final class Create implements ResourceCreator
     ): Identity {
         $section = new Processes(
             Section\Identity::generate($this->section),
-            $resource->property('processes')->value()
+            $resource->property('processes')->value(),
         );
         $this->graphs->add($section);
 
         $profile = $this->profiles->get(new Profile\Identity(
-            $resource->property('profile')->value()
+            $resource->property('profile')->value(),
         ));
         $profile->add($section->identity());
         $this->profiles->add($profile);

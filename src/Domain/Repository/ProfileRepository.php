@@ -62,15 +62,11 @@ final class ProfileRepository
         return $this
             ->filesystem
             ->all()
-            ->reduce(
-                Set::of(Profile::class),
-                static function(Set $profiles, File $file): Set {
-                    return $profiles->add(
-                        \unserialize(
-                            $file->content()->toString(),
-                        )
-                    );
-                }
+            ->mapTo(
+                Profile::class,
+                static fn(File $file): Profile => \unserialize(
+                    $file->content()->toString(),
+                ),
             );
     }
 }

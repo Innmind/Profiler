@@ -41,24 +41,24 @@ return function(Clock $clock): Directory {
                                 Property::required(
                                     'uuid',
                                     new StringType,
-                                    new Access(Access::READ)
+                                    new Access(Access::READ),
                                 ),
                                 Property::required(
                                     'profile',
                                     new StringType,
-                                    new Access(Access::CREATE)
+                                    new Access(Access::CREATE),
                                 ),
                                 Property::required(
                                     'request',
                                     new StringType,
-                                    new Access(Access::CREATE, Access::UPDATE)
+                                    new Access(Access::CREATE, Access::UPDATE),
                                 ),
                                 Property::required(
                                     'response',
                                     new StringType,
-                                    new Access(Access::CREATE, Access::UPDATE)
-                                )
-                            )
+                                    new Access(Access::CREATE, Access::UPDATE),
+                                ),
+                            ),
                         ),
                         new HttpResource(
                             'processes',
@@ -69,22 +69,22 @@ return function(Clock $clock): Directory {
                                 Property::required(
                                     'uuid',
                                     new StringType,
-                                    new Access(Access::READ)
+                                    new Access(Access::READ),
                                 ),
                                 Property::required(
                                     'processes',
                                     new SetType('string', new StringType),
-                                    new Access(Access::CREATE)
+                                    new Access(Access::CREATE),
                                 ),
                                 Property::required(
                                     'profile',
                                     new StringType,
-                                    new Access(Access::CREATE)
+                                    new Access(Access::CREATE),
                                 )
                             ),
-                            Set::of(Action::class, Action::get(), Action::create())
-                        )
-                    )
+                            Set::of(Action::class, Action::get(), Action::create()),
+                        ),
+                    ),
                 ),
                 new HttpResource(
                     'http',
@@ -95,25 +95,25 @@ return function(Clock $clock): Directory {
                         Property::required(
                             'uuid',
                             new StringType,
-                            new Access(Access::READ)
+                            new Access(Access::READ),
                         ),
                         Property::required(
                             'request',
                             new StringType,
-                            new Access(Access::CREATE)
+                            new Access(Access::CREATE),
                         ),
                         Property::required(
                             'profile',
                             new StringType,
-                            new Access(Access::CREATE)
+                            new Access(Access::CREATE),
                         ),
                         Property::required(
                             'response',
                             new StringType,
-                            new Access(Access::UPDATE)
-                        )
+                            new Access(Access::UPDATE),
+                        ),
                     ),
-                    Set::of(Action::class, Action::get(), Action::create(), Action::update())
+                    Set::of(Action::class, Action::get(), Action::create(), Action::update()),
                 ),
                 new HttpResource(
                     'exception',
@@ -124,20 +124,20 @@ return function(Clock $clock): Directory {
                         Property::required(
                             'uuid',
                             new StringType,
-                            new Access(Access::READ)
+                            new Access(Access::READ),
                         ),
                         Property::required(
                             'graph',
                             new StringType,
-                            new Access(Access::CREATE)
+                            new Access(Access::CREATE),
                         ),
                         Property::required(
                             'profile',
                             new StringType,
-                            new Access(Access::CREATE)
-                        )
+                            new Access(Access::CREATE),
+                        ),
                     ),
-                    Set::of(Action::class, Action::get(), Action::create())
+                    Set::of(Action::class, Action::get(), Action::create()),
                 ),
                 new HttpResource(
                     'app_graph',
@@ -148,20 +148,20 @@ return function(Clock $clock): Directory {
                         Property::required(
                             'uuid',
                             new StringType,
-                            new Access(Access::READ)
+                            new Access(Access::READ),
                         ),
                         Property::required(
                             'graph',
                             new StringType,
-                            new Access(Access::CREATE)
+                            new Access(Access::CREATE),
                         ),
                         Property::required(
                             'profile',
                             new StringType,
-                            new Access(Access::CREATE)
+                            new Access(Access::CREATE),
                         )
                     ),
-                    Set::of(Action::class, Action::get(), Action::create())
+                    Set::of(Action::class, Action::get(), Action::create()),
                 ),
                 new HttpResource(
                     'call_graph',
@@ -172,20 +172,20 @@ return function(Clock $clock): Directory {
                         Property::required(
                             'uuid',
                             new StringType,
-                            new Access(Access::READ)
+                            new Access(Access::READ),
                         ),
                         Property::required(
                             'graph',
                             new StringType,
-                            new Access(Access::CREATE)
+                            new Access(Access::CREATE),
                         ),
                         Property::required(
                             'profile',
                             new StringType,
-                            new Access(Access::CREATE)
+                            new Access(Access::CREATE),
                         )
                     ),
-                    Set::of(Action::class, Action::get(), Action::create())
+                    Set::of(Action::class, Action::get(), Action::create()),
                 ),
                 new HttpResource(
                     'environment',
@@ -196,20 +196,20 @@ return function(Clock $clock): Directory {
                         Property::required(
                             'uuid',
                             new StringType,
-                            new Access(Access::READ)
+                            new Access(Access::READ),
                         ),
                         Property::required(
                             'pairs',
                             new SetType('string', new StringType),
-                            new Access(Access::CREATE)
+                            new Access(Access::CREATE),
                         ),
                         Property::required(
                             'profile',
                             new StringType,
-                            new Access(Access::CREATE)
+                            new Access(Access::CREATE),
                         )
                     ),
-                    Set::of(Action::class, Action::get(), Action::create())
+                    Set::of(Action::class, Action::get(), Action::create()),
                 ),
                 new HttpResource(
                     'processes',
@@ -220,22 +220,22 @@ return function(Clock $clock): Directory {
                         Property::required(
                             'uuid',
                             new StringType,
-                            new Access(Access::READ)
+                            new Access(Access::READ),
                         ),
                         Property::required(
                             'processes',
                             new SetType('string', new StringType),
-                            new Access(Access::CREATE)
+                            new Access(Access::CREATE),
                         ),
                         Property::required(
                             'profile',
                             new StringType,
-                            new Access(Access::CREATE)
+                            new Access(Access::CREATE),
                         )
                     ),
-                    Set::of(Action::class, Action::get(), Action::create())
-                )
-            )
+                    Set::of(Action::class, Action::get(), Action::create()),
+                ),
+            ),
         ),
         new HttpResource(
             'profile',
@@ -246,30 +246,30 @@ return function(Clock $clock): Directory {
                 Property::required(
                     'uuid',
                     new StringType,
-                    new Access(Access::READ)
+                    new Access(Access::READ),
                 ),
                 Property::required(
                     'name',
                     new StringType,
-                    new Access(Access::CREATE)
+                    new Access(Access::CREATE),
                 ),
                 Property::required(
                     'started_at',
                     new PointInTimeType($clock),
-                    new Access(Access::CREATE)
+                    new Access(Access::CREATE),
                 ),
                 Property::required(
                     'success',
                     new BoolType,
-                    new Access(Access::UPDATE)
+                    new Access(Access::UPDATE),
                 ),
                 Property::required(
                     'exit',
                     new StringType,
-                    new Access(Access::UPDATE)
+                    new Access(Access::UPDATE),
                 )
             ),
-            Set::of(Action::class, Action::get(), Action::create(), Action::update())
-        )
+            Set::of(Action::class, Action::get(), Action::create(), Action::update()),
+        ),
     );
 };

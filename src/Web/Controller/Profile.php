@@ -15,7 +15,6 @@ use Innmind\Http\{
     Message\StatusCode,
     Headers,
     Header\ContentType,
-    Header\ContentTypeValue,
 };
 use Innmind\Router\Route;
 use Innmind\Templating\{
@@ -55,15 +54,14 @@ final class Profile implements Controller
         Map $arguments
     ): Response {
         $profile = $this->repository->get(new ProfileEntity\Identity(
-            $arguments->get('identity')
+            $arguments->get('identity'),
         ));
-        $sections = $profile->sections()->reduce(
-            Set::of(Section::class),
-            function(Set $sections, Section\Identity $identity): Set {
-                return $sections->add(
-                    $this->repositories->get($identity->section())->get($identity)
-                );
-            }
+        $sections = $profile->sections()->mapTo(
+            Section::class,
+            fn(Section\Identity $identity): Section => $this
+                ->repositories
+                ->get($identity->section())
+                ->get($identity),
         );
 
         return new Response\Response(
@@ -71,16 +69,14 @@ final class Profile implements Controller
             $code->associatedReasonPhrase(),
             $request->protocolVersion(),
             Headers::of(
-                new ContentType(
-                    new ContentTypeValue('text', 'html')
-                )
+                ContentType::of('text', 'html'),
             ),
             ($this->render)(
                 new Name('profile.html.twig'),
                 Map::of('string', 'mixed')
                     ('profile', $profile)
-                    ('sections', $sections)
-            )
+                    ('sections', $sections),
+            ),
         );
     }
 }

@@ -35,7 +35,7 @@ final class Update implements ResourceUpdater
 
         $section->add(new Call(
             $resource->property('request')->value(),
-            $resource->property('response')->value()
+            $resource->property('response')->value(),
         ));
 
         $this->repository->add($section);

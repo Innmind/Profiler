@@ -33,7 +33,7 @@ final class Update implements ResourceUpdater
         $section = $this->repository->get($identity);
 
         $section->respondedWith(
-            $resource->property('response')->value()
+            $resource->property('response')->value(),
         );
 
         $this->repository->add($section);

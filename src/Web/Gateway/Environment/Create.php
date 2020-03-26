@@ -37,12 +37,12 @@ final class Create implements ResourceCreator
     ): Identity {
         $section = new Environment(
             Section\Identity::generate(Environment::class),
-            $resource->property('pairs')->value()
+            $resource->property('pairs')->value(),
         );
         $this->graphs->add($section);
 
         $profile = $this->profiles->get(new Profile\Identity(
-            $resource->property('profile')->value()
+            $resource->property('profile')->value(),
         ));
         $profile->add($section->identity());
         $this->profiles->add($profile);

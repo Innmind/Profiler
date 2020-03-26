@@ -37,12 +37,12 @@ final class Create implements ResourceCreator
     ): Identity {
         $section = new AppGraph(
             Section\Identity::generate(AppGraph::class),
-            new Svg($resource->property('graph')->value())
+            new Svg($resource->property('graph')->value()),
         );
         $this->graphs->add($section);
 
         $profile = $this->profiles->get(new Profile\Identity(
-            $resource->property('profile')->value()
+            $resource->property('profile')->value(),
         ));
         $profile->add($section->identity());
         $this->profiles->add($profile);

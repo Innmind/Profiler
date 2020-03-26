@@ -18,7 +18,7 @@ final class Identity
 
     public static function generate(string $section): self
     {
-        return new self((string) Uuid::uuid4(), $section);
+        return new self(Uuid::uuid4()->toString(), $section);
     }
 
     public function section(): string

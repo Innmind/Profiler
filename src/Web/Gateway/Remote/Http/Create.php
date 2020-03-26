@@ -36,16 +36,16 @@ final class Create implements ResourceCreator
         HttpResource $resource
     ): Identity {
         $section = new Http(
-            Section\Identity::generate(Http::class)
+            Section\Identity::generate(Http::class),
         );
         $section->add(new Call(
             $resource->property('request')->value(),
-            $resource->property('response')->value()
+            $resource->property('response')->value(),
         ));
         $this->requests->add($section);
 
         $profile = $this->profiles->get(new Profile\Identity(
-            $resource->property('profile')->value()
+            $resource->property('profile')->value(),
         ));
         $profile->add($section->identity());
         $this->profiles->add($profile);
