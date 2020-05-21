@@ -121,7 +121,7 @@ function bootstrap(
         $resources,
         Route::of(
             new Route\Name('capabilities'),
-            Str::of('OPTIONS /\*'),
+            Str::of('OPTIONS /*'),
         ),
     );
     $routes = $rest['routes'];
