@@ -20,7 +20,7 @@
         "ramsey/uuid": "^3.8",
         "innmind/operating-system": "~2.0",
         "innmind/rest-server": "~8.0",
-        "innmind/http-framework": "~2.0",
+        "innmind/http-framework": "~2.1",
         "innmind/http-server": "~2.0",
         "innmind/templating": "~2.0"
     },
