@@ -9,7 +9,6 @@ use Innmind\Profiler\Domain\Entity\{
     Section,
 };
 use Innmind\Immutable\Sequence;
-use function Innmind\Immutable\unwrap;
 use PHPUnit\Framework\TestCase;
 
 class HttpTest extends TestCase
@@ -22,11 +21,10 @@ class HttpTest extends TestCase
 
         $this->assertInstanceOf(Section::class, $section);
         $this->assertSame($identity, $section->identity());
-        $this->assertInstanceOf(Sequence::class, $section->calls());
-        $this->assertSame(Call::class, (string) $section->calls()->type());
+        $this->assertIsArray($section->calls());
         $this->assertCount(0, $section->calls());
 
         $this->assertNull($section->add($call = new Call('foo', 'bar')));
-        $this->assertSame([$call], unwrap($section->calls()));
+        $this->assertSame([$call], $section->calls());
     }
 }

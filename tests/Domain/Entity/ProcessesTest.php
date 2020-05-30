@@ -22,6 +22,6 @@ class ProcessesTest extends TestCase
 
         $this->assertInstanceOf(Section::class, $section);
         $this->assertSame($identity, $section->identity());
-        $this->assertSame($processes, $section->processes());
+        $this->assertSame(['cat foo', 'echo bar'], $section->processes());
     }
 }
