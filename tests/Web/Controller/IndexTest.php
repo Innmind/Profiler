@@ -58,8 +58,7 @@ class IndexTest extends TestCase
                 new TemplateName('index.html.twig'),
                 $this->callback(static function($parameters): bool {
                     return $parameters->contains('profiles') &&
-                        $parameters->get('profiles') instanceof Sequence &&
-                        (string) $parameters->get('profiles')->type() === Profile::class;
+                        \is_array($parameters->get('profiles'));
                 })
             );
         $request = $this->createMock(ServerRequest::class);

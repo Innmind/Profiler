@@ -21,6 +21,7 @@ use Innmind\Templating\{
     Name,
 };
 use Innmind\Immutable\Map;
+use function Innmind\Immutable\unwrap;
 
 final class Index implements Controller
 {
@@ -58,7 +59,7 @@ final class Index implements Controller
             ($this->render)(
                 new Name('index.html.twig'),
                 Map::of('string', 'mixed')
-                    ('profiles', $profiles),
+                    ('profiles', unwrap($profiles)),
             ),
         );
     }

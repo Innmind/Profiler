@@ -25,7 +25,10 @@ use Innmind\Immutable\{
     Map,
     Set,
 };
-use function Innmind\Immutable\assertMap;
+use function Innmind\Immutable\{
+    assertMap,
+    unwrap,
+};
 
 final class Profile implements Controller
 {
@@ -75,7 +78,7 @@ final class Profile implements Controller
                 new Name('profile.html.twig'),
                 Map::of('string', 'mixed')
                     ('profile', $profile)
-                    ('sections', $sections),
+                    ('sections', unwrap($sections)),
             ),
         );
     }
