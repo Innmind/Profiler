@@ -48,9 +48,6 @@ final class Profile implements Controller
         $this->render = $render;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(
         ServerRequest $request,
         Route $route,

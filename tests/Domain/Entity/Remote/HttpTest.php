@@ -8,7 +8,6 @@ use Innmind\Profiler\Domain\Entity\{
     Remote\Http\Call,
     Section,
 };
-use Innmind\Immutable\Sequence;
 use PHPUnit\Framework\TestCase;
 
 class HttpTest extends TestCase
