@@ -64,8 +64,7 @@ class ProfileTest extends TestCase
                     return $parameters->contains('profile') &&
                         $parameters->get('profile') instanceof ProfileEntity &&
                         $parameters->contains('sections') &&
-                        $parameters->get('sections') instanceof Set &&
-                        (string) $parameters->get('sections')->type() === Section::class;
+                        \is_array($parameters->get('sections'));
                 })
             );
         $repository->add(ProfileEntity::start(

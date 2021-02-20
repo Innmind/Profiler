@@ -58,8 +58,9 @@ class UpdateTest extends TestCase
         );
 
         $section = $repository->get($section->identity());
-        $this->assertCount(1, $section->calls());
-        $this->assertSame('foo', $section->calls()->first()->request());
-        $this->assertSame('bar', $section->calls()->first()->response());
+        $calls = $section->calls();
+        $this->assertCount(1, $calls);
+        $this->assertSame('foo', \reset($calls)->request());
+        $this->assertSame('bar', \reset($calls)->response());
     }
 }

@@ -8,7 +8,6 @@ use function Innmind\Profiler\{
     Domain\bootstrap as domain,
 };
 use Innmind\OperatingSystem\Factory;
-use Innmind\Url\Path;
 use Innmind\HttpFramework\RequestHandler;
 use Innmind\Templating\Engine;
 use PHPUnit\Framework\TestCase;

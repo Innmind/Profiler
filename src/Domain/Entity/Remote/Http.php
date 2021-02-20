@@ -9,6 +9,7 @@ use Innmind\Profiler\Domain\Entity\{
     Remote\Http\Call,
 };
 use Innmind\Immutable\Sequence;
+use function Innmind\Immutable\unwrap;
 
 final class Http implements Section
 {
@@ -32,10 +33,10 @@ final class Http implements Section
     }
 
     /**
-     * @return Sequence<Call>
+     * @return list<Call>
      */
-    public function calls(): Sequence
+    public function calls(): array
     {
-        return $this->calls;
+        return unwrap($this->calls);
     }
 }

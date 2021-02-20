@@ -4,7 +4,10 @@ declare(strict_types = 1);
 namespace Innmind\Profiler\Domain\Entity;
 
 use Innmind\Immutable\Set;
-use function Innmind\Immutable\assertSet;
+use function Innmind\Immutable\{
+    assertSet,
+    unwrap,
+};
 
 final class Processes implements Section
 {
@@ -25,10 +28,10 @@ final class Processes implements Section
     }
 
     /**
-     * @return Set<string>
+     * @return list<string>
      */
-    public function processes(): Set
+    public function processes(): array
     {
-        return $this->processes;
+        return unwrap($this->processes);
     }
 }

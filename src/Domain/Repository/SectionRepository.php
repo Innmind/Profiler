@@ -14,7 +14,6 @@ use Innmind\Filesystem\{
     Name,
 };
 use Innmind\Stream\Readable\Stream;
-use Innmind\Immutable\Set;
 
 final class SectionRepository
 {

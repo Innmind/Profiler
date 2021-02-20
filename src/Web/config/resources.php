@@ -20,7 +20,7 @@ use Innmind\Rest\Server\{
 use Innmind\TimeContinuum\Clock;
 use Innmind\Immutable\Set;
 
-return function(Clock $clock): Directory {
+return static function(Clock $clock): Directory {
     return Directory::of(
         'api',
         Set::of(
