@@ -27,11 +27,7 @@
     "autoload": {
         "psr-4": {
             "Innmind\\Profiler\\": "src/"
-        },
-        "files": [
-            "src/Domain/bootstrap.php",
-            "src/Web/bootstrap.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
