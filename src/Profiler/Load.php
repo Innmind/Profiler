@@ -6,6 +6,7 @@ namespace Innmind\Profiler\Profiler;
 use Innmind\Profiler\{
     Profile,
     Profile\Id,
+    Profile\Status,
 };
 use Innmind\TimeContinuum\{
     Clock,
@@ -34,9 +35,9 @@ final class Load
     /**
      * @return Maybe<Profile>
      */
-    public function __invoke(Directory $profile): Maybe
+    public function __invoke(Directory $raw): Maybe
     {
-        return $profile
+        return $raw
             ->get(Name::of('start.json'))
             ->map(static fn($file) => $file->content()->toString())
             ->flatMap(static function($start) {
@@ -46,7 +47,7 @@ final class Load
                     return Maybe::nothing();
                 }
             })
-            ->flatMap(function($start) use ($profile) {
+            ->flatMap(function($start) use ($raw) {
                 if (!\is_array($start)) {
                     return Maybe::nothing();
                 }
@@ -61,16 +62,50 @@ final class Load
 
                 return Maybe::all($name, $startedAt)->map(
                     static fn(string $name, PointInTime $startedAt) => Profile::of(
-                        Id::of($profile->name()->toString()),
+                        Id::of($raw->name()->toString()),
                         $name,
                         $startedAt,
                     ),
                 );
-            });
+            })
+            ->map(fn($profile) => $this->exit($profile, $raw));
     }
 
     public static function of(Clock $clock): self
     {
         return new self($clock);
+    }
+
+    private function exit(Profile $profile, Directory $raw): Profile
+    {
+        return $raw
+            ->get(Name::of('exit.json'))
+            ->map(static fn($file) => $file->content()->toString())
+            ->flatMap(static function($exit) {
+                try {
+                    return Maybe::just(Json::decode($exit));
+                } catch (Exception $e) {
+                    return Maybe::nothing();
+                }
+            })
+            ->flatMap(static function($exit) {
+                if (!\is_array($exit)) {
+                    return Maybe::nothing();
+                }
+
+                $message = Maybe::of($exit['message'] ?? null)->filter(\is_string(...));
+                $status = Maybe::of($exit['succeeded'] ?? null)->map(static fn($succeeded) => match ($succeeded) {
+                    true => Status::succeeded,
+                    default => Status::failed,
+                });
+
+                return Maybe::all($message, $status)->map(
+                    static fn(string $message, Status $status) => [$message, $status],
+                );
+            })
+            ->match(
+                static fn($pair) => $profile->withExit($pair[1], $pair[0]),
+                static fn() => $profile,
+            );
     }
 }
