@@ -27,11 +27,11 @@ final class CallGraph
         return new self($storage, $profile);
     }
 
-    public function record(Content $svg): void
+    public function record(Content $json): void
     {
         $this->storage->add($this->profile->add(File::named(
-            'call-graph.svg',
-            $svg,
+            'call-graph.json',
+            $json,
         )));
     }
 }
