@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\Profiler\Web;
 
-use Innmind\Profiler\Domain\Profile;
+use Innmind\Profiler\Profiler;
 use Innmind\Framework\{
     Application,
     Middleware,
@@ -28,24 +28,16 @@ final class Kernel implements Middleware
     {
         return $app
             ->service(
-                'profileRepository',
-                fn($_, $os) => new Profile\Repository(
+                'profiler',
+                fn($_, $os) => Profiler::of(
                     $os
                         ->filesystem()
                         ->mount($this->storage),
+                    $os->clock(),
                 ),
             )
-            ->service('startProfile', static fn($get, $os) => new Profile\Start(
-                $os->clock(),
-                $get('profileRepository'),
-            ))
-            ->service('succeedProfile', static fn($get) => new Profile\Succeed(
-                $get('profileRepository'),
-            ))
             ->service('listProfiles', static fn($get) => new ListProfiles(
-                $get('startProfile'),
-                $get('succeedProfile'),
-                $get('profileRepository'),
+                $get('profiler'),
             ))
             ->appendRoutes(
                 static fn($routes, $get) => $routes
