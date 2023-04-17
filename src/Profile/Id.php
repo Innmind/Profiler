@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\Profiler\Profile;
 
+use Innmind\Immutable\Maybe;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -18,10 +19,6 @@ final class Id
      */
     private function __construct(string $value)
     {
-        if (!Uuid::isValid($value)) {
-            throw new \DomainException($value);
-        }
-
         $this->value = $value;
     }
 
@@ -32,11 +29,15 @@ final class Id
 
     /**
      * @psalm-pure
+     *
+     * @return Maybe<self>
      */
-    public static function of(string $value): self
+    public static function maybe(string $value): Maybe
     {
         /** @psalm-suppress ArgumentTypeCoercion */
-        return new self($value);
+        return Maybe::just($value)
+            ->filter(Uuid::isValid(...))
+            ->map(static fn($value) => new self($value));
     }
 
     /**

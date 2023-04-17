@@ -52,6 +52,7 @@ final class Load
                     return Maybe::nothing();
                 }
 
+                $id = Id::maybe($raw->name()->toString());
                 $name = Maybe::of($start['name'] ?? null);
                 /** @psalm-suppress MixedArgument */
                 $startedAt = Maybe::of($start['startedAt'] ?? null)
@@ -60,12 +61,8 @@ final class Load
                         fn($pointInTime) => $this->clock->at($pointInTime, new ISO8601),
                     );
 
-                return Maybe::all($name, $startedAt)->map(
-                    static fn(string $name, PointInTime $startedAt) => Profile::of(
-                        Id::of($raw->name()->toString()),
-                        $name,
-                        $startedAt,
-                    ),
+                return Maybe::all($id, $name, $startedAt)->map(
+                    Profile::of(...),
                 );
             })
             ->map(fn($profile) => $this->exit($profile, $raw));
