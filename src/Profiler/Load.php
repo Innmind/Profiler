@@ -7,6 +7,7 @@ use Innmind\Profiler\{
     Profile,
     Profile\Id,
     Profile\Status,
+    Profile\Section,
 };
 use Innmind\TimeContinuum\{
     Clock,
@@ -21,15 +22,31 @@ use Innmind\Json\{
     Json,
     Exception\Exception,
 };
-use Innmind\Immutable\Maybe;
+use Innmind\Immutable\{
+    Maybe,
+    Sequence,
+};
 
 final class Load
 {
     private Clock $clock;
+    /** @var Sequence<callable(Directory): Maybe<Section>> */
+    private Sequence $sections;
 
     private function __construct(Clock $clock)
     {
         $this->clock = $clock;
+        $this->sections = Sequence::lazyStartingWith(
+            new Load\Exception,
+            new Load\Http,
+            new Load\Environment,
+            new Load\RawList('Processes', 'processes'),
+            new Load\RawList('Remote/Http', 'remote-http'),
+            new Load\RawList('Remote/Sql', 'remote-sql'),
+            new Load\RawList('Remote/Processes', 'remote-processes'),
+            new Load\CallGraph,
+            new Load\AppGraph,
+        );
     }
 
     /**
@@ -65,7 +82,13 @@ final class Load
                     Profile::of(...),
                 );
             })
-            ->map(fn($profile) => $this->exit($profile, $raw));
+            ->map(fn($profile) => $this->exit($profile, $raw))
+            ->map(fn($profile) => $profile->withSections($this->sections->flatMap(
+                static fn($load) => $load($raw)->match(
+                    static fn($section) => Sequence::of($section),
+                    static fn() => Sequence::of(),
+                ),
+            )));
     }
 
     public static function of(Clock $clock): self
