@@ -30,16 +30,18 @@ final class Profiler
 {
     private Adapter $storage;
     private Clock $clock;
+    private Load $load;
 
-    private function __construct(Adapter $storage, Clock $clock)
+    private function __construct(Adapter $storage, Clock $clock, Load $load)
     {
         $this->storage = $storage;
         $this->clock = $clock;
+        $this->load = $load;
     }
 
-    public static function of(Adapter $storage, Clock $clock): self
+    public static function of(Adapter $storage, Clock $clock, Load $load): self
     {
-        return new self($storage, $clock);
+        return new self($storage, $clock, $load);
     }
 
     public function start(string $name): Id
@@ -82,13 +84,11 @@ final class Profiler
      */
     public function get(Id $profile): Maybe
     {
-        $load = Load::of($this->clock);
-
         return $this
             ->storage
             ->get(Name::of($profile->toString()))
             ->keep(Instance::of(Directory::class))
-            ->flatMap($load);
+            ->flatMap($this->load);
     }
 
     /**
@@ -96,14 +96,12 @@ final class Profiler
      */
     public function all(): Sequence
     {
-        $load = Load::of($this->clock);
-
         return $this
             ->storage
             ->root()
             ->files()
             ->keep(Instance::of(Directory::class))
-            ->flatMap(static fn($profile) => $load($profile)->match(
+            ->flatMap(fn($profile) => ($this->load)($profile)->match(
                 static fn($profile) => Sequence::of($profile),
                 static fn() => Sequence::of(),
             ))

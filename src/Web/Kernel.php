@@ -5,6 +5,7 @@ namespace Innmind\Profiler\Web;
 
 use Innmind\Profiler\{
     Profiler,
+    Profiler\Load,
     Template\Index,
     Template\Profile,
 };
@@ -38,6 +39,7 @@ final class Kernel implements Middleware
                         ->filesystem()
                         ->mount($this->storage),
                     $os->clock(),
+                    Load::of($os->clock()),
                 ),
             )
             ->service('listProfiles', static fn($get) => new ListProfiles(
