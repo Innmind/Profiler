@@ -3,23 +3,27 @@ declare(strict_types = 1);
 
 namespace Innmind\Profiler\Web;
 
-use Innmind\Profiler\Profiler;
-use Innmind\Filesystem\File\Content;
+use Innmind\Profiler\{
+    Profiler,
+    Template\Index,
+};
 use Innmind\Http\Message\{
     ServerRequest,
     Response\Response,
     StatusCode,
 };
-use Innmind\Immutable\Str;
 
 final class ListProfiles
 {
     private Profiler $profiler;
+    private Index $template;
 
     public function __construct(
         Profiler $profiler,
+        Index $template,
     ) {
         $this->profiler = $profiler;
+        $this->template = $template;
     }
 
     public function __invoke(ServerRequest $request): Response
@@ -38,14 +42,7 @@ final class ListProfiles
             StatusCode::ok,
             $request->protocolVersion(),
             null,
-            Content\Lines::of(
-                $this
-                    ->profiler
-                    ->all()
-                    ->map(static fn($profile) => $profile->toString())
-                    ->map(Str::of(...))
-                    ->map(Content\Line::of(...)),
-            ),
+            ($this->template)($this->profiler->all()),
         );
     }
 }

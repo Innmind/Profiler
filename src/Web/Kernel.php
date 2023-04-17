@@ -3,7 +3,10 @@ declare(strict_types = 1);
 
 namespace Innmind\Profiler\Web;
 
-use Innmind\Profiler\Profiler;
+use Innmind\Profiler\{
+    Profiler,
+    Template\Index,
+};
 use Innmind\Framework\{
     Application,
     Middleware,
@@ -38,6 +41,7 @@ final class Kernel implements Middleware
             )
             ->service('listProfiles', static fn($get) => new ListProfiles(
                 $get('profiler'),
+                new Index,
             ))
             ->appendRoutes(
                 static fn($routes, $get) => $routes
