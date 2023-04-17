@@ -6,6 +6,7 @@ namespace Innmind\Profiler\Web;
 use Innmind\Profiler\{
     Profiler,
     Template\Index,
+    Template\Profile,
 };
 use Innmind\Framework\{
     Application,
@@ -43,9 +44,14 @@ final class Kernel implements Middleware
                 $get('profiler'),
                 new Index,
             ))
+            ->service('showProfile', static fn($get) => new ShowProfile(
+                $get('profiler'),
+                new Profile,
+            ))
             ->appendRoutes(
                 static fn($routes, $get) => $routes
-                    ->add(Route::literal('GET /')->handle(Service::of($get, 'listProfiles'))),
+                    ->add(Route::literal('GET /')->handle(Service::of($get, 'listProfiles')))
+                    ->add(Route::literal('GET /profile/{id}')->handle(Service::of($get, 'showProfile'))),
             );
     }
 }

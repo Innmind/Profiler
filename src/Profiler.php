@@ -22,6 +22,7 @@ use Innmind\TimeContinuum\{
 use Innmind\Json\Json;
 use Innmind\Immutable\{
     Sequence,
+    Maybe,
     Predicate\Instance,
 };
 
@@ -74,6 +75,20 @@ final class Profiler
                 )),
                 static fn() => null,
             );
+    }
+
+    /**
+     * @return Maybe<Profile>
+     */
+    public function get(Id $profile): Maybe
+    {
+        $load = Load::of($this->clock);
+
+        return $this
+            ->storage
+            ->get(Name::of($profile->toString()))
+            ->keep(Instance::of(Directory::class))
+            ->flatMap($load);
     }
 
     /**
