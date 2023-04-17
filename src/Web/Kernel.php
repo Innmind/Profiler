@@ -33,7 +33,7 @@ final class Kernel implements Middleware
     {
         return $app
             ->service(
-                'profiler',
+                'innmind/profiler',
                 fn($_, $os) => Profiler::of(
                     $os
                         ->filesystem()
@@ -42,19 +42,19 @@ final class Kernel implements Middleware
                     Load::of($os->clock()),
                 ),
             )
-            ->service('listProfiles', static fn($get) => new ListProfiles(
-                $get('profiler'),
+            ->service('innmind/profiler.listProfiles', static fn($get) => new ListProfiles(
+                $get('innmind/profiler'),
                 new Index,
             ))
-            ->service('showProfile', static fn($get) => new ShowProfile(
-                $get('profiler'),
+            ->service('innmind/profiler.showProfile', static fn($get) => new ShowProfile(
+                $get('innmind/profiler'),
                 new Profile,
             ))
             ->appendRoutes(
                 static fn($routes, $get) => $routes
-                    ->add(Route::literal('GET /')->handle(Service::of($get, 'listProfiles')))
-                    ->add(Route::literal('GET /profile/{id}')->handle(Service::of($get, 'showProfile')))
-                    ->add(Route::literal('GET /profile/{id}/{section}')->handle(Service::of($get, 'showProfile'))),
+                    ->add(Route::literal('GET /')->handle(Service::of($get, 'innmind/profiler.listProfiles')))
+                    ->add(Route::literal('GET /profile/{id}')->handle(Service::of($get, 'innmind/profiler.showProfile')))
+                    ->add(Route::literal('GET /profile/{id}/{section}')->handle(Service::of($get, 'innmind/profiler.showProfile'))),
             );
     }
 }
