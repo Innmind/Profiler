@@ -6,6 +6,7 @@ namespace Innmind\Profiler\Template;
 use Innmind\Profiler\Profile as Data;
 use Innmind\Filesystem\File\Content;
 use Innmind\Url\Url;
+use Innmind\UrlTemplate\Template;
 use Innmind\Html\{
     Node\Document,
     Element\A,
@@ -20,12 +21,30 @@ use Innmind\Xml\{
 use Innmind\Immutable\{
     Sequence,
     Set,
+    Maybe,
+    Map,
 };
 
 final class Profile
 {
-    public function __invoke(Data $profile): Content
+    private Template $template;
+
+    public function __construct()
     {
+        $this->template = Template::of('/profile/{id}/{section}');
+    }
+
+    /**
+     * @param Maybe<string> $active
+     */
+    public function __invoke(Data $profile, Maybe $active): Content
+    {
+        $name = Element::of(
+            'code',
+            Set::of(Attribute::of('class', 'name '.$profile->status()->name)),
+            Sequence::of(Text::of($profile->toString())),
+        );
+
         $document = Document::of(
             Type::of('html'),
             Sequence::of(Element::of(
@@ -60,12 +79,20 @@ final class Profile
                                     Element::of(
                                         'ul',
                                         null,
-                                        $profile->sections()->map(static fn($section) => Element::of(
+                                        $profile->sections()->map(fn($section) => Element::of(
                                             'li',
                                             null,
                                             Sequence::of(A::of(
-                                                Url::of('#section-'.$section->slug()),
-                                                null,
+                                                $this->template->expand(Map::of(
+                                                    ['id', $profile->id()->toString()],
+                                                    ['section', $section->slug()],
+                                                )),
+                                                $active
+                                                    ->filter(static fn($slug) => $section->slug() === $slug)
+                                                    ->match(
+                                                        static fn() => Set::of(Attribute::of('class', 'active')),
+                                                        static fn() => null,
+                                                    ),
                                                 Sequence::of(Text::of($section->name())),
                                             )),
                                         )),
@@ -87,18 +114,21 @@ final class Profile
                             Element::of(
                                 'main',
                                 null,
-                                Sequence::lazyStartingWith(Element::of(
-                                    'code',
-                                    Set::of(Attribute::of('class', 'name '.$profile->status()->name)),
-                                    Sequence::of(Text::of($profile->toString())),
-                                ))->append($profile->sections()->map(static fn($section) => Element::of(
-                                    'section',
-                                    Set::of(Attribute::of('id', 'section-'.$section->slug())),
-                                    Sequence::of(
-                                        Element::of('h3', null, Sequence::of(Text::of($section->name()))),
-                                        $section->render(),
+                                $active
+                                    ->flatMap(
+                                        static fn($slug) => $profile
+                                            ->sections()
+                                            ->find(static fn($section) => $section->slug() === $slug),
+                                    )
+                                    ->map(static fn($section) => Element::of(
+                                        'section',
+                                        Set::of(Attribute::of('id', 'section-'.$section->slug())),
+                                        Sequence::of($section->render()),
+                                    ))
+                                    ->match(
+                                        static fn($section) => Sequence::of($name, $section),
+                                        static fn() => Sequence::of($name),
                                     ),
-                                ))),
                             ),
                         ),
                     ),
@@ -148,7 +178,7 @@ final class Profile
             flex: 0 0 auto;
         }
 
-        header ul li a:hover {
+        header ul li a:hover, header ul li a.active {
             background-color: rgb(52,140,255);
         }
 
@@ -219,13 +249,8 @@ final class Profile
         }
 
         main section {
-            display: none;
             margin-top: 20px;
             max-width: 100%;
-        }
-
-        main section:target {
-            display: block;
         }
 
         main section code {

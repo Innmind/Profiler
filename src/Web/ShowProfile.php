@@ -39,7 +39,17 @@ final class ShowProfile
                     StatusCode::ok,
                     $request->protocolVersion(),
                     null,
-                    ($this->template)($profile),
+                    ($this->template)(
+                        $profile,
+                        $variables
+                            ->maybe('section')
+                            ->otherwise(
+                                static fn() => $profile
+                                    ->sections()
+                                    ->first()
+                                    ->map(static fn($section) => $section->slug()),
+                            ),
+                    ),
                 ),
                 static fn() => new Response(
                     StatusCode::notFound,

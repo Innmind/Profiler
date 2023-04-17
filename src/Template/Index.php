@@ -31,7 +31,7 @@ final class Index
 
     public function __construct()
     {
-        $this->profile = Template::of('/profile/{id}#section-1');
+        $this->profile = Template::of('/profile/{id}');
     }
 
     /**

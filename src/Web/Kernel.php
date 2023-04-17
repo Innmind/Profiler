@@ -53,7 +53,8 @@ final class Kernel implements Middleware
             ->appendRoutes(
                 static fn($routes, $get) => $routes
                     ->add(Route::literal('GET /')->handle(Service::of($get, 'listProfiles')))
-                    ->add(Route::literal('GET /profile/{id}')->handle(Service::of($get, 'showProfile'))),
+                    ->add(Route::literal('GET /profile/{id}')->handle(Service::of($get, 'showProfile')))
+                    ->add(Route::literal('GET /profile/{id}/{section}')->handle(Service::of($get, 'showProfile'))),
             );
     }
 }
