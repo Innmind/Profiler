@@ -28,16 +28,6 @@ final class ListProfiles
 
     public function __invoke(ServerRequest $request): Response
     {
-        $profile = $this->profiler->start(\sprintf(
-            '%s %s',
-            $request->method()->toString(),
-            $request->url()->path()->toString(),
-        ));
-        $this->profiler->mutate(
-            $profile,
-            static fn($mutation) => $mutation->succeed(StatusCode::ok->toString()),
-        );
-
         return new Response(
             StatusCode::ok,
             $request->protocolVersion(),
