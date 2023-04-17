@@ -9,6 +9,7 @@ use Innmind\Xml\{
     Node,
     Node\Text,
     Element\Element,
+    Element\SelfClosingElement,
 };
 use Innmind\Immutable\Sequence;
 
@@ -59,13 +60,16 @@ final class RawList implements Section
             'div',
             null,
             $this->contents->map(static fn($content) => Element::of(
-                'pre',
+                'code',
                 null,
-                Sequence::of(Element::of(
-                    'code',
-                    null,
-                    Sequence::of(Text::of($content->toString())),
-                )),
+                $content
+                    ->lines()
+                    ->map(static fn($line) => $line->toString())
+                    ->map(Text::of(...))
+                    ->flatMap(static fn($line) => Sequence::of(
+                        $line,
+                        SelfClosingElement::of('br'),
+                    )),
             )),
         );
     }

@@ -9,6 +9,7 @@ use Innmind\Xml\{
     Node,
     Node\Text,
     Element\Element,
+    Element\SelfClosingElement,
 };
 use Innmind\Immutable\Sequence;
 
@@ -39,13 +40,17 @@ final class Environment implements Section
     public function render(): Node
     {
         return Element::of(
-            'pre',
+            'code',
             null,
-            Sequence::of(Element::of(
-                'code',
-                null,
-                Sequence::of(Text::of($this->pairs->toString())),
-            )),
+            $this
+                ->pairs
+                ->lines()
+                ->map(static fn($line) => $line->toString())
+                ->map(Text::of(...))
+                ->flatMap(static fn($line) => Sequence::of(
+                    $line,
+                    SelfClosingElement::of('br'),
+                )),
         );
     }
 }
