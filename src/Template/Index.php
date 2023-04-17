@@ -64,9 +64,12 @@ final class Index
                                 Sequence::of(A::of(
                                     Url::of('/'),
                                     null,
-                                    Sequence::of(Img::of(
-                                        Url::of('/logo.svg'),
-                                        Set::of(Attribute::of('alt', 'home')),
+                                    Sequence::of(SelfClosingElement::of(
+                                        'img',
+                                        Set::of(
+                                            Attribute::of('alt', 'home'),
+                                            Attribute::of('src', 'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUwMCIgd2lkdGg9IjUwMCIgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogIDxjaXJjbGUgY3g9IjI1MCIgY3k9IjI1MCIgcj0iMjUwIiBmaWxsPSJyZ2IoNDgsNDgsNDgpIiAvPgogIDxkZWZzPgogICAgPGcgaWQ9ImxlYWYiIGZpbHRlcj0idXJsKCNzaGFkb3cpIj4KICAgICAgPHBhdGggZD0ibSAyNTAgMjAgcSAtNjAgMTI1IDAgMTUwIiBmaWxsPSJ3aGl0ZSIgLz4KICAgICAgPHBhdGggZD0ibSAyNTAgMjAgcSA2MCAxMjUgMCAxNTAiIGZpbGw9IndoaXRlIiAvPgogICAgICA8cG9seWdvbiBwb2ludHM9IjI1MCw4MCAyNTEsMTcwIDI0OSwxNzAiIGZpbGw9InJnYig0OCw0OCw0OCkiIC8+CiAgICA8L2c+CiAgICA8ZmlsdGVyIGlkPSJzaGFkb3ciIHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEyMCUiPgogICAgICA8ZmVPZmZzZXQgcmVzdWx0PSJvZmZPdXQiIGluPSJTb3VyY2VBbHBoYSIgZHg9IjAiIGR5PSI1IiAvPgogICAgICA8ZmVHYXVzc2lhbkJsdXIgcmVzdWx0PSJibHVyT3V0IiBpbj0ib2ZmT3V0IiBzdGREZXZpYXRpb249IjEwMCIgLz4KICAgICAgPGZlQmxlbmQgaW49IlNvdXJjZUdyYXBoaWMiIGluMj0ib2ZmT3V0IiBtb2RlPSJub3JtYWwiIC8+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgPHVzZSB4bGluazpocmVmPSIjbGVhZiIgLz4KICA8dXNlIHhsaW5rOmhyZWY9IiNsZWFmIiB0cmFuc2Zvcm09InJvdGF0ZSg0NSAyNTAgMjUwKSIgLz4KICA8dXNlIHhsaW5rOmhyZWY9IiNsZWFmIiB0cmFuc2Zvcm09InJvdGF0ZSg5MCAyNTAgMjUwKSIgLz4KICA8dXNlIHhsaW5rOmhyZWY9IiNsZWFmIiB0cmFuc2Zvcm09InJvdGF0ZSgxMzUgMjUwIDI1MCkiIC8+CiAgPHVzZSB4bGluazpocmVmPSIjbGVhZiIgdHJhbnNmb3JtPSJyb3RhdGUoMTgwIDI1MCAyNTApIiAvPgogIDx1c2UgeGxpbms6aHJlZj0iI2xlYWYiIHRyYW5zZm9ybT0icm90YXRlKDIyNSAyNTAgMjUwKSIgLz4KICA8dXNlIHhsaW5rOmhyZWY9IiNsZWFmIiB0cmFuc2Zvcm09InJvdGF0ZSgyNzAgMjUwIDI1MCkiIC8+CiAgPHVzZSB4bGluazpocmVmPSIjbGVhZiIgdHJhbnNmb3JtPSJyb3RhdGUoMzE1IDI1MCAyNTApIiAvPgogIDxjaXJjbGUgY3g9IjI1MCIgY3k9IjI1MCIgcj0iNjAiIHN0cm9rZT0icmdiKDUyLDE0MCwyNTUpIiBzdHJva2Utd2lkdGg9IjEwIiBmaWxsPSJub25lIiAvPgo8L3N2Zz4K'),
+                                        ),
                                     )),
                                 )),
                             ),
