@@ -24,7 +24,7 @@ final class Kernel implements Middleware
 {
     private Path $storage;
 
-    public function __construct(Path $storage)
+    private function __construct(Path $storage)
     {
         $this->storage = $storage;
     }
@@ -56,5 +56,10 @@ final class Kernel implements Middleware
                     ->add(Route::literal('GET /profile/{id}')->handle(Service::of($get, 'innmind/profiler.showProfile')))
                     ->add(Route::literal('GET /profile/{id}/{section}')->handle(Service::of($get, 'innmind/profiler.showProfile'))),
             );
+    }
+
+    public static function standalone(Path $storage): self
+    {
+        return new self($storage);
     }
 }

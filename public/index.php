@@ -14,6 +14,6 @@ use Innmind\Url\Path;
 new class extends Http {
     protected function configure(Application $app): Application
     {
-        return $app->map(new Kernel(Path::of(__DIR__.'/../var/profiles/')));
+        return $app->map(Kernel::standalone(Path::of(__DIR__.'/../var/profiles/')));
     }
 };
