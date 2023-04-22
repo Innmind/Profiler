@@ -480,6 +480,7 @@ class KernelTest extends TestCase
             ));
 
             $this->assertSame(StatusCode::ok, $response->statusCode());
+            $this->assertNotEmpty($response->body()->toString());
         }
     }
 
