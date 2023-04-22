@@ -39,5 +39,8 @@
         "phpunit/phpunit": "~9.0",
         "vimeo/psalm": "~5.6",
         "innmind/coding-standard": "~2.0"
+    },
+    "provide": {
+        "innmind/framework-middlewares": "1.0"
     }
 }
