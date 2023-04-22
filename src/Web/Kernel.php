@@ -23,10 +23,20 @@ use Innmind\Url\Path;
 final class Kernel implements Middleware
 {
     private Path $storage;
+    private Route $list;
+    private Route $profile;
+    private Route $section;
 
-    private function __construct(Path $storage)
-    {
+    private function __construct(
+        Path $storage,
+        Route $list,
+        Route $profile,
+        Route $section,
+    ) {
         $this->storage = $storage;
+        $this->list = $list;
+        $this->profile = $profile;
+        $this->section = $section;
     }
 
     public function __invoke(Application $app): Application
@@ -51,15 +61,30 @@ final class Kernel implements Middleware
                 new Profile,
             ))
             ->appendRoutes(
-                static fn($routes, $get) => $routes
-                    ->add(Route::literal('GET /')->handle(Service::of($get, 'innmind/profiler.listProfiles')))
-                    ->add(Route::literal('GET /profile/{id}')->handle(Service::of($get, 'innmind/profiler.showProfile')))
-                    ->add(Route::literal('GET /profile/{id}/{section}')->handle(Service::of($get, 'innmind/profiler.showProfile'))),
+                fn($routes, $get) => $routes
+                    ->add($this->list->handle(Service::of($get, 'innmind/profiler.listProfiles')))
+                    ->add($this->profile->handle(Service::of($get, 'innmind/profiler.showProfile')))
+                    ->add($this->section->handle(Service::of($get, 'innmind/profiler.showProfile'))),
             );
     }
 
     public static function standalone(Path $storage): self
     {
-        return new self($storage);
+        return new self(
+            $storage,
+            Route::literal('GET /'),
+            Route::literal('GET /profile/{id}'),
+            Route::literal('GET /profile/{id}/{section}'),
+        );
+    }
+
+    public static function inApp(Path $storage): self
+    {
+        return new self(
+            $storage,
+            Route::literal('GET /_profiler/'),
+            Route::literal('GET /_profiler/profile/{id}'),
+            Route::literal('GET /_profiler/profile/{id}/{section}'),
+        );
     }
 }
