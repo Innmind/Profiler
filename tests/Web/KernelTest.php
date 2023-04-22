@@ -470,7 +470,17 @@ class KernelTest extends TestCase
             );
         $this->assertNotNull($a);
 
-        $sections = [];
+        $sections = [
+            'app-graph',
+            'call-graph',
+            'environment',
+            'exception',
+            'http',
+            'processes',
+            'remote-processes',
+            'remote-http',
+            'remote-sql',
+        ];
 
         foreach ($sections as $section) {
             $response = $app->run(new ServerRequest\ServerRequest(
