@@ -42,13 +42,3 @@ A section is a part of a profile. By default there are 9 sections:
 ## Documentation
 
 All the documentation can be found in the [`docs`](docs/) folder.
-
-```sh
-cd profiler-directory/public && php -S localhost:8000
-```
-
-This will start the php builtin webserver to expose the profiler on the local machine on the port `8000`. (You can change the port or use a real webserver such a nginx, the use of php webserver is for simplicity)
-
-Then open `http://localhost:8000` in your browser to access the profiler.
-
-To create new profiles you need to create them via http, you can use the [`innmind/rest-client`](https://packagist.org/packages/innmind/rest-client) to simplify the task. All the capabilities can be accessed via the url `OPTIONS http://localhost:8000/*`
