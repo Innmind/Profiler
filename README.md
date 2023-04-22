@@ -2,6 +2,7 @@
 
 [![Build Status](https://github.com/Innmind/Profiler/workflows/CI/badge.svg?branch=master)](https://github.com/Innmind/Profiler/actions?query=workflow%3ACI)
 [![codecov](https://codecov.io/gh/Innmind/Profiler/branch/develop/graph/badge.svg)](https://codecov.io/gh/Innmind/Profiler)
+[![Type Coverage](https://shepherd.dev/github/innmind/profiler/coverage.svg)](https://shepherd.dev/github/innmind/profiler)
 
 App profiler to help profile any kind of applications (http or cli).
 
