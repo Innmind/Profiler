@@ -5,7 +5,6 @@ namespace Innmind\Profiler\Template;
 
 use Innmind\Profiler\Profile as Data;
 use Innmind\Filesystem\File\Content;
-use Innmind\Url\Url;
 use Innmind\UrlTemplate\Template;
 use Innmind\Html\{
     Node\Document,
@@ -27,11 +26,13 @@ use Innmind\Immutable\{
 
 final class Profile
 {
-    private Template $template;
+    private Template $list;
+    private Template $section;
 
-    public function __construct()
+    public function __construct(Template $list, Template $section)
     {
-        $this->template = Template::of('/profile/{id}/{section}');
+        $this->list = $list;
+        $this->section = $section;
     }
 
     /**
@@ -69,7 +70,7 @@ final class Profile
                                 null,
                                 Sequence::of(
                                     A::of(
-                                        Url::of('/'),
+                                        $this->list->expand(Map::of()),
                                         null,
                                         Sequence::of(SelfClosingElement::of('img', Set::of(
                                             Attribute::of('alt', 'home'),
@@ -83,7 +84,7 @@ final class Profile
                                             'li',
                                             null,
                                             Sequence::of(A::of(
-                                                $this->template->expand(Map::of(
+                                                $this->section->expand(Map::of(
                                                     ['id', $profile->id()->toString()],
                                                     ['section', $section->slug()],
                                                 )),
