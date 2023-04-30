@@ -69,6 +69,7 @@ final class Http implements Section
             $content
                 ->lines()
                 ->map(static fn($line) => $line->toString())
+                ->map(\htmlspecialchars(...))
                 ->map(Text::of(...))
                 ->flatMap(static fn($line) => Sequence::of(
                     $line,
