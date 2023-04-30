@@ -5,7 +5,6 @@ namespace Innmind\Profiler\Template;
 
 use Innmind\Profiler\Profile;
 use Innmind\Filesystem\File\Content;
-use Innmind\Url\Url;
 use Innmind\UrlTemplate\Template;
 use Innmind\Html\{
     Node\Document,
@@ -27,11 +26,13 @@ use Innmind\Immutable\{
 
 final class Index
 {
+    private Template $list;
     private Template $profile;
 
-    public function __construct()
+    public function __construct(Template $list, Template $profile)
     {
-        $this->profile = Template::of('/profile/{id}');
+        $this->list = $list;
+        $this->profile = $profile;
     }
 
     /**
@@ -62,7 +63,7 @@ final class Index
                                 'header',
                                 null,
                                 Sequence::of(A::of(
-                                    Url::of('/'),
+                                    $this->list->expand(Map::of()),
                                     null,
                                     Sequence::of(SelfClosingElement::of(
                                         'img',

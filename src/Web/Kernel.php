@@ -52,13 +52,13 @@ final class Kernel implements Middleware
                     Load::of($os->clock()),
                 ),
             )
-            ->service('innmind/profiler.listProfiles', static fn($get) => new ListProfiles(
+            ->service('innmind/profiler.listProfiles', fn($get) => new ListProfiles(
                 $get('innmind/profiler'),
-                new Index,
+                new Index($this->list->template(), $this->profile->template()),
             ))
-            ->service('innmind/profiler.showProfile', static fn($get) => new ShowProfile(
+            ->service('innmind/profiler.showProfile', fn($get) => new ShowProfile(
                 $get('innmind/profiler'),
-                new Profile,
+                new Profile($this->list->template(), $this->section->template()),
             ))
             ->appendRoutes(
                 fn($routes, $get) => $routes
