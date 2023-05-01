@@ -3,16 +3,14 @@ declare(strict_types = 1);
 
 namespace Innmind\Profiler\Profiler\Mutation\Remote;
 
+use Innmind\Profiler\Format;
 use Innmind\Filesystem\{
     Adapter,
     Directory,
     File\File,
     File\Content,
 };
-use Innmind\TimeContinuum\{
-    Clock,
-    Earth\Format\ISO8601,
-};
+use Innmind\TimeContinuum\Clock;
 
 final class Http
 {
@@ -52,7 +50,7 @@ final class Http
         /** @psalm-suppress ArgumentTypeCoercion */
         $this->storage->add($this->profile->add(
             Directory\Directory::named('remote-http')->add(File::named(
-                $this->clock->now()->format(new ISO8601),
+                $this->clock->now()->format(new Format),
                 $message,
             )),
         ));
