@@ -52,6 +52,7 @@ final class Exception implements Section
                         Attribute::of('href', 'data:image/svg+xml;base64,'.\base64_encode($this->svg->toString())),
                         Attribute::of('download', 'stack-trace.svg'),
                     ),
+                    Sequence::of(Text::of('Download')),
                 ),
                 Text::of($this->svg->toString()),
             ),

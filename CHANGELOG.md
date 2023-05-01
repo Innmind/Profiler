@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.0.3 - 2023-05-01
+
+### Fixed
+
+- Missing text to display the link to download the graphs
+- Fixed possible collisions between recorded elements when executed within the same second
+
 ## 3.0.2 - 2023-04-30
 
 ### Fixed

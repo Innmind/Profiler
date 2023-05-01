@@ -3,16 +3,14 @@ declare(strict_types = 1);
 
 namespace Innmind\Profiler\Profiler\Mutation\Remote;
 
+use Innmind\Profiler\Format;
 use Innmind\Filesystem\{
     Adapter,
     Directory,
     File\File,
     File\Content,
 };
-use Innmind\TimeContinuum\{
-    Clock,
-    Earth\Format\ISO8601,
-};
+use Innmind\TimeContinuum\Clock;
 
 final class Sql
 {
@@ -37,7 +35,7 @@ final class Sql
         /** @psalm-suppress ArgumentTypeCoercion */
         $this->storage->add($this->profile->add(
             Directory\Directory::named('remote-sql')->add(File::named(
-                $this->clock->now()->format(new ISO8601),
+                $this->clock->now()->format(new Format),
                 $process,
             )),
         ));
