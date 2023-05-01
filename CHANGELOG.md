@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Missing text to display the link to download the graphs
+
 ## 3.0.2 - 2023-04-30
 
 ### Fixed
