@@ -66,6 +66,7 @@ final class Load
             })
             ->flatMap(function($start) use ($raw) {
                 if (!\is_array($start)) {
+                    /** @var Maybe<Profile> */
                     return Maybe::nothing();
                 }
 
@@ -110,6 +111,7 @@ final class Load
             })
             ->flatMap(static function($exit) {
                 if (!\is_array($exit)) {
+                    /** @var Maybe<array{string, Status}> */
                     return Maybe::nothing();
                 }
 
