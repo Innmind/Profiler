@@ -12,7 +12,7 @@ use Innmind\Filesystem\{
     Adapter,
     Name,
     Directory,
-    File\File,
+    File,
     File\Content,
 };
 use Innmind\TimeContinuum\{
@@ -48,9 +48,9 @@ final class Profiler
     {
         $id = Id::new();
         $this->storage->add(
-            Directory\Directory::named($id->toString())->add(File::named(
+            Directory::named($id->toString())->add(File::named(
                 'start.json',
-                Content\Lines::ofContent(Json::encode([
+                Content::ofString(Json::encode([
                     'name' => $name,
                     'startedAt' => $this->clock->now()->format(new ISO8601),
                 ])),
@@ -99,7 +99,7 @@ final class Profiler
         return $this
             ->storage
             ->root()
-            ->files()
+            ->all()
             ->keep(Instance::of(Directory::class))
             ->flatMap(fn($profile) => ($this->load)($profile)->match(
                 static fn($profile) => Sequence::of($profile),

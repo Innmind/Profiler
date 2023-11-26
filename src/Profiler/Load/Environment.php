@@ -7,8 +7,12 @@ use Innmind\Profiler\Profile\Section;
 use Innmind\Filesystem\{
     Name,
     Directory,
+    File,
 };
-use Innmind\Immutable\Maybe;
+use Innmind\Immutable\{
+    Maybe,
+    Predicate\Instance,
+};
 
 final class Environment
 {
@@ -19,6 +23,7 @@ final class Environment
     {
         return $profile
             ->get(Name::of('environment.txt'))
+            ->keep(Instance::of(File::class))
             ->map(static fn($file) => $file->content())
             ->map(Section\Environment::of(...));
     }

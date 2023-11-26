@@ -9,10 +9,10 @@ use Innmind\Profiler\{
     Template\Profile,
 };
 use Innmind\Router\Route\Variables;
-use Innmind\Http\Message\{
+use Innmind\Http\{
     ServerRequest,
-    Response\Response,
-    StatusCode,
+    Response,
+    Response\StatusCode,
 };
 
 final class ShowProfile
@@ -35,7 +35,7 @@ final class ShowProfile
             ->flatMap(Id::maybe(...))
             ->flatMap($this->profiler->get(...))
             ->match(
-                fn($profile) => new Response(
+                fn($profile) => Response::of(
                     StatusCode::ok,
                     $request->protocolVersion(),
                     null,
@@ -51,7 +51,7 @@ final class ShowProfile
                             ),
                     ),
                 ),
-                static fn() => new Response(
+                static fn() => Response::of(
                     StatusCode::notFound,
                     $request->protocolVersion(),
                 ),

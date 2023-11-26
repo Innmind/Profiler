@@ -7,6 +7,7 @@ use Innmind\Profiler\Profile\Section;
 use Innmind\Filesystem\{
     Name,
     Directory,
+    File,
 };
 use Innmind\Immutable\{
     Maybe,
@@ -38,9 +39,14 @@ final class RawList
         return $profile
             ->get(Name::of($this->slug))
             ->keep(Instance::of(Directory::class))
-            ->map(static fn($all) => $all->files()->sort(
-                static fn($a, $b) => $b->name()->toString() <=> $a->name()->toString(),
-            ))
+            ->map(
+                static fn($directory) => $directory
+                    ->all()
+                    ->keep(Instance::of(File::class))
+                    ->sort(
+                        static fn($a, $b) => $b->name()->toString() <=> $a->name()->toString(),
+                    ),
+            )
             ->map(static fn($files) => $files->map(
                 static fn($file) => $file->content(),
             ))

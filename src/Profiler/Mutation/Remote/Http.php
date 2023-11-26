@@ -7,7 +7,7 @@ use Innmind\Profiler\Format;
 use Innmind\Filesystem\{
     Adapter,
     Directory,
-    File\File,
+    File,
     File\Content,
 };
 use Innmind\TimeContinuum\Clock;
@@ -49,7 +49,7 @@ final class Http
     {
         /** @psalm-suppress ArgumentTypeCoercion */
         $this->storage->add($this->profile->add(
-            Directory\Directory::named('remote-http')->add(File::named(
+            Directory::named('remote-http')->add(File::named(
                 $this->clock->now()->format(new Format),
                 $message,
             )),

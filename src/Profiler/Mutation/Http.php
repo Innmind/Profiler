@@ -6,7 +6,7 @@ namespace Innmind\Profiler\Profiler\Mutation;
 use Innmind\Filesystem\{
     Adapter,
     Directory,
-    File\File,
+    File,
     File\Content,
 };
 
@@ -29,7 +29,7 @@ final class Http
     public function received(Content $request): void
     {
         $this->storage->add($this->profile->add(
-            Directory\Directory::named('http')->add(File::named(
+            Directory::named('http')->add(File::named(
                 'request.txt',
                 $request,
             )),
@@ -39,7 +39,7 @@ final class Http
     public function respondedWith(Content $response): void
     {
         $this->storage->add($this->profile->add(
-            Directory\Directory::named('http')->add(File::named(
+            Directory::named('http')->add(File::named(
                 'response.txt',
                 $response,
             )),

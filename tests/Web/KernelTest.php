@@ -19,10 +19,10 @@ use Innmind\Filesystem\{
     File\Content,
 };
 use Innmind\Http\{
-    Message\ServerRequest,
-    Message\Response,
-    Message\Method,
-    Message\StatusCode,
+    ServerRequest,
+    Response,
+    Method,
+    Response\StatusCode,
     ProtocolVersion,
 };
 use Innmind\Url\{
@@ -52,7 +52,7 @@ class KernelTest extends TestCase
     public function tearDown(): void
     {
         $storage = Filesystem::mount($this->storage);
-        $storage->root()->files()->foreach(
+        $storage->root()->all()->foreach(
             static fn($file) => $storage->remove($file->name()),
         );
     }
@@ -89,7 +89,7 @@ class KernelTest extends TestCase
                 }
             });
 
-        $response = $app->run(new ServerRequest\ServerRequest(
+        $response = $app->run(ServerRequest::of(
             Url::of('/'),
             Method::get,
             ProtocolVersion::v11,
@@ -143,7 +143,7 @@ class KernelTest extends TestCase
                 }
             });
 
-        $response = $app->run(new ServerRequest\ServerRequest(
+        $response = $app->run(ServerRequest::of(
             Url::of('/'),
             Method::get,
             ProtocolVersion::v11,
@@ -160,7 +160,7 @@ class KernelTest extends TestCase
             );
         $this->assertNotNull($a);
 
-        $response = $app->run(new ServerRequest\ServerRequest(
+        $response = $app->run(ServerRequest::of(
             $a->href(),
             Method::get,
             ProtocolVersion::v11,
@@ -223,8 +223,8 @@ class KernelTest extends TestCase
                     $this->profiler->mutate(
                         $profile,
                         static function($mutation) {
-                            $mutation->sections()->appGraph()->record(Content\Lines::ofContent('<app-graph-svg/>'));
-                            $mutation->sections()->exception()->record(Content\Lines::ofContent('<exception-svg/>'));
+                            $mutation->sections()->appGraph()->record(Content::ofString('<app-graph-svg/>'));
+                            $mutation->sections()->exception()->record(Content::ofString('<exception-svg/>'));
                         },
                     );
 
@@ -232,7 +232,7 @@ class KernelTest extends TestCase
                 }
             });
 
-        $response = $app->run(new ServerRequest\ServerRequest(
+        $response = $app->run(ServerRequest::of(
             Url::of('/'),
             Method::get,
             ProtocolVersion::v11,
@@ -249,7 +249,7 @@ class KernelTest extends TestCase
             );
         $this->assertNotNull($a);
 
-        $response = $app->run(new ServerRequest\ServerRequest(
+        $response = $app->run(ServerRequest::of(
             $a->href(),
             Method::get,
             ProtocolVersion::v11,
@@ -329,8 +329,8 @@ class KernelTest extends TestCase
                     $this->profiler->mutate(
                         $profile,
                         static function($mutation) {
-                            $mutation->sections()->appGraph()->record(Content\Lines::ofContent('<app-graph-svg/>'));
-                            $mutation->sections()->exception()->record(Content\Lines::ofContent('<exception-svg/>'));
+                            $mutation->sections()->appGraph()->record(Content::ofString('<app-graph-svg/>'));
+                            $mutation->sections()->exception()->record(Content::ofString('<exception-svg/>'));
                         },
                     );
 
@@ -338,7 +338,7 @@ class KernelTest extends TestCase
                 }
             });
 
-        $response = $app->run(new ServerRequest\ServerRequest(
+        $response = $app->run(ServerRequest::of(
             Url::of('/'),
             Method::get,
             ProtocolVersion::v11,
@@ -355,7 +355,7 @@ class KernelTest extends TestCase
             );
         $this->assertNotNull($a);
 
-        $response = $app->run(new ServerRequest\ServerRequest(
+        $response = $app->run(ServerRequest::of(
             Url::of($a->href()->toString().'/app-graph'),
             Method::get,
             ProtocolVersion::v11,
@@ -435,17 +435,17 @@ class KernelTest extends TestCase
                     $this->profiler->mutate(
                         $profile,
                         static function($mutation) {
-                            $mutation->sections()->appGraph()->record(Content\Lines::ofContent('<app-graph-svg/>'));
-                            $mutation->sections()->callGraph()->record(Content\Lines::ofContent('{"call-graph-svg": []}'));
+                            $mutation->sections()->appGraph()->record(Content::ofString('<app-graph-svg/>'));
+                            $mutation->sections()->callGraph()->record(Content::ofString('{"call-graph-svg": []}'));
                             $mutation->sections()->environment()->record(Map::of());
-                            $mutation->sections()->exception()->record(Content\Lines::ofContent('<exception-svg/>'));
-                            $mutation->sections()->http()->received(Content\Lines::ofContent('request'));
-                            $mutation->sections()->http()->respondedWith(Content\Lines::ofContent('response'));
-                            $mutation->sections()->processes()->record(Content\Lines::ofContent('process'));
-                            $mutation->sections()->remote()->http()->sent(Content\Lines::ofContent('request'));
-                            $mutation->sections()->remote()->http()->got(Content\Lines::ofContent('response'));
-                            $mutation->sections()->remote()->processes()->record(Content\Lines::ofContent('process'));
-                            $mutation->sections()->remote()->sql()->record(Content\Lines::ofContent('sql query'));
+                            $mutation->sections()->exception()->record(Content::ofString('<exception-svg/>'));
+                            $mutation->sections()->http()->received(Content::ofString('request'));
+                            $mutation->sections()->http()->respondedWith(Content::ofString('response'));
+                            $mutation->sections()->processes()->record(Content::ofString('process'));
+                            $mutation->sections()->remote()->http()->sent(Content::ofString('request'));
+                            $mutation->sections()->remote()->http()->got(Content::ofString('response'));
+                            $mutation->sections()->remote()->processes()->record(Content::ofString('process'));
+                            $mutation->sections()->remote()->sql()->record(Content::ofString('sql query'));
                         },
                     );
 
@@ -453,7 +453,7 @@ class KernelTest extends TestCase
                 }
             });
 
-        $response = $app->run(new ServerRequest\ServerRequest(
+        $response = $app->run(ServerRequest::of(
             Url::of('/'),
             Method::get,
             ProtocolVersion::v11,
@@ -483,7 +483,7 @@ class KernelTest extends TestCase
         ];
 
         foreach ($sections as $section) {
-            $response = $app->run(new ServerRequest\ServerRequest(
+            $response = $app->run(ServerRequest::of(
                 Url::of($a->href()->toString().'/'.$section),
                 Method::get,
                 ProtocolVersion::v11,
@@ -500,7 +500,7 @@ class KernelTest extends TestCase
         $app = Application::http($os, Environment::test([]))
             ->map(Kernel::inApp(Path::of(\sys_get_temp_dir().'/innmind_profiler/')));
 
-        $response = $app->run(new ServerRequest\ServerRequest(
+        $response = $app->run(ServerRequest::of(
             Url::of('/'),
             Method::get,
             ProtocolVersion::v11,
@@ -508,7 +508,7 @@ class KernelTest extends TestCase
 
         $this->assertSame(StatusCode::notFound, $response->statusCode());
 
-        $response = $app->run(new ServerRequest\ServerRequest(
+        $response = $app->run(ServerRequest::of(
             Url::of('/_profiler/'),
             Method::get,
             ProtocolVersion::v11,
