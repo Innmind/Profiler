@@ -38,7 +38,7 @@ use Innmind\Immutable\{
     Set,
     Map,
 };
-use PHPUnit\Framework\TestCase;
+use Innmind\BlackBox\PHPUnit\Framework\TestCase;
 
 class KernelTest extends TestCase
 {
@@ -490,7 +490,7 @@ class KernelTest extends TestCase
             ));
 
             $this->assertSame(StatusCode::ok, $response->statusCode());
-            $this->assertNotEmpty($response->body()->toString());
+            $this->assertNotSame('', $response->body()->toString());
         }
     }
 
