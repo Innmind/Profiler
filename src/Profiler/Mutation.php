@@ -8,7 +8,7 @@ use Innmind\Filesystem\{
     Adapter,
     Name,
     Directory,
-    File\File,
+    File,
     File\Content,
 };
 use Innmind\TimeContinuum\Clock;
@@ -55,7 +55,7 @@ final class Mutation
 
         $this->storage->add($this->profile->add(File::named(
             'exit.json',
-            Content\Lines::ofContent(Json::encode([
+            Content::ofString(Json::encode([
                 'message' => $message,
                 'succeeded' => $succeeded,
             ])),

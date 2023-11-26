@@ -6,7 +6,7 @@ namespace Innmind\Profiler\Profiler\Mutation;
 use Innmind\Filesystem\{
     Adapter,
     Directory,
-    File\File,
+    File,
     File\Content,
     File\Content\Line,
 };
@@ -38,7 +38,7 @@ final class Environment
     {
         $this->storage->add($this->profile->add(File::named(
             'environment.txt',
-            Content\Lines::of(
+            Content::ofLines(
                 $pairs
                     ->map(static fn($key, $value) => "$key=$value")
                     ->values()

@@ -7,7 +7,7 @@ use Innmind\Profiler\Format;
 use Innmind\Filesystem\{
     Adapter,
     Directory,
-    File\File,
+    File,
     File\Content,
 };
 use Innmind\TimeContinuum\Clock;
@@ -34,7 +34,7 @@ final class Processes
     {
         /** @psalm-suppress ArgumentTypeCoercion */
         $this->storage->add($this->profile->add(
-            Directory\Directory::named('remote-processes')->add(File::named(
+            Directory::named('remote-processes')->add(File::named(
                 $this->clock->now()->format(new Format),
                 $process,
             )),

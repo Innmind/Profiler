@@ -7,10 +7,10 @@ use Innmind\Profiler\{
     Profiler,
     Template\Index,
 };
-use Innmind\Http\Message\{
+use Innmind\Http\{
     ServerRequest,
-    Response\Response,
-    StatusCode,
+    Response,
+    Response\StatusCode,
 };
 
 final class ListProfiles
@@ -28,7 +28,7 @@ final class ListProfiles
 
     public function __invoke(ServerRequest $request): Response
     {
-        return new Response(
+        return Response::of(
             StatusCode::ok,
             $request->protocolVersion(),
             null,

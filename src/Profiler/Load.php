@@ -17,6 +17,7 @@ use Innmind\TimeContinuum\{
 use Innmind\Filesystem\{
     Name,
     Directory,
+    File,
 };
 use Innmind\Json\{
     Json,
@@ -25,6 +26,7 @@ use Innmind\Json\{
 use Innmind\Immutable\{
     Maybe,
     Sequence,
+    Predicate\Instance,
 };
 
 final class Load
@@ -56,6 +58,7 @@ final class Load
     {
         return $raw
             ->get(Name::of('start.json'))
+            ->keep(Instance::of(File::class))
             ->map(static fn($file) => $file->content()->toString())
             ->flatMap(static function($start) {
                 try {
@@ -101,6 +104,7 @@ final class Load
     {
         return $raw
             ->get(Name::of('exit.json'))
+            ->keep(Instance::of(File::class))
             ->map(static fn($file) => $file->content()->toString())
             ->flatMap(static function($exit) {
                 try {

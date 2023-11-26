@@ -1,5 +1,17 @@
 # Changelog
 
+## 4.0.0 - 2023-11-26
+
+### Changed
+
+- Requires `innmind/immutable:~5.2`
+- Requires `innmind/operating-system:~4.1`
+- Requires `innmind/framework:~2.0`
+
+### Removed
+
+- Support for PHP `8.1`
+
 ## 3.1.0 - 2023-09-24
 
 ### Added

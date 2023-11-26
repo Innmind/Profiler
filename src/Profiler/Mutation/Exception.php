@@ -7,7 +7,7 @@ use Innmind\Filesystem\{
     Adapter,
     Name,
     Directory,
-    File\File,
+    File,
     File\Content,
 };
 
