@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Support for `innmind/operating-system:~5.0`
+
 ## 4.0.0 - 2023-11-26
 
 ### Changed
