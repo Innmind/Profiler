@@ -9,7 +9,6 @@ use Innmind\UrlTemplate\Template;
 use Innmind\Html\{
     Node\Document,
     Element\A,
-    Element\Img,
 };
 use Innmind\Xml\{
     Node\Document\Type,

@@ -11,7 +11,6 @@ use Innmind\Profiler\{
 };
 use Innmind\TimeContinuum\{
     Clock,
-    PointInTime,
     Earth\Format\ISO8601,
 };
 use Innmind\Filesystem\{
