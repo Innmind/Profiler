@@ -5,7 +5,6 @@ namespace Innmind\Profiler\Profiler\Mutation;
 
 use Innmind\Filesystem\{
     Adapter,
-    Name,
     Directory,
     File,
     File\Content,
