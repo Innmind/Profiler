@@ -22,7 +22,8 @@
         "innmind/framework": "~2.0",
         "innmind/json": "^1.3",
         "innmind/html": "~6.2",
-        "innmind/url-template": "^3.0"
+        "innmind/url-template": "^3.0",
+        "innmind/ui": "dev-develop"
     },
     "autoload": {
         "psr-4": {
