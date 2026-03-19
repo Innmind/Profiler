@@ -28,9 +28,9 @@ final class Exception
 
     public function record(Content $svg): void
     {
-        $this->storage->add($this->profile->add(File::named(
+        $_ = $this->storage->add($this->profile->add(File::named(
             'exception.svg',
             $svg,
-        )));
+        )))->unwrap();
     }
 }

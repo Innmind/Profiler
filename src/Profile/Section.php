@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Innmind\Profiler\Profile;
 
-use Innmind\Xml\Node;
+use Innmind\Xml\Element;
 
 interface Section
 {
@@ -16,5 +16,5 @@ interface Section
      * @return non-empty-string
      */
     public function slug(): string;
-    public function render(): Node;
+    public function render(): Element;
 }

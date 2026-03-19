@@ -10,7 +10,7 @@ use Innmind\Filesystem\{
     File,
     File\Content,
 };
-use Innmind\TimeContinuum\Clock;
+use Innmind\Time\Clock;
 
 final class Sql
 {
@@ -33,11 +33,11 @@ final class Sql
     public function record(Content $process): void
     {
         /** @psalm-suppress ArgumentTypeCoercion */
-        $this->storage->add($this->profile->add(
+        $_ = $this->storage->add($this->profile->add(
             Directory::named('remote-sql')->add(File::named(
-                $this->clock->now()->format(new Format),
+                $this->clock->now()->format(Format::internal),
                 $process,
             )),
-        ));
+        ))->unwrap();
     }
 }

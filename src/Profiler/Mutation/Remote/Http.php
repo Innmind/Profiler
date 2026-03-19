@@ -10,7 +10,7 @@ use Innmind\Filesystem\{
     File,
     File\Content,
 };
-use Innmind\TimeContinuum\Clock;
+use Innmind\Time\Clock;
 
 final class Http
 {
@@ -48,11 +48,11 @@ final class Http
     private function record(Content $message): void
     {
         /** @psalm-suppress ArgumentTypeCoercion */
-        $this->storage->add($this->profile->add(
+        $_ = $this->storage->add($this->profile->add(
             Directory::named('remote-http')->add(File::named(
-                $this->clock->now()->format(new Format),
+                $this->clock->now()->format(Format::internal),
                 $message,
             )),
-        ));
+        ))->unwrap();
     }
 }

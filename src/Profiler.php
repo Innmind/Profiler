@@ -15,9 +15,9 @@ use Innmind\Filesystem\{
     File,
     File\Content,
 };
-use Innmind\TimeContinuum\{
+use Innmind\Time\{
     Clock,
-    Earth\Format\ISO8601,
+    Format,
 };
 use Innmind\Json\Json;
 use Innmind\Immutable\{
@@ -47,15 +47,15 @@ final class Profiler
     public function start(string $name): Id
     {
         $id = Id::new();
-        $this->storage->add(
+        $_ = $this->storage->add(
             Directory::named($id->toString())->add(File::named(
                 'start.json',
                 Content::ofString(Json::encode([
                     'name' => $name,
-                    'startedAt' => $this->clock->now()->format(new ISO8601),
+                    'startedAt' => $this->clock->now()->format(Format::iso8601()),
                 ])),
             )),
-        );
+        )->unwrap();
 
         return $id;
     }
@@ -106,7 +106,7 @@ final class Profiler
                 static fn() => Sequence::of(),
             ))
             ->sort(
-                static fn($a, $b) => $b->startedAt()->format(new ISO8601) <=> $a->startedAt()->format(new ISO8601),
+                static fn($a, $b) => $b->startedAt()->format(Format::iso8601()) <=> $a->startedAt()->format(Format::iso8601()),
             );
     }
 }

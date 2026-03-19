@@ -7,7 +7,7 @@ use Innmind\Filesystem\{
     Adapter,
     Directory,
 };
-use Innmind\TimeContinuum\Clock;
+use Innmind\Time\Clock;
 
 final class Sections
 {

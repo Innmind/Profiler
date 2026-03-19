@@ -28,21 +28,21 @@ final class Http
 
     public function received(Content $request): void
     {
-        $this->storage->add($this->profile->add(
+        $_ = $this->storage->add($this->profile->add(
             Directory::named('http')->add(File::named(
                 'request.txt',
                 $request,
             )),
-        ));
+        ))->unwrap();
     }
 
     public function respondedWith(Content $response): void
     {
-        $this->storage->add($this->profile->add(
+        $_ = $this->storage->add($this->profile->add(
             Directory::named('http')->add(File::named(
                 'response.txt',
                 $response,
             )),
-        ));
+        ))->unwrap();
     }
 }
