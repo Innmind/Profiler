@@ -15,7 +15,7 @@
         "issues": "http://github.com/Innmind/Profiler/issues"
     },
     "require": {
-        "php": "~8.2",
+        "php": "~8.4",
         "innmind/foundation": "~2.1",
         "innmind/framework": "^4.0.1",
         "innmind/url-template": "~4.0",
