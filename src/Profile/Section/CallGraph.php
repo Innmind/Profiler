@@ -8,14 +8,11 @@ use Innmind\Filesystem\File\Content;
 use Innmind\Html\Element\Script;
 use Innmind\Xml\{
     Node,
-    Node\Text,
-    Element\Element,
+    Element,
+    Element\Name,
     Attribute,
 };
-use Innmind\Immutable\{
-    Sequence,
-    Set,
-};
+use Innmind\Immutable\Sequence;
 
 final class CallGraph implements Section
 {
@@ -31,25 +28,28 @@ final class CallGraph implements Section
         return new self($json);
     }
 
+    #[\Override]
     public function name(): string
     {
         return 'Call graph';
     }
 
+    #[\Override]
     public function slug(): string
     {
         return 'call-graph';
     }
 
-    public function render(): Node
+    #[\Override]
+    public function render(): Element
     {
         return Element::of(
-            'div',
+            Name::of('div'),
             null,
             Sequence::of(
-                Element::of('div', Set::of(Attribute::of('id', 'call-graph'))),
+                Element::of(Name::of('div'), Sequence::of(Attribute::of('id', 'call-graph'))),
                 Script::of(
-                    Text::of(<<<D3
+                    Node::text(<<<D3
                     var flamegraph = d3.flamegraph();
                     flamegraph
                         .inverted(true)
@@ -61,7 +61,7 @@ final class CallGraph implements Section
                         .datum({$this->json->toString()})
                         .call(flamegraph);
                     D3),
-                    Set::of(Attribute::of('type', 'text/javascript')),
+                    Sequence::of(Attribute::of('type', 'text/javascript')),
                 ),
             ),
         );

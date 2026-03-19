@@ -7,9 +7,8 @@ use Innmind\Profiler\Profile\Section;
 use Innmind\Filesystem\File\Content;
 use Innmind\Xml\{
     Node,
-    Node\Text,
-    Element\Element,
-    Element\SelfClosingElement,
+    Element,
+    Element\Name,
 };
 use Innmind\Immutable\Sequence;
 
@@ -44,32 +43,35 @@ final class RawList implements Section
         return new self($name, $slug, $contents);
     }
 
+    #[\Override]
     public function name(): string
     {
         return $this->name;
     }
 
+    #[\Override]
     public function slug(): string
     {
         return $this->slug;
     }
 
-    public function render(): Node
+    #[\Override]
+    public function render(): Element
     {
         return Element::of(
-            'div',
+            Name::of('div'),
             null,
             $this->contents->map(static fn($content) => Element::of(
-                'code',
+                Name::of('code'),
                 null,
                 $content
                     ->lines()
                     ->map(static fn($line) => $line->toString())
                     ->map(\htmlspecialchars(...))
-                    ->map(Text::of(...))
+                    ->map(Node::text(...))
                     ->flatMap(static fn($line) => Sequence::of(
                         $line,
-                        SelfClosingElement::of('br'),
+                        Element::selfClosing(Name::of('br')),
                     )),
             )),
         );

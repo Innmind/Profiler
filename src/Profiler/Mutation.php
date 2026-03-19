@@ -11,7 +11,7 @@ use Innmind\Filesystem\{
     File,
     File\Content,
 };
-use Innmind\TimeContinuum\Clock;
+use Innmind\Time\Clock;
 use Innmind\Json\Json;
 
 final class Mutation
@@ -53,12 +53,12 @@ final class Mutation
             return;
         }
 
-        $this->storage->add($this->profile->add(File::named(
+        $_ = $this->storage->add($this->profile->add(File::named(
             'exit.json',
             Content::ofString(Json::encode([
                 'message' => $message,
                 'succeeded' => $succeeded,
             ])),
-        )));
+        )))->unwrap();
     }
 }

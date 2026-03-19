@@ -36,7 +36,7 @@ final class Environment
      */
     public function record(Map $pairs): void
     {
-        $this->storage->add($this->profile->add(File::named(
+        $_ = $this->storage->add($this->profile->add(File::named(
             'environment.txt',
             Content::ofLines(
                 $pairs
@@ -45,6 +45,6 @@ final class Environment
                     ->map(Str::of(...))
                     ->map(Line::of(...)),
             ),
-        )));
+        )))->unwrap();
     }
 }

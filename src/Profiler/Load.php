@@ -9,19 +9,16 @@ use Innmind\Profiler\{
     Profile\Status,
     Profile\Section,
 };
-use Innmind\TimeContinuum\{
+use Innmind\Time\{
     Clock,
-    Earth\Format\ISO8601,
+    Format,
 };
 use Innmind\Filesystem\{
     Name,
     Directory,
     File,
 };
-use Innmind\Json\{
-    Json,
-    Exception\Exception,
-};
+use Innmind\Json\Json;
 use Innmind\Immutable\{
     Maybe,
     Sequence,
@@ -59,13 +56,7 @@ final class Load
             ->get(Name::of('start.json'))
             ->keep(Instance::of(File::class))
             ->map(static fn($file) => $file->content()->toString())
-            ->flatMap(static function($start) {
-                try {
-                    return Maybe::just(Json::decode($start));
-                } catch (Exception $e) {
-                    return Maybe::nothing();
-                }
-            })
+            ->flatMap(Json::maybeDecode(...))
             ->flatMap(function($start) use ($raw) {
                 if (!\is_array($start)) {
                     /** @var Maybe<Profile> */
@@ -78,7 +69,10 @@ final class Load
                 $startedAt = Maybe::of($start['startedAt'] ?? null)
                     ->filter(\is_string(...))
                     ->flatMap(
-                        fn($pointInTime) => $this->clock->at($pointInTime, new ISO8601),
+                        fn($pointInTime) => $this
+                            ->clock
+                            ->at($pointInTime, Format::iso8601())
+                            ->maybe(),
                     );
 
                 return Maybe::all($id, $name, $startedAt)->map(
@@ -105,13 +99,7 @@ final class Load
             ->get(Name::of('exit.json'))
             ->keep(Instance::of(File::class))
             ->map(static fn($file) => $file->content()->toString())
-            ->flatMap(static function($exit) {
-                try {
-                    return Maybe::just(Json::decode($exit));
-                } catch (Exception $e) {
-                    return Maybe::nothing();
-                }
-            })
+            ->flatMap(Json::maybeDecode(...))
             ->flatMap(static function($exit) {
                 if (!\is_array($exit)) {
                     /** @var Maybe<array{string, Status}> */

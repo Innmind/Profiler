@@ -7,9 +7,8 @@ use Innmind\Profiler\Profile\Section;
 use Innmind\Filesystem\File\Content;
 use Innmind\Xml\{
     Node,
-    Node\Text,
-    Element\Element,
-    Element\SelfClosingElement,
+    Element,
+    Element\Name,
 };
 use Innmind\Immutable\Sequence;
 
@@ -27,29 +26,32 @@ final class Environment implements Section
         return new self($pairs);
     }
 
+    #[\Override]
     public function name(): string
     {
         return 'Environment';
     }
 
+    #[\Override]
     public function slug(): string
     {
         return 'environment';
     }
 
-    public function render(): Node
+    #[\Override]
+    public function render(): Element
     {
         return Element::of(
-            'code',
+            Name::of('code'),
             null,
             $this
                 ->pairs
                 ->lines()
                 ->map(static fn($line) => $line->toString())
-                ->map(Text::of(...))
+                ->map(Node::text(...))
                 ->flatMap(static fn($line) => Sequence::of(
                     $line,
-                    SelfClosingElement::of('br'),
+                    Element::selfClosing(Name::of('br')),
                 )),
         );
     }

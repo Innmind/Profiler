@@ -7,9 +7,8 @@ use Innmind\Profiler\Profile\Section;
 use Innmind\Filesystem\File\Content;
 use Innmind\Xml\{
     Node,
-    Node\Text,
-    Element\Element,
-    Element\SelfClosingElement,
+    Element,
+    Element\Name,
 };
 use Innmind\Immutable\{
     Sequence,
@@ -39,20 +38,23 @@ final class Http implements Section
         return new self($request, $response);
     }
 
+    #[\Override]
     public function name(): string
     {
         return 'Http';
     }
 
+    #[\Override]
     public function slug(): string
     {
         return 'http';
     }
 
-    public function render(): Node
+    #[\Override]
+    public function render(): Element
     {
         return Element::of(
-            'div',
+            Name::of('div'),
             null,
             $this->response->match(
                 fn($response) => Sequence::of($this->wrap($this->request), $this->wrap($response)),
@@ -61,19 +63,19 @@ final class Http implements Section
         );
     }
 
-    private function wrap(Content $content): Node
+    private function wrap(Content $content): Element
     {
         return Element::of(
-            'code',
+            Name::of('code'),
             null,
             $content
                 ->lines()
                 ->map(static fn($line) => $line->toString())
                 ->map(\htmlspecialchars(...))
-                ->map(Text::of(...))
+                ->map(Node::text(...))
                 ->flatMap(static fn($line) => Sequence::of(
                     $line,
-                    SelfClosingElement::of('br'),
+                    Element::selfClosing(Name::of('br')),
                 )),
         );
     }

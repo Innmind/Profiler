@@ -28,9 +28,9 @@ final class CallGraph
 
     public function record(Content $json): void
     {
-        $this->storage->add($this->profile->add(File::named(
+        $_ = $this->storage->add($this->profile->add(File::named(
             'call-graph.json',
             $json,
-        )));
+        )))->unwrap();
     }
 }

@@ -12,9 +12,10 @@ use Innmind\Profiler\{
 use Innmind\Framework\{
     Application,
     Middleware,
-    Http\Service,
+    Http\Route,
 };
-use Innmind\Router\Route;
+use Innmind\Filesystem\Recover;
+use Innmind\UrlTemplate\Template;
 use Innmind\Url\Path;
 
 /**
@@ -23,15 +24,15 @@ use Innmind\Url\Path;
 final class Kernel implements Middleware
 {
     private Path $storage;
-    private Route $list;
-    private Route $profile;
-    private Route $section;
+    private Template $list;
+    private Template $profile;
+    private Template $section;
 
     private function __construct(
         Path $storage,
-        Route $list,
-        Route $profile,
-        Route $section,
+        Template $list,
+        Template $profile,
+        Template $section,
     ) {
         $this->storage = $storage;
         $this->list = $list;
@@ -39,42 +40,51 @@ final class Kernel implements Middleware
         $this->section = $section;
     }
 
+    #[\Override]
     public function __invoke(Application $app): Application
     {
         return $app
             ->service(
-                'innmind/profiler',
+                Services::profiler,
                 fn($_, $os) => Profiler::of(
                     $os
                         ->filesystem()
-                        ->mount($this->storage),
+                        ->mount($this->storage)
+                        ->recover(Recover::mount(...))
+                        ->unwrap(),
                     $os->clock(),
                     Load::of($os->clock()),
                 ),
             )
-            ->service('innmind/profiler.listProfiles', fn($get) => new ListProfiles(
-                $get('innmind/profiler'),
-                new Index($this->list->template(), $this->profile->template()),
+            ->service(Services::listProfiles, fn($get) => new ListProfiles(
+                $get(Services::profiler()),
+                new Index($this->list, $this->profile),
             ))
-            ->service('innmind/profiler.showProfile', fn($get) => new ShowProfile(
-                $get('innmind/profiler'),
-                new Profile($this->list->template(), $this->section->template()),
+            ->service(Services::showProfile, fn($get) => new ShowProfile(
+                $get(Services::profiler()),
+                new Profile($this->list, $this->section),
             ))
-            ->appendRoutes(
-                fn($routes, $get) => $routes
-                    ->add($this->list->handle(Service::of($get, 'innmind/profiler.listProfiles')))
-                    ->add($this->profile->handle(Service::of($get, 'innmind/profiler.showProfile')))
-                    ->add($this->section->handle(Service::of($get, 'innmind/profiler.showProfile'))),
-            );
+            ->route(Route::get(
+                $this->list,
+                Services::listProfiles(),
+            ))
+            ->route(Route::get(
+                $this->profile,
+                Services::showProfile(),
+            ))
+            ->route(Route::get(
+                $this->section,
+                Services::showProfile(),
+            ));
     }
 
     public static function standalone(Path $storage): self
     {
         return new self(
             $storage,
-            Route::literal('GET /'),
-            Route::literal('GET /profile/{id}'),
-            Route::literal('GET /profile/{id}/{section}'),
+            Template::of('/'),
+            Template::of('/profile/{id}'),
+            Template::of('/profile/{id}/{section}'),
         );
     }
 
@@ -82,9 +92,9 @@ final class Kernel implements Middleware
     {
         return new self(
             $storage,
-            Route::literal('GET /_profiler/'),
-            Route::literal('GET /_profiler/profile/{id}'),
-            Route::literal('GET /_profiler/profile/{id}/{section}'),
+            Template::of('/_profiler/'),
+            Template::of('/_profiler/profile/{id}'),
+            Template::of('/_profiler/profile/{id}/{section}'),
         );
     }
 }
