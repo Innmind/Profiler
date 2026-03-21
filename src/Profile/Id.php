@@ -11,23 +11,23 @@ use Ramsey\Uuid\Uuid;
  */
 final class Id
 {
-    /** @var non-empty-string */
-    private string $value;
-
     /**
      * @param non-empty-string $value
      */
-    private function __construct(string $value)
+    private function __construct(private string $value)
     {
-        $this->value = $value;
     }
 
+    /**
+     * @internal
+     */
     public static function new(): self
     {
         return new self(Uuid::uuid4()->toString());
     }
 
     /**
+     * @internal
      * @psalm-pure
      *
      * @return Maybe<self>

@@ -15,12 +15,14 @@ use Innmind\Filesystem\{
     File,
     File\Content,
 };
-use Innmind\TimeContinuum\{
+use Innmind\Time\{
     Clock,
-    Earth\Format\ISO8601,
+    Format,
 };
 use Innmind\Json\Json;
 use Innmind\Immutable\{
+    Attempt,
+    SideEffect,
     Sequence,
     Maybe,
     Predicate\Instance,
@@ -28,58 +30,69 @@ use Innmind\Immutable\{
 
 final class Profiler
 {
-    private Adapter $storage;
-    private Clock $clock;
-    private Load $load;
-
-    private function __construct(Adapter $storage, Clock $clock, Load $load)
-    {
-        $this->storage = $storage;
-        $this->clock = $clock;
-        $this->load = $load;
+    private function __construct(
+        private Adapter $storage,
+        private Clock $clock,
+        private Load $load,
+    ) {
     }
 
+    /**
+     * @internal
+     */
     public static function of(Adapter $storage, Clock $clock, Load $load): self
     {
         return new self($storage, $clock, $load);
     }
 
-    public function start(string $name): Id
+    /**
+     * @return Attempt<Id>
+     */
+    #[\NoDiscard]
+    public function start(string $name): Attempt
     {
         $id = Id::new();
-        $this->storage->add(
-            Directory::named($id->toString())->add(File::named(
-                'start.json',
-                Content::ofString(Json::encode([
-                    'name' => $name,
-                    'startedAt' => $this->clock->now()->format(new ISO8601),
-                ])),
-            )),
-        );
 
-        return $id;
+        return $this
+            ->storage
+            ->add(
+                Directory::named($id->toString())->add(File::named(
+                    'start.json',
+                    Content::ofString(Json::encode([
+                        'name' => $name,
+                        'startedAt' => $this->clock->now()->format(Format::iso8601()),
+                    ])),
+                )),
+            )
+            ->map(static fn() => $id);
     }
 
     /**
-     * @param callable(Mutation): void $mutation
+     * @param callable(Mutation): Attempt<SideEffect> $mutation
+     *
+     * @return Attempt<SideEffect>
      */
-    public function mutate(Id $id, callable $mutation): void
+    #[\NoDiscard]
+    public function mutate(Id $id, callable $mutation): Attempt
     {
-        $_ = $this
+        return $this
             ->storage
             ->get(Name::of($id->toString()))
             ->keep(Instance::of(Directory::class))
-            ->match(
+            ->attempt(static fn() => new \Exception)
+            ->eitherWay(
                 fn($profile) => $mutation(Mutation::of(
                     $this->storage,
                     $this->clock,
                     $profile,
                 )),
-                static fn() => null,
+                static fn() => Attempt::result(SideEffect::identity),
             );
     }
 
     /**
+     * @internal
+     *
      * @return Maybe<Profile>
      */
     public function get(Id $profile): Maybe
@@ -92,6 +105,8 @@ final class Profiler
     }
 
     /**
+     * @internal
+     *
      * @return Sequence<Profile>
      */
     public function all(): Sequence
@@ -101,12 +116,10 @@ final class Profiler
             ->root()
             ->all()
             ->keep(Instance::of(Directory::class))
-            ->flatMap(fn($profile) => ($this->load)($profile)->match(
-                static fn($profile) => Sequence::of($profile),
-                static fn() => Sequence::of(),
-            ))
+            ->map($this->load)
+            ->flatMap(static fn($profile) => $profile->toSequence())
             ->sort(
-                static fn($a, $b) => $b->startedAt()->format(new ISO8601) <=> $a->startedAt()->format(new ISO8601),
+                static fn($a, $b) => $b->startedAt()->format(Format::iso8601()) <=> $a->startedAt()->format(Format::iso8601()),
             );
     }
 }

@@ -14,21 +14,20 @@ use Innmind\Immutable\{
     Predicate\Instance,
 };
 
+/**
+ * @internal
+ * @psalm-immutable
+ */
 final class RawList
 {
-    /** @var non-empty-string */
-    private string $name;
-    /** @var non-empty-string */
-    private string $slug;
-
     /**
      * @param non-empty-string $name
      * @param non-empty-string $slug
      */
-    public function __construct(string $name, string $slug)
-    {
-        $this->name = $name;
-        $this->slug = $slug;
+    public function __construct(
+        private string $name,
+        private string $slug,
+    ) {
     }
 
     /**

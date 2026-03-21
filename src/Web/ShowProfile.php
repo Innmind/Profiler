@@ -8,31 +8,36 @@ use Innmind\Profiler\{
     Profile\Id,
     Template\Profile,
 };
-use Innmind\Router\Route\Variables;
 use Innmind\Http\{
     ServerRequest,
     Response,
     Response\StatusCode,
 };
+use Innmind\Immutable\{
+    Attempt,
+    Maybe,
+};
 
+/**
+ * @internal
+ */
 final class ShowProfile
 {
-    private Profiler $profiler;
-    private Profile $template;
-
     public function __construct(
-        Profiler $profiler,
-        Profile $template,
+        private Profiler $profiler,
+        private Profile $template,
     ) {
-        $this->profiler = $profiler;
-        $this->template = $template;
     }
 
-    public function __invoke(ServerRequest $request, Variables $variables): Response
-    {
-        return $variables
-            ->maybe('id')
-            ->flatMap(Id::maybe(...))
+    /**
+     * @return Attempt<Response>
+     */
+    public function __invoke(
+        ServerRequest $request,
+        string $id,
+        ?string $section = null,
+    ): Attempt {
+        $response = Id::maybe($id)
             ->flatMap($this->profiler->get(...))
             ->match(
                 fn($profile) => Response::of(
@@ -41,14 +46,12 @@ final class ShowProfile
                     null,
                     ($this->template)(
                         $profile,
-                        $variables
-                            ->maybe('section')
-                            ->otherwise(
-                                static fn() => $profile
-                                    ->sections()
-                                    ->first()
-                                    ->map(static fn($section) => $section->slug()),
-                            ),
+                        Maybe::of($section)->otherwise(
+                            static fn() => $profile
+                                ->sections()
+                                ->first()
+                                ->map(static fn($section) => $section->slug()),
+                        ),
                     ),
                 ),
                 static fn() => Response::of(
@@ -56,5 +59,7 @@ final class ShowProfile
                     $request->protocolVersion(),
                 ),
             );
+
+        return Attempt::result($response);
     }
 }

@@ -8,9 +8,9 @@ use Innmind\Profiler\Profile\{
     Status,
     Section,
 };
-use Innmind\TimeContinuum\{
-    PointInTime,
-    Earth\Format\ISO8601,
+use Innmind\Time\{
+    Point,
+    Format,
 };
 use Innmind\Immutable\{
     Sequence,
@@ -18,46 +18,34 @@ use Innmind\Immutable\{
 };
 
 /**
+ * @internal
  * @psalm-immutable
  */
 final class Profile
 {
-    private Id $id;
-    private string $name;
-    private PointInTime $startedAt;
-    /** @var Sequence<Section> */
-    private Sequence $sections;
-    private Status $status;
-    /** @var Maybe<string> */
-    private Maybe $exit;
-
     /**
      * @param Sequence<Section> $sections
      * @param Maybe<string> $exit
      */
     private function __construct(
-        Id $id,
-        string $name,
-        PointInTime $startedAt,
-        Sequence $sections,
-        Status $status,
-        Maybe $exit,
+        private Id $id,
+        private string $name,
+        private Point $startedAt,
+        private Sequence $sections,
+        private Status $status,
+        private Maybe $exit,
     ) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->startedAt = $startedAt;
-        $this->sections = $sections;
-        $this->status = $status;
-        $this->exit = $exit;
     }
 
     /**
+     * @internal
+     *
      * @psalm-pure
      */
     public static function of(
         Id $id,
         string $name,
-        PointInTime $startedAt,
+        Point $startedAt,
     ): self {
         /** @var Maybe<string> */
         $exit = Maybe::nothing();
@@ -82,7 +70,7 @@ final class Profile
         return $this->name;
     }
 
-    public function startedAt(): PointInTime
+    public function startedAt(): Point
     {
         return $this->startedAt;
     }
@@ -139,7 +127,7 @@ final class Profile
     {
         return \sprintf(
             '[%s]%s %s',
-            $this->startedAt->format(new ISO8601),
+            $this->startedAt->format(Format::iso8601()),
             $this->exit->match(
                 static fn($exit) => " [$exit]",
                 static fn() => '',

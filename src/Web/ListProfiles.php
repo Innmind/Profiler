@@ -12,27 +12,29 @@ use Innmind\Http\{
     Response,
     Response\StatusCode,
 };
+use Innmind\Immutable\Attempt;
 
+/**
+ * @internal
+ */
 final class ListProfiles
 {
-    private Profiler $profiler;
-    private Index $template;
-
     public function __construct(
-        Profiler $profiler,
-        Index $template,
+        private Profiler $profiler,
+        private Index $template,
     ) {
-        $this->profiler = $profiler;
-        $this->template = $template;
     }
 
-    public function __invoke(ServerRequest $request): Response
+    /**
+     * @return Attempt<Response>
+     */
+    public function __invoke(ServerRequest $request): Attempt
     {
-        return Response::of(
+        return Attempt::result(Response::of(
             StatusCode::ok,
             $request->protocolVersion(),
             null,
             ($this->template)($this->profiler->all()),
-        );
+        ));
     }
 }

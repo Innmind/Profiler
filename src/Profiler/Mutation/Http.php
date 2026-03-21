@@ -9,26 +9,34 @@ use Innmind\Filesystem\{
     File,
     File\Content,
 };
+use Innmind\Immutable\{
+    Attempt,
+    SideEffect,
+};
 
 final class Http
 {
-    private Adapter $storage;
-    private Directory $profile;
-
-    private function __construct(Adapter $storage, Directory $profile)
-    {
-        $this->storage = $storage;
-        $this->profile = $profile;
+    private function __construct(
+        private Adapter $storage,
+        private Directory $profile,
+    ) {
     }
 
+    /**
+     * @internal
+     */
     public static function of(Adapter $storage, Directory $profile): self
     {
         return new self($storage, $profile);
     }
 
-    public function received(Content $request): void
+    /**
+     * @return Attempt<SideEffect>
+     */
+    #[\NoDiscard]
+    public function received(Content $request): Attempt
     {
-        $this->storage->add($this->profile->add(
+        return $this->storage->add($this->profile->add(
             Directory::named('http')->add(File::named(
                 'request.txt',
                 $request,
@@ -36,9 +44,13 @@ final class Http
         ));
     }
 
-    public function respondedWith(Content $response): void
+    /**
+     * @return Attempt<SideEffect>
+     */
+    #[\NoDiscard]
+    public function respondedWith(Content $response): Attempt
     {
-        $this->storage->add($this->profile->add(
+        return $this->storage->add($this->profile->add(
             Directory::named('http')->add(File::named(
                 'response.txt',
                 $response,

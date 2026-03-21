@@ -12,21 +12,20 @@ use Innmind\Filesystem\{
     Adapter,
     Directory,
 };
-use Innmind\TimeContinuum\Clock;
+use Innmind\Time\Clock;
 
 final class Remote
 {
-    private Adapter $storage;
-    private Clock $clock;
-    private Directory $profile;
-
-    private function __construct(Adapter $storage, Clock $clock, Directory $profile)
-    {
-        $this->storage = $storage;
-        $this->clock = $clock;
-        $this->profile = $profile;
+    private function __construct(
+        private Adapter $storage,
+        private Clock $clock,
+        private Directory $profile,
+    ) {
     }
 
+    /**
+     * @internal
+     */
     public static function of(Adapter $storage, Clock $clock, Directory $profile): self
     {
         return new self($storage, $clock, $profile);

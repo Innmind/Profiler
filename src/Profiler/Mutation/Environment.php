@@ -13,19 +13,21 @@ use Innmind\Filesystem\{
 use Innmind\Immutable\{
     Map,
     Str,
+    Attempt,
+    SideEffect,
 };
 
 final class Environment
 {
-    private Adapter $storage;
-    private Directory $profile;
-
-    private function __construct(Adapter $storage, Directory $profile)
-    {
-        $this->storage = $storage;
-        $this->profile = $profile;
+    private function __construct(
+        private Adapter $storage,
+        private Directory $profile,
+    ) {
     }
 
+    /**
+     * @internal
+     */
     public static function of(Adapter $storage, Directory $profile): self
     {
         return new self($storage, $profile);
@@ -33,10 +35,13 @@ final class Environment
 
     /**
      * @param Map<string, string> $pairs
+     *
+     * @return Attempt<SideEffect>
      */
-    public function record(Map $pairs): void
+    #[\NoDiscard]
+    public function record(Map $pairs): Attempt
     {
-        $this->storage->add($this->profile->add(File::named(
+        return $this->storage->add($this->profile->add(File::named(
             'environment.txt',
             Content::ofLines(
                 $pairs

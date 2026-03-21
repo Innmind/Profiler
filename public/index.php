@@ -12,6 +12,7 @@ use Innmind\Framework\{
 use Innmind\Url\Path;
 
 new class extends Http {
+    #[\Override]
     protected function configure(Application $app): Application
     {
         return $app->map(Kernel::standalone(Path::of(__DIR__.'/../var/profiles/')));

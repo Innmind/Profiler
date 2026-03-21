@@ -7,32 +7,31 @@ use Innmind\Profiler\Profile as Data;
 use Innmind\Filesystem\File\Content;
 use Innmind\UrlTemplate\Template;
 use Innmind\Html\{
-    Node\Document,
+    Document,
     Element\A,
 };
 use Innmind\Xml\{
-    Node\Document\Type,
-    Node\Text,
-    Element\Element,
-    Element\SelfClosingElement,
+    Document\Type,
+    Node,
+    Element,
+    Element\Name,
     Attribute,
 };
 use Innmind\Immutable\{
     Sequence,
-    Set,
     Maybe,
-    Map,
 };
 
+/**
+ * @internal
+ * @psalm-immutable
+ */
 final class Profile
 {
-    private Template $list;
-    private Template $section;
-
-    public function __construct(Template $list, Template $section)
-    {
-        $this->list = $list;
-        $this->section = $section;
+    public function __construct(
+        private Template $list,
+        private Template $section,
+    ) {
     }
 
     /**
@@ -41,79 +40,81 @@ final class Profile
     public function __invoke(Data $profile, Maybe $active): Content
     {
         $name = Element::of(
-            'code',
-            Set::of(Attribute::of('class', 'name '.$profile->status()->name)),
-            Sequence::of(Text::of($profile->toString())),
+            Name::of('code'),
+            Sequence::of(Attribute::of('class', 'name '.$profile->status()->name)),
+            Sequence::of(Node::text($profile->toString())),
         );
 
         $document = Document::of(
             Type::of('html'),
             Sequence::of(Element::of(
-                'html',
+                Name::of('html'),
                 null,
                 Sequence::of(
                     Element::of(
-                        'head',
+                        Name::of('head'),
                         null,
                         Sequence::of(
-                            Element::of('title', null, Sequence::of(Text::of('Profile '.$profile->toString()))),
-                            SelfClosingElement::of('meta', Set::of(Attribute::of('charset', 'UTF-8'))),
-                            Element::of('style', null, Sequence::of(Text::of(self::css()))),
+                            Element::of(Name::of('title'), null, Sequence::of(Node::text('Profile '.$profile->toString()))),
+                            Element::selfClosing(Name::of('meta'), Sequence::of(Attribute::of('charset', 'UTF-8'))),
+                            Element::of(Name::of('style'), null, Sequence::of(Node::text(self::css()))),
                         ),
                     ),
                     Element::of(
-                        'body',
+                        Name::of('body'),
                         null,
                         Sequence::of(
                             Element::of(
-                                'header',
+                                Name::of('header'),
                                 null,
                                 Sequence::of(
                                     A::of(
-                                        $this->list->expand(Map::of()),
+                                        $this->list->expansion()->expand(),
                                         null,
-                                        Sequence::of(SelfClosingElement::of('img', Set::of(
+                                        Sequence::of(Element::selfClosing(Name::of('img'), Sequence::of(
                                             Attribute::of('alt', 'home'),
                                             Attribute::of('src', 'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUwMCIgd2lkdGg9IjUwMCIgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogIDxjaXJjbGUgY3g9IjI1MCIgY3k9IjI1MCIgcj0iMjUwIiBmaWxsPSJyZ2IoNDgsNDgsNDgpIiAvPgogIDxkZWZzPgogICAgPGcgaWQ9ImxlYWYiIGZpbHRlcj0idXJsKCNzaGFkb3cpIj4KICAgICAgPHBhdGggZD0ibSAyNTAgMjAgcSAtNjAgMTI1IDAgMTUwIiBmaWxsPSJ3aGl0ZSIgLz4KICAgICAgPHBhdGggZD0ibSAyNTAgMjAgcSA2MCAxMjUgMCAxNTAiIGZpbGw9IndoaXRlIiAvPgogICAgICA8cG9seWdvbiBwb2ludHM9IjI1MCw4MCAyNTEsMTcwIDI0OSwxNzAiIGZpbGw9InJnYig0OCw0OCw0OCkiIC8+CiAgICA8L2c+CiAgICA8ZmlsdGVyIGlkPSJzaGFkb3ciIHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEyMCUiPgogICAgICA8ZmVPZmZzZXQgcmVzdWx0PSJvZmZPdXQiIGluPSJTb3VyY2VBbHBoYSIgZHg9IjAiIGR5PSI1IiAvPgogICAgICA8ZmVHYXVzc2lhbkJsdXIgcmVzdWx0PSJibHVyT3V0IiBpbj0ib2ZmT3V0IiBzdGREZXZpYXRpb249IjEwMCIgLz4KICAgICAgPGZlQmxlbmQgaW49IlNvdXJjZUdyYXBoaWMiIGluMj0ib2ZmT3V0IiBtb2RlPSJub3JtYWwiIC8+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgPHVzZSB4bGluazpocmVmPSIjbGVhZiIgLz4KICA8dXNlIHhsaW5rOmhyZWY9IiNsZWFmIiB0cmFuc2Zvcm09InJvdGF0ZSg0NSAyNTAgMjUwKSIgLz4KICA8dXNlIHhsaW5rOmhyZWY9IiNsZWFmIiB0cmFuc2Zvcm09InJvdGF0ZSg5MCAyNTAgMjUwKSIgLz4KICA8dXNlIHhsaW5rOmhyZWY9IiNsZWFmIiB0cmFuc2Zvcm09InJvdGF0ZSgxMzUgMjUwIDI1MCkiIC8+CiAgPHVzZSB4bGluazpocmVmPSIjbGVhZiIgdHJhbnNmb3JtPSJyb3RhdGUoMTgwIDI1MCAyNTApIiAvPgogIDx1c2UgeGxpbms6aHJlZj0iI2xlYWYiIHRyYW5zZm9ybT0icm90YXRlKDIyNSAyNTAgMjUwKSIgLz4KICA8dXNlIHhsaW5rOmhyZWY9IiNsZWFmIiB0cmFuc2Zvcm09InJvdGF0ZSgyNzAgMjUwIDI1MCkiIC8+CiAgPHVzZSB4bGluazpocmVmPSIjbGVhZiIgdHJhbnNmb3JtPSJyb3RhdGUoMzE1IDI1MCAyNTApIiAvPgogIDxjaXJjbGUgY3g9IjI1MCIgY3k9IjI1MCIgcj0iNjAiIHN0cm9rZT0icmdiKDUyLDE0MCwyNTUpIiBzdHJva2Utd2lkdGg9IjEwIiBmaWxsPSJub25lIiAvPgo8L3N2Zz4K'),
                                         ))),
                                     ),
                                     Element::of(
-                                        'ul',
+                                        Name::of('ul'),
                                         null,
                                         $profile->sections()->map(fn($section) => Element::of(
-                                            'li',
+                                            Name::of('li'),
                                             null,
                                             Sequence::of(A::of(
-                                                $this->section->expand(Map::of(
-                                                    ['id', $profile->id()->toString()],
-                                                    ['section', $section->slug()],
-                                                )),
+                                                $this
+                                                    ->section
+                                                    ->expansion()
+                                                    ->with('id', $profile->id()->toString())
+                                                    ->with('section', $section->slug())
+                                                    ->expand(),
                                                 $active
                                                     ->filter(static fn($slug) => $section->slug() === $slug)
                                                     ->match(
-                                                        static fn() => Set::of(Attribute::of('class', 'active')),
+                                                        static fn() => Sequence::of(Attribute::of('class', 'active')),
                                                         static fn() => null,
                                                     ),
-                                                Sequence::of(Text::of($section->name())),
+                                                Sequence::of(Node::text($section->name())),
                                             )),
                                         )),
                                     ),
                                 ),
                             ),
-                            Element::of('script', Set::of(
+                            Element::of(Name::of('script'), Sequence::of(
                                 Attribute::of('type', 'text/javascript'),
                                 Attribute::of('src', 'https://d3js.org/d3.v4.min.js'),
                             )),
-                            Element::of('script', Set::of(
+                            Element::of(Name::of('script'), Sequence::of(
                                 Attribute::of('type', 'text/javascript'),
                                 Attribute::of('src', 'https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.min.js'),
                             )),
-                            Element::of('script', Set::of(
+                            Element::of(Name::of('script'), Sequence::of(
                                 Attribute::of('type', 'text/javascript'),
                                 Attribute::of('src', 'https://cdn.jsdelivr.net/gh/spiermar/d3-flame-graph@2.0.3/dist/d3-flamegraph.min.js'),
                             )),
                             Element::of(
-                                'main',
+                                Name::of('main'),
                                 null,
                                 $active
                                     ->flatMap(
@@ -122,8 +123,8 @@ final class Profile
                                             ->find(static fn($section) => $section->slug() === $slug),
                                     )
                                     ->map(static fn($section) => Element::of(
-                                        'section',
-                                        Set::of(Attribute::of('id', 'section-'.$section->slug())),
+                                        Name::of('section'),
+                                        Sequence::of(Attribute::of('id', 'section-'.$section->slug())),
                                         Sequence::of($section->render()),
                                     ))
                                     ->match(
@@ -140,6 +141,9 @@ final class Profile
         return $document->asContent();
     }
 
+    /**
+     * @psalm-pure
+     */
     private static function css(): string
     {
         return <<<CSS

@@ -7,54 +7,59 @@ use Innmind\Profiler\Profile\Section;
 use Innmind\Filesystem\File\Content;
 use Innmind\Xml\{
     Node,
-    Node\Text,
-    Element\Element,
+    Element,
+    Element\Name,
     Attribute,
 };
-use Innmind\Immutable\{
-    Sequence,
-    Set,
-};
+use Innmind\Immutable\Sequence;
 
+/**
+ * @internal
+ * @psalm-immutable
+ */
 final class Exception implements Section
 {
-    private Content $svg;
-
-    private function __construct(Content $svg)
+    private function __construct(private Content $svg)
     {
-        $this->svg = $svg;
     }
 
+    /**
+     * @internal
+     * @psalm-pure
+     */
     public static function of(Content $svg): self
     {
         return new self($svg);
     }
 
+    #[\Override]
     public function name(): string
     {
         return 'Exception';
     }
 
+    #[\Override]
     public function slug(): string
     {
         return 'exception';
     }
 
-    public function render(): Node
+    #[\Override]
+    public function render(): Element
     {
         return Element::of(
-            'div',
+            Name::of('div'),
             null,
             Sequence::of(
                 Element::of(
-                    'a',
-                    Set::of(
+                    Name::of('a'),
+                    Sequence::of(
                         Attribute::of('href', 'data:image/svg+xml;base64,'.\base64_encode($this->svg->toString())),
                         Attribute::of('download', 'stack-trace.svg'),
                     ),
-                    Sequence::of(Text::of('Download')),
+                    Sequence::of(Node::text('Download')),
                 ),
-                Text::of($this->svg->toString()),
+                Node::raw($this->svg->toString()),
             ),
         );
     }
