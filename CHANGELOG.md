@@ -7,6 +7,19 @@
 - Requires PHP `8.4`
 - Requires `innmind/foundation:~2.1`
 - Requires `innmind/framework:~4.0`
+- `Innmind\Profiler\Profiler::start()` now returns an `Innmind\Immutable\Attempt<Id>`
+- `Innmind\Profiler\Profiler::mutate()` now returns an `Innmind\Immutable\Attempt<Innmind\Immutable\SideEffect>`
+- `Innmind\Profiler\Profiler\Mutation\Remote\Http::sent()` now returns an `Innmind\Immutable\Attempt<Innmind\Immutable\SideEffect>`
+- `Innmind\Profiler\Profiler\Mutation\Remote\Http::got()` now returns an `Innmind\Immutable\Attempt<Innmind\Immutable\SideEffect>`
+- `Innmind\Profiler\Profiler\Mutation\Remote\Processes::record()` now returns an `Innmind\Immutable\Attempt<Innmind\Immutable\SideEffect>`
+- `Innmind\Profiler\Profiler\Mutation\Remote\Sql::record()` now returns an `Innmind\Immutable\Attempt<Innmind\Immutable\SideEffect>`
+- `Innmind\Profiler\Profiler\Mutation\AppGraph::record()` now returns an `Innmind\Immutable\Attempt<Innmind\Immutable\SideEffect>`
+- `Innmind\Profiler\Profiler\Mutation\CallGraph::record()` now returns an `Innmind\Immutable\Attempt<Innmind\Immutable\SideEffect>`
+- `Innmind\Profiler\Profiler\Mutation\Environment::record()` now returns an `Innmind\Immutable\Attempt<Innmind\Immutable\SideEffect>`
+- `Innmind\Profiler\Profiler\Mutation\Exception::record()` now returns an `Innmind\Immutable\Attempt<Innmind\Immutable\SideEffect>`
+- `Innmind\Profiler\Profiler\Mutation\Http::received()` now returns an `Innmind\Immutable\Attempt<Innmind\Immutable\SideEffect>`
+- `Innmind\Profiler\Profiler\Mutation\Http::respondedWith()` now returns an `Innmind\Immutable\Attempt<Innmind\Immutable\SideEffect>`
+- `Innmind\Profiler\Profiler\Mutation\Processes::record()` now returns an `Innmind\Immutable\Attempt<Innmind\Immutable\SideEffect>`
 
 ## 4.1.0 - 2024-03-10
 

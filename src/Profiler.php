@@ -21,6 +21,8 @@ use Innmind\Time\{
 };
 use Innmind\Json\Json;
 use Innmind\Immutable\{
+    Attempt,
+    SideEffect,
     Sequence,
     Maybe,
     Predicate\Instance,
@@ -44,38 +46,48 @@ final class Profiler
         return new self($storage, $clock, $load);
     }
 
-    public function start(string $name): Id
+    /**
+     * @return Attempt<Id>
+     */
+    #[\NoDiscard]
+    public function start(string $name): Attempt
     {
         $id = Id::new();
-        $_ = $this->storage->add(
-            Directory::named($id->toString())->add(File::named(
-                'start.json',
-                Content::ofString(Json::encode([
-                    'name' => $name,
-                    'startedAt' => $this->clock->now()->format(Format::iso8601()),
-                ])),
-            )),
-        )->unwrap();
 
-        return $id;
+        return $this
+            ->storage
+            ->add(
+                Directory::named($id->toString())->add(File::named(
+                    'start.json',
+                    Content::ofString(Json::encode([
+                        'name' => $name,
+                        'startedAt' => $this->clock->now()->format(Format::iso8601()),
+                    ])),
+                )),
+            )
+            ->map(static fn() => $id);
     }
 
     /**
-     * @param callable(Mutation): void $mutation
+     * @param callable(Mutation): Attempt<SideEffect> $mutation
+     *
+     * @return Attempt<SideEffect>
      */
-    public function mutate(Id $id, callable $mutation): void
+    #[\NoDiscard]
+    public function mutate(Id $id, callable $mutation): Attempt
     {
-        $_ = $this
+        return $this
             ->storage
             ->get(Name::of($id->toString()))
             ->keep(Instance::of(Directory::class))
-            ->match(
+            ->attempt(static fn() => new \Exception)
+            ->eitherWay(
                 fn($profile) => $mutation(Mutation::of(
                     $this->storage,
                     $this->clock,
                     $profile,
                 )),
-                static fn() => null,
+                static fn() => Attempt::result(SideEffect::identity),
             );
     }
 
@@ -101,10 +113,8 @@ final class Profiler
             ->root()
             ->all()
             ->keep(Instance::of(Directory::class))
-            ->flatMap(fn($profile) => ($this->load)($profile)->match(
-                static fn($profile) => Sequence::of($profile),
-                static fn() => Sequence::of(),
-            ))
+            ->map($this->load)
+            ->flatMap(static fn($profile) => $profile->toSequence())
             ->sort(
                 static fn($a, $b) => $b->startedAt()->format(Format::iso8601()) <=> $a->startedAt()->format(Format::iso8601()),
             );

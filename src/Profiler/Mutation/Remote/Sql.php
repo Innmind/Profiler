@@ -11,6 +11,10 @@ use Innmind\Filesystem\{
     File\Content,
 };
 use Innmind\Time\Clock;
+use Innmind\Immutable\{
+    Attempt,
+    SideEffect,
+};
 
 final class Sql
 {
@@ -30,14 +34,18 @@ final class Sql
         return new self($storage, $clock, $profile);
     }
 
-    public function record(Content $process): void
+    /**
+     * @return Attempt<SideEffect>
+     */
+    #[\NoDiscard]
+    public function record(Content $process): Attempt
     {
         /** @psalm-suppress ArgumentTypeCoercion */
-        $_ = $this->storage->add($this->profile->add(
+        return $this->storage->add($this->profile->add(
             Directory::named('remote-sql')->add(File::named(
                 $this->clock->now()->format(Format::internal),
                 $process,
             )),
-        ))->unwrap();
+        ));
     }
 }

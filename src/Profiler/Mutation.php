@@ -13,6 +13,10 @@ use Innmind\Filesystem\{
 };
 use Innmind\Time\Clock;
 use Innmind\Json\Json;
+use Innmind\Immutable\{
+    Attempt,
+    SideEffect,
+};
 
 final class Mutation
 {
@@ -32,14 +36,22 @@ final class Mutation
         return new self($storage, $clock, $profile);
     }
 
-    public function succeed(string $message): void
+    /**
+     * @return Attempt<SideEffect>
+     */
+    #[\NoDiscard]
+    public function succeed(string $message): Attempt
     {
-        $this->finish($message, true);
+        return $this->finish($message, true);
     }
 
-    public function fail(string $message): void
+    /**
+     * @return Attempt<SideEffect>
+     */
+    #[\NoDiscard]
+    public function fail(string $message): Attempt
     {
-        $this->finish($message, false);
+        return $this->finish($message, false);
     }
 
     public function sections(): Sections
@@ -47,18 +59,21 @@ final class Mutation
         return Sections::of($this->storage, $this->clock, $this->profile);
     }
 
-    private function finish(string $message, bool $succeeded): void
+    /**
+     * @return Attempt<SideEffect>
+     */
+    private function finish(string $message, bool $succeeded): Attempt
     {
         if ($this->profile->contains(Name::of('exit.json'))) {
-            return;
+            return Attempt::result(SideEffect::identity);
         }
 
-        $_ = $this->storage->add($this->profile->add(File::named(
+        return $this->storage->add($this->profile->add(File::named(
             'exit.json',
             Content::ofString(Json::encode([
                 'message' => $message,
                 'succeeded' => $succeeded,
             ])),
-        )))->unwrap();
+        )));
     }
 }
