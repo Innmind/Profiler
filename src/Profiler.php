@@ -22,6 +22,7 @@ use Innmind\Time\{
 use Innmind\Json\Json;
 use Innmind\Immutable\{
     Attempt,
+    SideEffect,
     Sequence,
     Maybe,
     Predicate\Instance,
@@ -68,21 +69,25 @@ final class Profiler
     }
 
     /**
-     * @param callable(Mutation): void $mutation
+     * @param callable(Mutation): Attempt<SideEffect> $mutation
+     *
+     * @return Attempt<SideEffect>
      */
-    public function mutate(Id $id, callable $mutation): void
+    #[\NoDiscard]
+    public function mutate(Id $id, callable $mutation): Attempt
     {
-        $_ = $this
+        return $this
             ->storage
             ->get(Name::of($id->toString()))
             ->keep(Instance::of(Directory::class))
-            ->match(
+            ->attempt(static fn() => new \Exception)
+            ->eitherWay(
                 fn($profile) => $mutation(Mutation::of(
                     $this->storage,
                     $this->clock,
                     $profile,
                 )),
-                static fn() => null,
+                static fn() => Attempt::result(SideEffect::identity),
             );
     }
 

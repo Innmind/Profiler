@@ -8,6 +8,7 @@
 - Requires `innmind/foundation:~2.1`
 - Requires `innmind/framework:~4.0`
 - `Innmind\Profiler\Profiler::start()` now returns an `Innmind\Immutable\Attempt<Id>`
+- `Innmind\Profiler\Profiler::mutate()` now returns an `Innmind\Immutable\Attempt<Innmind\Immutable\SideEffect>`
 - `Innmind\Profiler\Profiler\Mutation\Remote\Http::sent()` now returns an `Innmind\Immutable\Attempt<Innmind\Immutable\SideEffect>`
 - `Innmind\Profiler\Profiler\Mutation\Remote\Http::got()` now returns an `Innmind\Immutable\Attempt<Innmind\Immutable\SideEffect>`
 - `Innmind\Profiler\Profiler\Mutation\Remote\Processes::record()` now returns an `Innmind\Immutable\Attempt<Innmind\Immutable\SideEffect>`

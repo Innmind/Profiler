@@ -34,10 +34,7 @@ use Innmind\Html\{
     Visitor\Element,
     Visitor\Elements,
 };
-use Innmind\Immutable\{
-    Map,
-    Attempt,
-};
+use Innmind\Immutable\Map;
 use Innmind\BlackBox\PHPUnit\Framework\TestCase;
 
 class KernelTest extends TestCase
@@ -77,14 +74,13 @@ class KernelTest extends TestCase
                 ) use ($get) {
                     $profiler = $get(Services::profiler);
                     $profile = $profiler->start('test')->unwrap();
-                    $profiler->mutate(
-                        $profile,
-                        static function($mutation) {
-                            $_ = $mutation->succeed('200')->unwrap();
-                        },
-                    );
 
-                    return Attempt::result($input);
+                    return $profiler
+                        ->mutate(
+                            $profile,
+                            static fn($mutation) => $mutation->succeed('200'),
+                        )
+                        ->map(static fn() => $input);
                 })->pipe($route),
             );
 
@@ -133,9 +129,10 @@ class KernelTest extends TestCase
                     $input,
                 ) use ($get) {
                     $profiler = $get(Services::profiler);
-                    $_ = $profiler->start('test')->unwrap();
 
-                    return Attempt::result($input);
+                    return $profiler
+                        ->start('test')
+                        ->map(static fn() => $input);
                 })->pipe($route),
             );
 
@@ -216,16 +213,23 @@ class KernelTest extends TestCase
                     $input,
                 ) use ($get) {
                     $profiler = $get(Services::profiler);
-                    $profile = $profiler->start('test')->unwrap();
-                    $profiler->mutate(
-                        $profile,
-                        static function($mutation) {
-                            $_ = $mutation->sections()->appGraph()->record(Content::ofString('<app-graph-svg/>'))->unwrap();
-                            $_ = $mutation->sections()->exception()->record(Content::ofString('<exception-svg/>'))->unwrap();
-                        },
-                    );
 
-                    return Attempt::result($input);
+                    return $profiler
+                        ->start('test')
+                        ->flatMap(static fn($profile) => $profiler->mutate(
+                            $profile,
+                            static fn($mutation) => $mutation
+                                ->sections()
+                                ->appGraph()
+                                ->record(Content::ofString('<app-graph-svg/>'))
+                                ->flatMap(
+                                    static fn() => $mutation
+                                        ->sections()
+                                        ->exception()
+                                        ->record(Content::ofString('<exception-svg/>')),
+                                ),
+                        ))
+                        ->map(static fn() => $input);
                 })->pipe($route),
             );
 
@@ -324,16 +328,23 @@ class KernelTest extends TestCase
                     $input,
                 ) use ($get) {
                     $profiler = $get(Services::profiler);
-                    $profile = $profiler->start('test')->unwrap();
-                    $profiler->mutate(
-                        $profile,
-                        static function($mutation) {
-                            $_ = $mutation->sections()->appGraph()->record(Content::ofString('<app-graph-svg/>'))->unwrap();
-                            $_ = $mutation->sections()->exception()->record(Content::ofString('<exception-svg/>'))->unwrap();
-                        },
-                    );
 
-                    return Attempt::result($input);
+                    return $profiler
+                        ->start('test')
+                        ->flatMap(static fn($profile) => $profiler->mutate(
+                            $profile,
+                            static fn($mutation) => $mutation
+                                ->sections()
+                                ->appGraph()
+                                ->record(Content::ofString('<app-graph-svg/>'))
+                                ->flatMap(
+                                    static fn() => $mutation
+                                        ->sections()
+                                        ->exception()
+                                        ->record(Content::ofString('<exception-svg/>')),
+                                ),
+                        ))
+                        ->map(static fn() => $input);
                 })->pipe($route),
             );
 
@@ -432,25 +443,81 @@ class KernelTest extends TestCase
                     $input,
                 ) use ($get) {
                     $profiler = $get(Services::profiler);
-                    $profile = $profiler->start('test')->unwrap();
-                    $profiler->mutate(
-                        $profile,
-                        static function($mutation) {
-                            $_ = $mutation->sections()->appGraph()->record(Content::ofString('<app-graph-svg/>'))->unwrap();
-                            $_ = $mutation->sections()->callGraph()->record(Content::ofString('{"call-graph-svg": []}'))->unwrap();
-                            $_ = $mutation->sections()->environment()->record(Map::of())->unwrap();
-                            $_ = $mutation->sections()->exception()->record(Content::ofString('<exception-svg/>'))->unwrap();
-                            $_ = $mutation->sections()->http()->received(Content::ofString('request'))->unwrap();
-                            $_ = $mutation->sections()->http()->respondedWith(Content::ofString('response'))->unwrap();
-                            $_ = $mutation->sections()->processes()->record(Content::ofString('process'))->unwrap();
-                            $_ = $mutation->sections()->remote()->http()->sent(Content::ofString('request'))->unwrap();
-                            $_ = $mutation->sections()->remote()->http()->got(Content::ofString('response'))->unwrap();
-                            $_ = $mutation->sections()->remote()->processes()->record(Content::ofString('process'))->unwrap();
-                            $_ = $mutation->sections()->remote()->sql()->record(Content::ofString('sql query'))->unwrap();
-                        },
-                    );
 
-                    return Attempt::result($input);
+                    return $profiler
+                        ->start('test')
+                        ->flatMap(static fn($profile) => $profiler->mutate(
+                            $profile,
+                            static fn($mutation) => $mutation
+                                ->sections()
+                                ->appGraph()
+                                ->record(Content::ofString('<app-graph-svg/>'))
+                                ->flatMap(
+                                    static fn() => $mutation
+                                        ->sections()
+                                        ->callGraph()
+                                        ->record(Content::ofString('{"call-graph-svg": []}')),
+                                )
+                                ->flatMap(
+                                    static fn() => $mutation
+                                        ->sections()
+                                        ->environment()
+                                        ->record(Map::of()),
+                                )
+                                ->flatMap(
+                                    static fn() => $mutation
+                                        ->sections()
+                                        ->exception()
+                                        ->record(Content::ofString('<exception-svg/>')),
+                                )
+                                ->flatMap(
+                                    static fn() => $mutation
+                                        ->sections()
+                                        ->http()
+                                        ->received(Content::ofString('request')),
+                                )
+                                ->flatMap(
+                                    static fn() => $mutation
+                                        ->sections()
+                                        ->http()
+                                        ->respondedWith(Content::ofString('response')),
+                                )
+                                ->flatMap(
+                                    static fn() => $mutation
+                                        ->sections()
+                                        ->processes()
+                                        ->record(Content::ofString('process')),
+                                )
+                                ->flatMap(
+                                    static fn() => $mutation
+                                        ->sections()
+                                        ->remote()
+                                        ->http()
+                                        ->sent(Content::ofString('request')),
+                                )
+                                ->flatMap(
+                                    static fn() => $mutation
+                                        ->sections()
+                                        ->remote()
+                                        ->http()
+                                        ->got(Content::ofString('response')),
+                                )
+                                ->flatMap(
+                                    static fn() => $mutation
+                                        ->sections()
+                                        ->remote()
+                                        ->processes()
+                                        ->record(Content::ofString('process')),
+                                )
+                                ->flatMap(
+                                    static fn() => $mutation
+                                        ->sections()
+                                        ->remote()
+                                        ->sql()
+                                        ->record(Content::ofString('sql query')),
+                                ),
+                        ))
+                        ->map(static fn() => $input);
                 })->pipe($route),
             );
 
