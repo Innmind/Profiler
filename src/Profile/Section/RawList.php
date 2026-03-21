@@ -13,6 +13,7 @@ use Innmind\Xml\{
 use Innmind\Immutable\Sequence;
 
 /**
+ * @internal
  * @psalm-immutable
  */
 final class RawList implements Section

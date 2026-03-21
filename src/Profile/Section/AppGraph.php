@@ -14,6 +14,7 @@ use Innmind\Xml\{
 use Innmind\Immutable\Sequence;
 
 /**
+ * @internal
  * @psalm-immutable
  */
 final class AppGraph implements Section
