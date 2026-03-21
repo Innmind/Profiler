@@ -19,11 +19,8 @@ use Innmind\Immutable\Sequence;
  */
 final class Exception implements Section
 {
-    private Content $svg;
-
-    private function __construct(Content $svg)
+    private function __construct(private Content $svg)
     {
-        $this->svg = $svg;
     }
 
     /**

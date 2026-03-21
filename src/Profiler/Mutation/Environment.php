@@ -19,13 +19,10 @@ use Innmind\Immutable\{
 
 final class Environment
 {
-    private Adapter $storage;
-    private Directory $profile;
-
-    private function __construct(Adapter $storage, Directory $profile)
-    {
-        $this->storage = $storage;
-        $this->profile = $profile;
+    private function __construct(
+        private Adapter $storage,
+        private Directory $profile,
+    ) {
     }
 
     /**

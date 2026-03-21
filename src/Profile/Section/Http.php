@@ -21,17 +21,13 @@ use Innmind\Immutable\{
  */
 final class Http implements Section
 {
-    private Content $request;
-    /** @var Maybe<Content> */
-    private Maybe $response;
-
     /**
      * @param Maybe<Content> $response
      */
-    private function __construct(Content $request, Maybe $response)
-    {
-        $this->request = $request;
-        $this->response = $response;
+    private function __construct(
+        private Content $request,
+        private Maybe $response,
+    ) {
     }
 
     /**

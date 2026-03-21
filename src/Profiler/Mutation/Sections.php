@@ -11,15 +11,11 @@ use Innmind\Time\Clock;
 
 final class Sections
 {
-    private Adapter $storage;
-    private Clock $clock;
-    private Directory $profile;
-
-    private function __construct(Adapter $storage, Clock $clock, Directory $profile)
-    {
-        $this->storage = $storage;
-        $this->clock = $clock;
-        $this->profile = $profile;
+    private function __construct(
+        private Adapter $storage,
+        private Clock $clock,
+        private Directory $profile,
+    ) {
     }
 
     /**

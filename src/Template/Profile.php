@@ -28,13 +28,10 @@ use Innmind\Immutable\{
  */
 final class Profile
 {
-    private Template $list;
-    private Template $section;
-
-    public function __construct(Template $list, Template $section)
-    {
-        $this->list = $list;
-        $this->section = $section;
+    public function __construct(
+        private Template $list,
+        private Template $section,
+    ) {
     }
 
     /**

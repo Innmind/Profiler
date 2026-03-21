@@ -23,15 +23,10 @@ use Innmind\Immutable\{
  */
 final class ShowProfile
 {
-    private Profiler $profiler;
-    private Profile $template;
-
     public function __construct(
-        Profiler $profiler,
-        Profile $template,
+        private Profiler $profiler,
+        private Profile $template,
     ) {
-        $this->profiler = $profiler;
-        $this->template = $template;
     }
 
     /**

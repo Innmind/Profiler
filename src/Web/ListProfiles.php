@@ -19,15 +19,10 @@ use Innmind\Immutable\Attempt;
  */
 final class ListProfiles
 {
-    private Profiler $profiler;
-    private Index $template;
-
     public function __construct(
-        Profiler $profiler,
-        Index $template,
+        private Profiler $profiler,
+        private Index $template,
     ) {
-        $this->profiler = $profiler;
-        $this->template = $template;
     }
 
     /**
