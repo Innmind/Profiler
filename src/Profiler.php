@@ -41,6 +41,9 @@ final class Profiler
         $this->load = $load;
     }
 
+    /**
+     * @internal
+     */
     public static function of(Adapter $storage, Clock $clock, Load $load): self
     {
         return new self($storage, $clock, $load);
@@ -92,6 +95,8 @@ final class Profiler
     }
 
     /**
+     * @internal
+     *
      * @return Maybe<Profile>
      */
     public function get(Id $profile): Maybe
@@ -104,6 +109,8 @@ final class Profiler
     }
 
     /**
+     * @internal
+     *
      * @return Sequence<Profile>
      */
     public function all(): Sequence

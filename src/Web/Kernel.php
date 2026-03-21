@@ -19,7 +19,7 @@ use Innmind\UrlTemplate\Template;
 use Innmind\Url\Path;
 
 /**
- * @psalm-suppress ArgumentTypeCoercion
+ * @psalm-immutable
  */
 final class Kernel implements Middleware
 {
@@ -78,6 +78,9 @@ final class Kernel implements Middleware
             ));
     }
 
+    /**
+     * @psalm-pure
+     */
     public static function standalone(Path $storage): self
     {
         return new self(
@@ -88,6 +91,9 @@ final class Kernel implements Middleware
         );
     }
 
+    /**
+     * @psalm-pure
+     */
     public static function inApp(Path $storage): self
     {
         return new self(

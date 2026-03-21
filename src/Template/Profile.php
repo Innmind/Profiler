@@ -22,6 +22,10 @@ use Innmind\Immutable\{
     Maybe,
 };
 
+/**
+ * @internal
+ * @psalm-immutable
+ */
 final class Profile
 {
     private Template $list;
@@ -140,6 +144,9 @@ final class Profile
         return $document->asContent();
     }
 
+    /**
+     * @psalm-pure
+     */
     private static function css(): string
     {
         return <<<CSS

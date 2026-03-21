@@ -13,6 +13,10 @@ use Innmind\Xml\{
 };
 use Innmind\Immutable\Sequence;
 
+/**
+ * @internal
+ * @psalm-immutable
+ */
 final class AppGraph implements Section
 {
     private Content $svg;
@@ -22,6 +26,10 @@ final class AppGraph implements Section
         $this->svg = $svg;
     }
 
+    /**
+     * @internal
+     * @psalm-pure
+     */
     public static function of(Content $svg): self
     {
         return new self($svg);

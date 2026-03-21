@@ -25,6 +25,10 @@ use Innmind\Immutable\{
     Predicate\Instance,
 };
 
+/**
+ * @internal
+ * @psalm-immutable
+ */
 final class Load
 {
     private Clock $clock;
@@ -88,6 +92,10 @@ final class Load
             )));
     }
 
+    /**
+     * @internal
+     * @psalm-pure
+     */
     public static function of(Clock $clock): self
     {
         return new self($clock);

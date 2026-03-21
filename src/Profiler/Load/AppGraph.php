@@ -14,6 +14,10 @@ use Innmind\Immutable\{
     Predicate\Instance,
 };
 
+/**
+ * @internal
+ * @psalm-immutable
+ */
 final class AppGraph
 {
     /**

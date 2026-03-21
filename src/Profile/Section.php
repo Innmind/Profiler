@@ -5,6 +5,10 @@ namespace Innmind\Profiler\Profile;
 
 use Innmind\Xml\Element;
 
+/**
+ * @internal
+ * @psalm-immutable
+ */
 interface Section
 {
     /**

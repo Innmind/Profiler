@@ -25,6 +25,9 @@ final class CallGraph
         $this->profile = $profile;
     }
 
+    /**
+     * @internal
+     */
     public static function of(Adapter $storage, Directory $profile): self
     {
         return new self($storage, $profile);

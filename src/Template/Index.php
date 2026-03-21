@@ -19,6 +19,10 @@ use Innmind\Xml\{
 };
 use Innmind\Immutable\Sequence;
 
+/**
+ * @internal
+ * @psalm-immutable
+ */
 final class Index
 {
     private Template $list;
@@ -99,6 +103,9 @@ final class Index
         return $document->asContent();
     }
 
+    /**
+     * @psalm-pure
+     */
     private static function css(): string
     {
         return <<<CSS

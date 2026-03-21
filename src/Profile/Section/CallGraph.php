@@ -14,6 +14,10 @@ use Innmind\Xml\{
 };
 use Innmind\Immutable\Sequence;
 
+/**
+ * @internal
+ * @psalm-immutable
+ */
 final class CallGraph implements Section
 {
     private Content $json;
@@ -23,6 +27,10 @@ final class CallGraph implements Section
         $this->json = $json;
     }
 
+    /**
+     * @internal
+     * @psalm-pure
+     */
     public static function of(Content $json): self
     {
         return new self($json);

@@ -18,6 +18,9 @@ use Innmind\Immutable\{
     Maybe,
 };
 
+/**
+ * @internal
+ */
 final class ShowProfile
 {
     private Profiler $profiler;

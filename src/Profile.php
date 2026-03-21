@@ -18,6 +18,7 @@ use Innmind\Immutable\{
 };
 
 /**
+ * @internal
  * @psalm-immutable
  */
 final class Profile
@@ -52,6 +53,8 @@ final class Profile
     }
 
     /**
+     * @internal
+     *
      * @psalm-pure
      */
     public static function of(

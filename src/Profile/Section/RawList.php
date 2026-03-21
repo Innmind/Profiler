@@ -12,6 +12,10 @@ use Innmind\Xml\{
 };
 use Innmind\Immutable\Sequence;
 
+/**
+ * @internal
+ * @psalm-immutable
+ */
 final class RawList implements Section
 {
     /** @var non-empty-string */
@@ -34,6 +38,9 @@ final class RawList implements Section
     }
 
     /**
+     * @internal
+     * @psalm-pure
+     *
      * @param non-empty-string $name
      * @param non-empty-string $slug
      * @param Sequence<Content> $contents
