@@ -22,6 +22,9 @@ final class AppGraph implements Section
         $this->svg = $svg;
     }
 
+    /**
+     * @internal
+     */
     public static function of(Content $svg): self
     {
         return new self($svg);

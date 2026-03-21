@@ -19,6 +19,9 @@ use Innmind\Xml\{
 };
 use Innmind\Immutable\Sequence;
 
+/**
+ * @internal
+ */
 final class Index
 {
     private Template $list;

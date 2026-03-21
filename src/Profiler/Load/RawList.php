@@ -14,6 +14,9 @@ use Innmind\Immutable\{
     Predicate\Instance,
 };
 
+/**
+ * @internal
+ */
 final class RawList
 {
     /** @var non-empty-string */

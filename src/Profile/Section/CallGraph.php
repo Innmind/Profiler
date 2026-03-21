@@ -23,6 +23,9 @@ final class CallGraph implements Section
         $this->json = $json;
     }
 
+    /**
+     * @internal
+     */
     public static function of(Content $json): self
     {
         return new self($json);

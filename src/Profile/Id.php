@@ -22,12 +22,16 @@ final class Id
         $this->value = $value;
     }
 
+    /**
+     * @internal
+     */
     public static function new(): self
     {
         return new self(Uuid::uuid4()->toString());
     }
 
     /**
+     * @internal
      * @psalm-pure
      *
      * @return Maybe<self>

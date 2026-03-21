@@ -22,6 +22,9 @@ final class Sections
         $this->profile = $profile;
     }
 
+    /**
+     * @internal
+     */
     public static function of(Adapter $storage, Clock $clock, Directory $profile): self
     {
         return new self($storage, $clock, $profile);

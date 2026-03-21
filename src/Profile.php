@@ -52,6 +52,8 @@ final class Profile
     }
 
     /**
+     * @internal
+     *
      * @psalm-pure
      */
     public static function of(

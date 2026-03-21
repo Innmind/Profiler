@@ -21,6 +21,9 @@ final class Environment implements Section
         $this->pairs = $pairs;
     }
 
+    /**
+     * @internal
+     */
     public static function of(Content $pairs): self
     {
         return new self($pairs);

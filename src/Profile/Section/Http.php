@@ -31,6 +31,8 @@ final class Http implements Section
     }
 
     /**
+     * @internal
+     *
      * @param Maybe<Content> $response
      */
     public static function of(Content $request, Maybe $response): self

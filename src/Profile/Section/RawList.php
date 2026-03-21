@@ -34,6 +34,8 @@ final class RawList implements Section
     }
 
     /**
+     * @internal
+     *
      * @param non-empty-string $name
      * @param non-empty-string $slug
      * @param Sequence<Content> $contents

@@ -14,6 +14,9 @@ use Innmind\Http\{
 };
 use Innmind\Immutable\Attempt;
 
+/**
+ * @internal
+ */
 final class ListProfiles
 {
     private Profiler $profiler;

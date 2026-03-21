@@ -22,6 +22,9 @@ use Innmind\Immutable\{
     Maybe,
 };
 
+/**
+ * @internal
+ */
 final class Profile
 {
     private Template $list;
