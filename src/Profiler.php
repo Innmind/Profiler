@@ -101,10 +101,8 @@ final class Profiler
             ->root()
             ->all()
             ->keep(Instance::of(Directory::class))
-            ->flatMap(fn($profile) => ($this->load)($profile)->match(
-                static fn($profile) => Sequence::of($profile),
-                static fn() => Sequence::of(),
-            ))
+            ->map($this->load)
+            ->flatMap(static fn($profile) => $profile->toSequence())
             ->sort(
                 static fn($a, $b) => $b->startedAt()->format(Format::iso8601()) <=> $a->startedAt()->format(Format::iso8601()),
             );
