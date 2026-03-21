@@ -8,13 +8,17 @@ The examples show how to record data when the profiler is [in the current app](i
 use Innmind\Framework\{
     Application,
     Middleware,
-    Http\RequestHandler,
 };
 use Innmind\Profiler\{
     Web\Kernel,
+    Web\Services,
     Profiler,
+    Profiler\Mutation,
+    Profile\Id,
 };
-use Innmind\Http\Message\{
+use Innmind\DI\Container;
+use Innmind\Route\Component;
+use Innmind\Http\{
     ServerRequest,
     Response,
 };
@@ -26,36 +30,37 @@ final class YourApp implements Middleware
     {
         return $app
             ->map(Kernel::inApp(Path::of('/tmp/')))
-            ->mapRequestHandler(
-                static fn($handler, $get) => new class($handler, $get('innmind/profiler')) implements RequestHandler {
-                    public function __construct(
-                        private RequestHandler $inner,
-                        private Profiler $profiler,
-                    ) {
-                    }
+            ->mapRoute(
+                static fn(
+                    Component $route,
+                    Container $get,
+                ) => Component::of(static function(ServerRequest $request, mixed $input) use ($route, $get) {
+                    $profiler = $get(Services::profiler());
 
-                    public function __invoke(ServerRequest $request): Response
-                    {
-                        $profile = $this->profiler->start($request->url()->path()->toString());
-                        $this->profiler->mutate(
-                            $profile,
-                            static function($mutation) {
-                                $mutation->sections(); // call any method here to record sections data
-                            },
+                    return $profiler
+                        ->start($request->url()->path()->toString())
+                        ->flatMap(
+                            static fn(Id $profile) => $profiler
+                                ->mutate(
+                                    $profile,
+                                    static fn(Mutation $mutation) => $mutation
+                                        ->http()
+                                        ->received($request->body()),
+                                )
+                                ->flatMap(static fn() => $route($request, $input))
+                                ->flatMap(
+                                    static fn(Response $response) => $profiler
+                                        ->mutate(
+                                            $profile,
+                                            static fn(Mutation $mutation) => match ($response->statusCode()->successful()) {
+                                                true => $mutation->succeed($response->statusCode()->toString()),
+                                                false => $mutation->fail($response->statusCode()->toString()),
+                                            },
+                                        )
+                                        ->map(static fn() => $response),
+                                ),
                         );
-
-                        $response = ($this->inner)($request);
-                        $this->profiler->mutate(
-                            $profile,
-                            static fn($mutation) => match ($response->statusCode()->successful()) {
-                                true => $mutation->succeed($response->statusCode()->toString()),
-                                false => $mutation->fail($response->statusCode()->toString()),
-                            },
-                        );
-
-                        return $response;
-                    }
-                },
+                }),
             );
     }
 }
