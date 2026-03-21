@@ -27,6 +27,7 @@ use Innmind\Immutable\{
 
 /**
  * @internal
+ * @psalm-immutable
  */
 final class Load
 {
@@ -93,6 +94,7 @@ final class Load
 
     /**
      * @internal
+     * @psalm-pure
      */
     public static function of(Clock $clock): self
     {

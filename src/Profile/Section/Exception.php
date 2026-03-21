@@ -13,6 +13,9 @@ use Innmind\Xml\{
 };
 use Innmind\Immutable\Sequence;
 
+/**
+ * @psalm-immutable
+ */
 final class Exception implements Section
 {
     private Content $svg;
@@ -24,6 +27,7 @@ final class Exception implements Section
 
     /**
      * @internal
+     * @psalm-pure
      */
     public static function of(Content $svg): self
     {

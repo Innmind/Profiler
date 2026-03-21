@@ -16,6 +16,7 @@ use Innmind\Immutable\{
 
 /**
  * @internal
+ * @psalm-immutable
  */
 final class RawList
 {

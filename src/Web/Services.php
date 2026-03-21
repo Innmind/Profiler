@@ -9,6 +9,7 @@ use Innmind\DI\Service;
 use Innmind\Immutable\Attempt;
 
 /**
+ * @psalm-immutable
  * @template T of object
  * @implements Service<T>
  */
@@ -19,6 +20,8 @@ enum Services implements Service
     case showProfile;
 
     /**
+     * @psalm-pure
+     *
      * @return self<Profiler>
      */
     public static function profiler(): self
@@ -29,6 +32,7 @@ enum Services implements Service
 
     /**
      * @internal
+     * @psalm-pure
      *
      * @return self<object&(callable(mixed...): Attempt<Response>)>
      */
@@ -40,6 +44,7 @@ enum Services implements Service
 
     /**
      * @internal
+     * @psalm-pure
      *
      * @return self<object&(callable(mixed...): Attempt<Response>)>
      */

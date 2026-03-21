@@ -24,6 +24,7 @@ use Innmind\Immutable\{
 
 /**
  * @internal
+ * @psalm-immutable
  */
 final class Profile
 {
@@ -143,6 +144,9 @@ final class Profile
         return $document->asContent();
     }
 
+    /**
+     * @psalm-pure
+     */
     private static function css(): string
     {
         return <<<CSS

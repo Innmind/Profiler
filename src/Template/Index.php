@@ -21,6 +21,7 @@ use Innmind\Immutable\Sequence;
 
 /**
  * @internal
+ * @psalm-immutable
  */
 final class Index
 {
@@ -102,6 +103,9 @@ final class Index
         return $document->asContent();
     }
 
+    /**
+     * @psalm-pure
+     */
     private static function css(): string
     {
         return <<<CSS

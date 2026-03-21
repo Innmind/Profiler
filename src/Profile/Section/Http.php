@@ -15,6 +15,9 @@ use Innmind\Immutable\{
     Maybe,
 };
 
+/**
+ * @psalm-immutable
+ */
 final class Http implements Section
 {
     private Content $request;
@@ -32,6 +35,7 @@ final class Http implements Section
 
     /**
      * @internal
+     * @psalm-pure
      *
      * @param Maybe<Content> $response
      */

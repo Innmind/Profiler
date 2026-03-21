@@ -12,6 +12,9 @@ use Innmind\Xml\{
 };
 use Innmind\Immutable\Sequence;
 
+/**
+ * @psalm-immutable
+ */
 final class Environment implements Section
 {
     private Content $pairs;
@@ -23,6 +26,7 @@ final class Environment implements Section
 
     /**
      * @internal
+     * @psalm-pure
      */
     public static function of(Content $pairs): self
     {
