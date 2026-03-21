@@ -76,7 +76,7 @@ class KernelTest extends TestCase
                     $input,
                 ) use ($get) {
                     $profiler = $get(Services::profiler);
-                    $profile = $profiler->start('test');
+                    $profile = $profiler->start('test')->unwrap();
                     $profiler->mutate(
                         $profile,
                         static function($mutation) {
@@ -133,7 +133,7 @@ class KernelTest extends TestCase
                     $input,
                 ) use ($get) {
                     $profiler = $get(Services::profiler);
-                    $profiler->start('test');
+                    $_ = $profiler->start('test')->unwrap();
 
                     return Attempt::result($input);
                 })->pipe($route),
@@ -216,7 +216,7 @@ class KernelTest extends TestCase
                     $input,
                 ) use ($get) {
                     $profiler = $get(Services::profiler);
-                    $profile = $profiler->start('test');
+                    $profile = $profiler->start('test')->unwrap();
                     $profiler->mutate(
                         $profile,
                         static function($mutation) {
@@ -324,7 +324,7 @@ class KernelTest extends TestCase
                     $input,
                 ) use ($get) {
                     $profiler = $get(Services::profiler);
-                    $profile = $profiler->start('test');
+                    $profile = $profiler->start('test')->unwrap();
                     $profiler->mutate(
                         $profile,
                         static function($mutation) {
@@ -432,7 +432,7 @@ class KernelTest extends TestCase
                     $input,
                 ) use ($get) {
                     $profiler = $get(Services::profiler);
-                    $profile = $profiler->start('test');
+                    $profile = $profiler->start('test')->unwrap();
                     $profiler->mutate(
                         $profile,
                         static function($mutation) {

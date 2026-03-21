@@ -7,6 +7,7 @@
 - Requires PHP `8.4`
 - Requires `innmind/foundation:~2.1`
 - Requires `innmind/framework:~4.0`
+- `Innmind\Profiler\Profiler::start()` now returns an `Innmind\Immutable\Attempt<Id>`
 
 ## 4.1.0 - 2024-03-10
 

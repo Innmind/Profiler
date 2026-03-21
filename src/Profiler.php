@@ -21,6 +21,7 @@ use Innmind\Time\{
 };
 use Innmind\Json\Json;
 use Innmind\Immutable\{
+    Attempt,
     Sequence,
     Maybe,
     Predicate\Instance,
@@ -44,20 +45,26 @@ final class Profiler
         return new self($storage, $clock, $load);
     }
 
-    public function start(string $name): Id
+    /**
+     * @return Attempt<Id>
+     */
+    #[\NoDiscard]
+    public function start(string $name): Attempt
     {
         $id = Id::new();
-        $_ = $this->storage->add(
-            Directory::named($id->toString())->add(File::named(
-                'start.json',
-                Content::ofString(Json::encode([
-                    'name' => $name,
-                    'startedAt' => $this->clock->now()->format(Format::iso8601()),
-                ])),
-            )),
-        )->unwrap();
 
-        return $id;
+        return $this
+            ->storage
+            ->add(
+                Directory::named($id->toString())->add(File::named(
+                    'start.json',
+                    Content::ofString(Json::encode([
+                        'name' => $name,
+                        'startedAt' => $this->clock->now()->format(Format::iso8601()),
+                    ])),
+                )),
+            )
+            ->map(static fn() => $id);
     }
 
     /**
