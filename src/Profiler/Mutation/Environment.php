@@ -13,6 +13,8 @@ use Innmind\Filesystem\{
 use Innmind\Immutable\{
     Map,
     Str,
+    Attempt,
+    SideEffect,
 };
 
 final class Environment
@@ -33,10 +35,13 @@ final class Environment
 
     /**
      * @param Map<string, string> $pairs
+     *
+     * @return Attempt<SideEffect>
      */
-    public function record(Map $pairs): void
+    #[\NoDiscard]
+    public function record(Map $pairs): Attempt
     {
-        $_ = $this->storage->add($this->profile->add(File::named(
+        return $this->storage->add($this->profile->add(File::named(
             'environment.txt',
             Content::ofLines(
                 $pairs
@@ -45,6 +50,6 @@ final class Environment
                     ->map(Str::of(...))
                     ->map(Line::of(...)),
             ),
-        )))->unwrap();
+        )));
     }
 }

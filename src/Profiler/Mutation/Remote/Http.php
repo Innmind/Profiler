@@ -11,6 +11,10 @@ use Innmind\Filesystem\{
     File\Content,
 };
 use Innmind\Time\Clock;
+use Innmind\Immutable\{
+    Attempt,
+    SideEffect,
+};
 
 final class Http
 {
@@ -30,29 +34,39 @@ final class Http
         return new self($storage, $clock, $profile);
     }
 
-    public function sent(Content $request): void
+    /**
+     * @return Attempt<SideEffect>
+     */
+    #[\NoDiscard]
+    public function sent(Content $request): Attempt
     {
-        $this->record($request);
+        return $this->record($request);
     }
 
-    public function got(Content $response): void
+    /**
+     * @return Attempt<SideEffect>
+     */
+    #[\NoDiscard]
+    public function got(Content $response): Attempt
     {
-        $this->record($response);
+        return $this->record($response);
     }
 
     /**
      * No distinction between request and response when persisting because the
      * http client allows for concurrency so we only need to persist in order
      * what we got
+     *
+     * @return Attempt<SideEffect>
      */
-    private function record(Content $message): void
+    private function record(Content $message): Attempt
     {
         /** @psalm-suppress ArgumentTypeCoercion */
-        $_ = $this->storage->add($this->profile->add(
+        return $this->storage->add($this->profile->add(
             Directory::named('remote-http')->add(File::named(
                 $this->clock->now()->format(Format::internal),
                 $message,
             )),
-        ))->unwrap();
+        ));
     }
 }

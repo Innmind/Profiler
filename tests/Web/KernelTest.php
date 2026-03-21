@@ -80,7 +80,7 @@ class KernelTest extends TestCase
                     $profiler->mutate(
                         $profile,
                         static function($mutation) {
-                            $mutation->succeed('200');
+                            $_ = $mutation->succeed('200')->unwrap();
                         },
                     );
 
@@ -220,8 +220,8 @@ class KernelTest extends TestCase
                     $profiler->mutate(
                         $profile,
                         static function($mutation) {
-                            $mutation->sections()->appGraph()->record(Content::ofString('<app-graph-svg/>'));
-                            $mutation->sections()->exception()->record(Content::ofString('<exception-svg/>'));
+                            $_ = $mutation->sections()->appGraph()->record(Content::ofString('<app-graph-svg/>'))->unwrap();
+                            $_ = $mutation->sections()->exception()->record(Content::ofString('<exception-svg/>'))->unwrap();
                         },
                     );
 
@@ -328,8 +328,8 @@ class KernelTest extends TestCase
                     $profiler->mutate(
                         $profile,
                         static function($mutation) {
-                            $mutation->sections()->appGraph()->record(Content::ofString('<app-graph-svg/>'));
-                            $mutation->sections()->exception()->record(Content::ofString('<exception-svg/>'));
+                            $_ = $mutation->sections()->appGraph()->record(Content::ofString('<app-graph-svg/>'))->unwrap();
+                            $_ = $mutation->sections()->exception()->record(Content::ofString('<exception-svg/>'))->unwrap();
                         },
                     );
 
@@ -436,17 +436,17 @@ class KernelTest extends TestCase
                     $profiler->mutate(
                         $profile,
                         static function($mutation) {
-                            $mutation->sections()->appGraph()->record(Content::ofString('<app-graph-svg/>'));
-                            $mutation->sections()->callGraph()->record(Content::ofString('{"call-graph-svg": []}'));
-                            $mutation->sections()->environment()->record(Map::of());
-                            $mutation->sections()->exception()->record(Content::ofString('<exception-svg/>'));
-                            $mutation->sections()->http()->received(Content::ofString('request'));
-                            $mutation->sections()->http()->respondedWith(Content::ofString('response'));
-                            $mutation->sections()->processes()->record(Content::ofString('process'));
-                            $mutation->sections()->remote()->http()->sent(Content::ofString('request'));
-                            $mutation->sections()->remote()->http()->got(Content::ofString('response'));
-                            $mutation->sections()->remote()->processes()->record(Content::ofString('process'));
-                            $mutation->sections()->remote()->sql()->record(Content::ofString('sql query'));
+                            $_ = $mutation->sections()->appGraph()->record(Content::ofString('<app-graph-svg/>'))->unwrap();
+                            $_ = $mutation->sections()->callGraph()->record(Content::ofString('{"call-graph-svg": []}'))->unwrap();
+                            $_ = $mutation->sections()->environment()->record(Map::of())->unwrap();
+                            $_ = $mutation->sections()->exception()->record(Content::ofString('<exception-svg/>'))->unwrap();
+                            $_ = $mutation->sections()->http()->received(Content::ofString('request'))->unwrap();
+                            $_ = $mutation->sections()->http()->respondedWith(Content::ofString('response'))->unwrap();
+                            $_ = $mutation->sections()->processes()->record(Content::ofString('process'))->unwrap();
+                            $_ = $mutation->sections()->remote()->http()->sent(Content::ofString('request'))->unwrap();
+                            $_ = $mutation->sections()->remote()->http()->got(Content::ofString('response'))->unwrap();
+                            $_ = $mutation->sections()->remote()->processes()->record(Content::ofString('process'))->unwrap();
+                            $_ = $mutation->sections()->remote()->sql()->record(Content::ofString('sql query'))->unwrap();
                         },
                     );
 

@@ -9,6 +9,10 @@ use Innmind\Filesystem\{
     File,
     File\Content,
 };
+use Innmind\Immutable\{
+    Attempt,
+    SideEffect,
+};
 
 final class Exception
 {
@@ -26,11 +30,15 @@ final class Exception
         return new self($storage, $profile);
     }
 
-    public function record(Content $svg): void
+    /**
+     * @return Attempt<SideEffect>
+     */
+    #[\NoDiscard]
+    public function record(Content $svg): Attempt
     {
-        $_ = $this->storage->add($this->profile->add(File::named(
+        return $this->storage->add($this->profile->add(File::named(
             'exception.svg',
             $svg,
-        )))->unwrap();
+        )));
     }
 }
