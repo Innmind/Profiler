@@ -25,13 +25,10 @@ use Innmind\Immutable\Sequence;
  */
 final class Index
 {
-    private Template $list;
-    private Template $profile;
-
-    public function __construct(Template $list, Template $profile)
-    {
-        $this->list = $list;
-        $this->profile = $profile;
+    public function __construct(
+        private Template $list,
+        private Template $profile,
+    ) {
     }
 
     /**

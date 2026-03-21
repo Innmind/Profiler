@@ -30,15 +30,11 @@ use Innmind\Immutable\{
 
 final class Profiler
 {
-    private Adapter $storage;
-    private Clock $clock;
-    private Load $load;
-
-    private function __construct(Adapter $storage, Clock $clock, Load $load)
-    {
-        $this->storage = $storage;
-        $this->clock = $clock;
-        $this->load = $load;
+    private function __construct(
+        private Adapter $storage,
+        private Clock $clock,
+        private Load $load,
+    ) {
     }
 
     /**

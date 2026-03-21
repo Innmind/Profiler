@@ -85,10 +85,7 @@ final class Load
             })
             ->map(fn($profile) => $this->exit($profile, $raw))
             ->map(fn($profile) => $profile->withSections($this->sections->flatMap(
-                static fn($load) => $load($raw)->match(
-                    static fn($section) => Sequence::of($section),
-                    static fn() => Sequence::of(),
-                ),
+                static fn($load) => $load($raw)->toSequence(),
             )));
     }
 

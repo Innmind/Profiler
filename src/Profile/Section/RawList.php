@@ -18,20 +18,16 @@ use Innmind\Immutable\Sequence;
  */
 final class RawList implements Section
 {
-    /** @var non-empty-string */
-    private string $name;
-    /** @var non-empty-string */
-    private string $slug;
-    /** @var Sequence<Content> */
-    private Sequence $contents;
-
     /**
      * @param non-empty-string $name
      * @param non-empty-string $slug
      * @param Sequence<Content> $contents
      */
-    private function __construct(string $name, string $slug, Sequence $contents)
-    {
+    private function __construct(
+        private string $name,
+        private string $slug,
+        private Sequence $contents,
+    ) {
         $this->name = $name;
         $this->slug = $slug;
         $this->contents = $contents;

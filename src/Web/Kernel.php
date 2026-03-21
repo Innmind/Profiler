@@ -23,21 +23,12 @@ use Innmind\Url\Path;
  */
 final class Kernel implements Middleware
 {
-    private Path $storage;
-    private Template $list;
-    private Template $profile;
-    private Template $section;
-
     private function __construct(
-        Path $storage,
-        Template $list,
-        Template $profile,
-        Template $section,
+        private Path $storage,
+        private Template $list,
+        private Template $profile,
+        private Template $section,
     ) {
-        $this->storage = $storage;
-        $this->list = $list;
-        $this->profile = $profile;
-        $this->section = $section;
     }
 
     #[\Override]

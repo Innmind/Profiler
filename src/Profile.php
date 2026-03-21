@@ -23,33 +23,18 @@ use Innmind\Immutable\{
  */
 final class Profile
 {
-    private Id $id;
-    private string $name;
-    private Point $startedAt;
-    /** @var Sequence<Section> */
-    private Sequence $sections;
-    private Status $status;
-    /** @var Maybe<string> */
-    private Maybe $exit;
-
     /**
      * @param Sequence<Section> $sections
      * @param Maybe<string> $exit
      */
     private function __construct(
-        Id $id,
-        string $name,
-        Point $startedAt,
-        Sequence $sections,
-        Status $status,
-        Maybe $exit,
+        private Id $id,
+        private string $name,
+        private Point $startedAt,
+        private Sequence $sections,
+        private Status $status,
+        private Maybe $exit,
     ) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->startedAt = $startedAt;
-        $this->sections = $sections;
-        $this->status = $status;
-        $this->exit = $exit;
     }
 
     /**

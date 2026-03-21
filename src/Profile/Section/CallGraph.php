@@ -20,11 +20,8 @@ use Innmind\Immutable\Sequence;
  */
 final class CallGraph implements Section
 {
-    private Content $json;
-
-    private function __construct(Content $json)
+    private function __construct(private Content $json)
     {
-        $this->json = $json;
     }
 
     /**

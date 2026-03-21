@@ -18,11 +18,8 @@ use Innmind\Immutable\Sequence;
  */
 final class Environment implements Section
 {
-    private Content $pairs;
-
-    private function __construct(Content $pairs)
+    private function __construct(private Content $pairs)
     {
-        $this->pairs = $pairs;
     }
 
     /**
